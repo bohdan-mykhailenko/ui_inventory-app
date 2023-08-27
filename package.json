@@ -19,8 +19,14 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write . --ignore-path .gitignore",
+    "lint": "eslint --ext .ts,.tsx --ignore-path .eslintignore",
+    "prepare": "husky install",
+    "sass": "sass --watch --style expanded src/styles/index.scss src/App.css"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +45,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^8.48.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.2",
+    "sass": "^1.66.1"
+  },
+  "lint-staged": {
+    "*.js": "npm run lint"
   }
 }
