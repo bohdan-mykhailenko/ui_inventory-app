@@ -20,7 +20,7 @@ export const SideBar: React.FC = () => {
 
       <ul className={styles.sidebar__list}>
         <MenuLink to="/" />
-        <MenuLink to="/arrival" />
+        <MenuLink to="/Orders" />
         <MenuLink to="/groups" />
         <MenuLink to="/products" />
         <MenuLink to="/users" />

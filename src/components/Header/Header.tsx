@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Header.module.scss';
 import DiamondIcon from '@mui/icons-material/Diamond';
-import { DateInfo } from '../DateInfo';
+import { TopMenu } from '../TopMenu';
 import { Search } from '../Search/Search';
 
 export const Header: React.FC = () => {
@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
 
       <Search />
 
-      <DateInfo />
+      <TopMenu />
     </header>
   );
 };

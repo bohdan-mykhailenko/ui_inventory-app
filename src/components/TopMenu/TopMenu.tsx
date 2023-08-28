@@ -1,8 +1,8 @@
 import React from 'react';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import styles from './DateInfo.module.scss';
+import styles from './TopMenu.module.scss';
 
-export const DateInfo: React.FC = () => {
+export const TopMenu: React.FC = () => {
   const date: Date = new Date();
 
   const weekday = date.toLocaleString('en-US', { weekday: 'long' });
@@ -27,17 +27,17 @@ export const DateInfo: React.FC = () => {
   const minutes = date.getMinutes().toString().padStart(2, '0');
 
   return (
-    <div className={styles.dateInfo}>
-      <span className={styles.dateInfo__weekday}>{weekday}</span>
+    <div className={styles.TopMenu}>
+      <span className={styles.TopMenu__weekday}>{weekday}</span>
 
-      <div className={styles.dateInfo__dateWrapper}>
+      <div className={styles.TopMenu__dateWrapper}>
         <span
-          className={styles.dateInfo__date}
+          className={styles.TopMenu__date}
         >{`${day} ${month}, ${year}`}</span>
 
-        <div className={styles.dateInfo__timeWrapper}>
-          <AccessTimeIcon className={styles.dateInfo__timeIcon} />
-          <span className={styles.dateInfo__time}>{`${hours}:${minutes}`}</span>
+        <div className={styles.TopMenu__timeWrapper}>
+          <AccessTimeIcon className={styles.TopMenu__timeIcon} />
+          <span className={styles.TopMenu__time}>{`${hours}:${minutes}`}</span>
         </div>
       </div>
     </div>

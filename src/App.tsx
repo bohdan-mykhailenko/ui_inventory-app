@@ -3,12 +3,12 @@ import './styles/main.scss';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { MainLayout } from './layouts/MainLayout';
 import { HomePage } from './pages/HomePage';
-import { ArrivalPage } from './pages/ArrivalPage';
 import { GroupsPage } from './pages/GroupsPage';
 import { ProductsPage } from './pages/ProductsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { UsersPage } from './pages/UsersPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { OrdersPage } from './pages/OrdersPage';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="home" element={<Navigate to="/" replace />} />
 
-        <Route path="arrival" element={<ArrivalPage />} />
+        <Route path="orders" element={<OrdersPage />} />
         <Route path="groups" element={<GroupsPage />} />
         <Route path="products" element={<ProductsPage />} />
         <Route path="users" element={<UsersPage />} />
