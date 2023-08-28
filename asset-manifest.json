@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/dZENcode_SPA/static/css/main.52ad5fcf.css",
+    "main.js": "/dZENcode_SPA/static/js/main.2350fd88.js",
+    "static/js/787.59d2ac72.chunk.js": "/dZENcode_SPA/static/js/787.59d2ac72.chunk.js",
+    "static/media/1.jpg": "/dZENcode_SPA/static/media/1.452a31d202f6306f650a.jpg",
+    "index.html": "/dZENcode_SPA/index.html",
+    "main.52ad5fcf.css.map": "/dZENcode_SPA/static/css/main.52ad5fcf.css.map",
+    "main.2350fd88.js.map": "/dZENcode_SPA/static/js/main.2350fd88.js.map",
+    "787.59d2ac72.chunk.js.map": "/dZENcode_SPA/static/js/787.59d2ac72.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.52ad5fcf.css",
+    "static/js/main.2350fd88.js"
+  ]
+}
