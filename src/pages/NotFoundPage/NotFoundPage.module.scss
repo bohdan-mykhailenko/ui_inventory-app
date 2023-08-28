@@ -1,0 +1,71 @@
+.notFoundPage {
+  margin-top: 80px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__title {
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+
+  &__message {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+  }
+
+  &__apologies {
+    font-weight: 700;
+    font-size: 144px;
+    background: linear-gradient(
+      to right,
+      #a153cf 20%,
+      #ff36d0 30%,
+      #5fcfcf 50%,
+      #ff36d0 70%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    background-size: 500% auto;
+    animation: textShine 5s ease-in-out infinite alternate;
+
+    @media (max-width: 639px) {
+      font-size: 100px;
+    }
+  }
+
+  &__img {
+    width: 50%;
+    margin-bottom: 20px;
+  }
+
+  &__link {
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding: 3px;
+    border-radius: 5px;
+    color: var(--accent);
+    font-weight: 600;
+
+    &:hover {
+      box-shadow: 0 0 2px 1px var(--shadow);
+    }
+
+    &:hover {
+      font-weight: 600;
+    }
+  }
+}
+
+@keyframes textShine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}

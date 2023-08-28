@@ -1,0 +1,24 @@
+.search {
+  width: 70%;
+  display: flex;
+  justify-self: flex-start;
+
+  &__input {
+    padding: 5px 10px;
+    width: 100%;
+
+    border: 2px solid var(--shadow);
+    border-radius: 5px;
+
+    background: var(--shadow);
+
+    &::placeholder {
+      font-weight: 600;
+    }
+
+    &:active,
+    &:focus {
+      outline: var(--primary-color) solid 2px;
+    }
+  }
+}

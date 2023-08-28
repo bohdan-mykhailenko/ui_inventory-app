@@ -1,0 +1,29 @@
+.header {
+  padding: 10px 20px;
+  display: grid;
+  grid-template-columns: 25% 1fr 1fr;
+  align-items: center;
+
+  grid-column: 1 / span 2;
+
+  background: #fff8f8;
+  border-bottom: 5px solid rgb(46, 40, 40);
+
+  &__logo {
+    color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-self: flex-start;
+  }
+
+  &__icon {
+    margin-right: 15px;
+    font-size: 50px !important;
+  }
+
+  &__companyName {
+    text-transform: uppercase;
+    font-size: 32px;
+  }
+}

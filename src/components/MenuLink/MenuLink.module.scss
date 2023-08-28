@@ -1,0 +1,19 @@
+.menuLink {
+  display: inline;
+  width: 100%;
+  margin-bottom: 15px;
+
+  line-height: 20px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.48px;
+  text-transform: uppercase;
+
+  color: var(--secondary);
+  border-bottom: 3px solid transparent;
+
+  &--active {
+    border-bottom: 3px solid var(--primary-color);
+  }
+}
