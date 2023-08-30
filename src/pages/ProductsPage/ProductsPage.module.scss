@@ -1,0 +1,20 @@
+.productsPage {
+  display: flex;
+  flex-direction: column;
+
+  &__topInfo {
+    display: flex;
+    align-items: center;
+  }
+  &__addButton {
+    /* Styles for the add button */
+  }
+
+  &__title {
+    /* Styles for the title */
+  }
+
+  &__count {
+    /* Styles for the count */
+  }
+}

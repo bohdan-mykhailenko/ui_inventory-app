@@ -1,0 +1,21 @@
+.ordersPage {
+  &__topInfo {
+    display: flex;
+    align-items: center;
+
+    &__addButton {
+      width: 20px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    &__title {
+      /* Styles for the title */
+    }
+
+    &__count {
+      /* Styles for the count span */
+    }
+  }
+}
