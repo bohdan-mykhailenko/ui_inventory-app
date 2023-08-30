@@ -1,0 +1,78 @@
+.productItem {
+  display: flex;
+  align-items: center;
+
+  &__indicator {
+    background: var(--);
+  }
+
+  &__img {
+    width: 40px;
+    height: 40px;
+  }
+
+  &__nameInfo {
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    /* Styles for the title */
+  }
+
+  &__specification {
+    /* Styles for the specification */
+  }
+
+  &__status {
+    /* Styles for the status */
+  }
+
+  &__garanteeInfo {
+    display: flex;
+    align-items: center;
+  }
+
+  &__garanteeStart {
+    /* Styles for the guarantee start */
+  }
+
+  &__garanteeEnd {
+    /* Styles for the guarantee end */
+  }
+
+  &__condition {
+    /* Styles for the condition */
+  }
+
+  &__priceInfo {
+    display: flex;
+    align-items: center;
+  }
+
+  &__priceUSD {
+    /* Styles for the price in USD */
+  }
+
+  &__priceUAH {
+    /* Styles for the price in UAH */
+  }
+
+  &__type {
+    /* Styles for the type */
+  }
+
+  &__orderTitle {
+    /* Styles for the order title */
+  }
+
+  &__date {
+    /* Styles for the date */
+  }
+
+  &__deleteButton {
+  }
+
+  &__deleteIcon {
+  }
+}
