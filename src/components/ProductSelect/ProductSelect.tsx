@@ -1,14 +1,25 @@
 import React from 'react';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  Select,
+  MenuItem,
+  FormControl,
+  SelectChangeEvent,
+} from '@mui/material';
 import styles from './ProductSelect.module.scss';
+import { setSelectedValue } from '../../reducers/filterSlice';
+import { RootState } from '../../store';
 
 export const ProductSelect = () => {
-  const [selectedValue, setSelectedValue] = React.useState('default');
+  const selectedValue = useSelector(
+    (state: RootState) => state.filter.selectedValue,
+  );
+  const dispatch = useDispatch();
 
   const handleChange = (event: SelectChangeEvent<string>) => {
-    setSelectedValue(event.target.value);
+    const newValue = event.target.value;
+
+    dispatch(setSelectedValue(newValue));
   };
 
   return (
@@ -23,9 +34,10 @@ export const ProductSelect = () => {
           <MenuItem value="default" disabled>
             Select an option
           </MenuItem>
-          <MenuItem value="option1">Option 1</MenuItem>
-          <MenuItem value="option2">Option 2</MenuItem>
-          <MenuItem value="option3">Option 3</MenuItem>
+          <MenuItem value="Phones">Phones</MenuItem>
+          <MenuItem value="Tablets">Tablets</MenuItem>
+          <MenuItem value="Monitors">Monitors</MenuItem>
+          <MenuItem value="Laptops">Laptops</MenuItem>
         </Select>
       </div>
     </FormControl>
