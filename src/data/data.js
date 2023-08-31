@@ -83,7 +83,7 @@ export const products = [
     isNew: true,
     isRepairing: false,
     photo: 'pathToFile.jpg',
-    title: 'Product 612',
+    title: 'Product With Damage 612',
     type: 'Phones',
     specification: 'Specification 3',
     guarantee: {
@@ -163,7 +163,7 @@ export const products = [
     isNew: false,
     isRepairing: true,
     photo: 'pathToFile.jpg',
-    title: 'Product 789',
+    title: 'Product Too Old 789',
     type: 'Monitors',
     specification: 'Specification 7',
     guarantee: {
@@ -183,7 +183,7 @@ export const products = [
     isNew: true,
     isRepairing: false,
     photo: 'pathToFile.jpg',
-    title: 'Product 555',
+    title: 'Product Very New 555',
     type: 'Phones',
     specification: 'Specification 8',
     guarantee: {
@@ -203,7 +203,7 @@ export const products = [
     isNew: false,
     isRepairing: false,
     photo: 'pathToFile.jpg',
-    title: 'Product 333',
+    title: 'Product New 333',
     type: 'Tablets',
     specification: 'Specification 9',
     guarantee: {
@@ -223,7 +223,7 @@ export const products = [
     isNew: true,
     isRepairing: true,
     photo: 'pathToFile.jpg',
-    title: 'Product 777',
+    title: 'Product Old 777',
     type: 'Phones',
     specification: 'Specification 10',
     guarantee: {

@@ -11,7 +11,7 @@ export const MainLayout: React.FC = () => {
 
       <SideBar />
 
-      <main className={styles.content}>
+      <main className={styles.mainLayout__content}>
         <Outlet />
       </main>
     </div>

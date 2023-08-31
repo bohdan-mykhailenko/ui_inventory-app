@@ -1,12 +1,22 @@
 .productItem {
+  padding: 10px 20px;
+  margin-bottom: 10px;
+
   display: flex;
   align-items: center;
-  justify-content: space-around;
+
+  background: var(--back-light);
+  border-radius: 5px;
+
+  font-size: 14px;
+
+  gap: 20px;
 
   &__indicator {
     display: flex;
     width: 10px;
     height: 10px;
+
     border-radius: 50%;
     background: var(--text);
 
@@ -16,24 +26,40 @@
   }
 
   &__img {
+    border: 1px solid var(--shadow);
+    border-radius: 5px;
+
     width: 40px;
     height: 40px;
+    object-fit: cover;
   }
 
   &__nameInfo {
+    margin-right: 20px;
+
     display: flex;
-    align-items: center;
-  }
+    justify-content: center;
+    flex-direction: column;
 
-  &__title {
-    /* Styles for the title */
-  }
+    &-title {
+      margin-bottom: 7px;
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
 
-  &__specification {
-    /* Styles for the specification */
+      font-size: 14px;
+    }
+
+    &-specification {
+      font-size: 12px;
+      color: var(--border);
+    }
   }
 
   &__status {
+    display: flex;
+    text-align: left;
+    margin-right: 20px;
+    font-weight: 500;
     color: var(--text);
 
     &--active {
@@ -41,51 +67,62 @@
     }
   }
 
-  &__garanteeInfo {
+  &__garantee {
     display: flex;
-    align-items: center;
-  }
+    justify-content: center;
+    flex-direction: column;
 
-  &__garanteeStart {
-    /* Styles for the guarantee start */
-  }
+    &-label {
+      font-size: 12px;
+      color: var(--border);
+    }
 
-  &__garanteeEnd {
-    /* Styles for the guarantee end */
+    &-start,
+    &-end {
+      font-weight: 500;
+    }
   }
 
   &__condition {
-    /* Styles for the condition */
+    font-weight: 500;
   }
 
-  &__priceInfo {
+  &__price {
     display: flex;
-    align-items: center;
-  }
+    justify-content: center;
+    flex-direction: column;
 
-  &__priceUSD {
-    /* Styles for the price in USD */
-  }
+    &-USD {
+      &-label {
+      }
+      font-size: 12px;
+      color: var(--border);
+    }
 
-  &__priceUAH {
-    /* Styles for the price in UAH */
+    &-UAH {
+      &-label {
+        font-size: 10px;
+      }
+    }
   }
 
   &__type {
-    /* Styles for the type */
+    border-bottom: 1px solid var(--border);
   }
 
   &__orderTitle {
-    /* Styles for the order title */
+    border-bottom: 1px solid var(--border);
   }
 
   &__date {
-    /* Styles for the date */
+    font-weight: 500;
   }
 
   &__deleteButton {
+    min-width: 30px;
   }
 
   &__deleteIcon {
+    color: var(--border);
   }
 }

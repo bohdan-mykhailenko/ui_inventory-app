@@ -5,6 +5,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import styles from './OrderItem.module.scss';
 import { Product } from '../../types/Product';
 import { products } from '../../data/data';
+import { Button } from '@mui/material';
 
 interface OrderItemProps {
   order: Order;
@@ -25,9 +26,9 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
     <article className={styles.orderItem}>
       <h2 className={styles.orderItem__title}>{title}</h2>
 
-      <button className={styles.orderItem__openDetailsButton}>
+      <Button className={styles.orderItem__openDetailsButton}>
         <FormatListBulletedIcon className={styles.orderItem__listIcon} />
-      </button>
+      </Button>
 
       <div className={styles.orderItem__productsInfo}>
         <span className={styles.orderItem__productsCount}>{productsCount}</span>
@@ -36,9 +37,9 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
 
       <span className={styles.orderItem__date}>{date}</span>
 
-      <button className={styles.orderItem__deleteButton}>
+      <Button className={styles.orderItem__deleteButton}>
         <DeleteForeverIcon className={styles.orderItem__deleteIcon} />
-      </button>
+      </Button>
     </article>
   );
 };
