@@ -1,0 +1,35 @@
+.orderItem {
+  display: flex;
+  align-items: center;
+
+  &__title {
+  }
+
+  &__openDetailsButton {
+  }
+
+  &__listIcon {
+  }
+
+  &__productsInfo {
+    /* Styles for the products info container */
+  }
+
+  &__productsCount {
+    /* Styles for the products count */
+  }
+
+  &__productsTitle {
+    /* Styles for the products title */
+  }
+
+  &__date {
+    /* Styles for the date */
+  }
+
+  &__deleteButton {
+  }
+
+  &__deleteIcon {
+  }
+}
