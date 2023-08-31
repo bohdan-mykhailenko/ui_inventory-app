@@ -2,11 +2,10 @@ import React from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import styles from './ProductSelect.module.scss';
 
 export const ProductSelect = () => {
-  const [selectedValue, setSelectedValue] = React.useState('');
+  const [selectedValue, setSelectedValue] = React.useState('default');
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setSelectedValue(event.target.value);
@@ -21,6 +20,9 @@ export const ProductSelect = () => {
           onChange={handleChange}
           className={styles.productSelect__select}
         >
+          <MenuItem value="default" disabled>
+            Select an option
+          </MenuItem>
           <MenuItem value="option1">Option 1</MenuItem>
           <MenuItem value="option2">Option 2</MenuItem>
           <MenuItem value="option3">Option 3</MenuItem>

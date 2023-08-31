@@ -5,6 +5,7 @@ import { orders } from '../../data/data';
 import laptop from '../../imgs/laptop.jpg';
 import { Order } from '../../types/Order';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import classNames from 'classnames';
 
 interface ProductItemProps {
   product: Product;
@@ -17,16 +18,30 @@ const getOrderById = (orderId: number, orders: Order[]) => {
 };
 
 export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
-  const { title, specification, guarantee, isNew, price, type, order, date } =
-    product;
+  const {
+    title,
+    specification,
+    guarantee,
+    isNew,
+    isRepairing,
+    price,
+    type,
+    order,
+    date,
+  } = product;
   const foundOrder = getOrderById(order, orders);
 
   const orderTitle = foundOrder?.title || '';
 
-  const condition = isNew > 0 ? 'New' : 'Used';
+  const condition = isNew ? 'New' : 'Used';
+  const status = isRepairing ? 'Ready' : 'Repairing';
   return (
     <article className={styles.productItem}>
-      <div className={styles.productItem__indicator}></div>
+      <div
+        className={classNames(styles.productItem__indicator, {
+          [styles['productItem__indicator--active']]: isRepairing,
+        })}
+      />
       <img
         className={styles.productItem__img}
         src={laptop}
@@ -38,7 +53,13 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
           {specification}
         </span>
       </div>
-      <span className={styles.productItem__status}>STATUS?</span>
+      <span
+        className={classNames(styles.productItem__status, {
+          [styles['productItem__status--active']]: isRepairing,
+        })}
+      >
+        {status}
+      </span>
       <div className={styles.productItem__garanteeInfo}>
         <span className={styles.productItem__garanteeStart}>
           from {guarantee.start}

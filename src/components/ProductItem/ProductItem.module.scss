@@ -1,9 +1,18 @@
 .productItem {
   display: flex;
   align-items: center;
+  justify-content: space-around;
 
   &__indicator {
-    background: var(--);
+    display: flex;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--text);
+
+    &--active {
+      background: var(--active);
+    }
   }
 
   &__img {
@@ -25,7 +34,11 @@
   }
 
   &__status {
-    /* Styles for the status */
+    color: var(--text);
+
+    &--active {
+      color: var(--active);
+    }
   }
 
   &__garanteeInfo {

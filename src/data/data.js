@@ -40,7 +40,8 @@ export const products = [
   {
     id: 1,
     serialNumber: 1234,
-    isNew: 1,
+    isNew: false,
+    isRepairing: false,
     photo: 'pathToFile.jpg',
     title: 'Product 7651',
     type: 'Monitors',
@@ -59,7 +60,8 @@ export const products = [
   {
     id: 2,
     serialNumber: 1234,
-    isNew: 1,
+    isNew: false,
+    isRepairing: true,
     photo: 'pathToFile.jpg',
     title: 'Product 221',
     type: 'Monitors',
@@ -78,7 +80,8 @@ export const products = [
   {
     id: 3,
     serialNumber: 1234,
-    isNew: 1,
+    isNew: true,
+    isRepairing: false,
     photo: 'pathToFile.jpg',
     title: 'Product 612',
     type: 'Monitors',
