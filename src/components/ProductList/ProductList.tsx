@@ -1,13 +1,12 @@
 import React from 'react';
 import { Product } from '../../types/Product';
-import { products } from '../../data/data';
 import { ProductItem } from '../ProductItem';
 
 interface ProductListProps {
   products: Product[];
 }
 
-export const ProductList: React.FC<ProductListProps> = () => {
+export const ProductList: React.FC<ProductListProps> = ({ products }) => {
   return (
     <ul>
       {products.map((product) => (

@@ -1,12 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styles from './ProductsPage.module.scss';
-import { products } from '../../data/data';
 import { ProductList } from '../../components/ProductList';
 import { ProductSelect } from '../../components/ProductSelect';
+import { getProducts } from '../../selectors/productSelector';
 
 export const ProductsPage: React.FC = () => {
-  const productsFromServer = products;
-  const count = productsFromServer.length;
+  const products = useSelector(getProducts);
+  const count = products.length;
 
   return (
     <section className={styles.productsPage}>
@@ -18,7 +19,7 @@ export const ProductsPage: React.FC = () => {
         <ProductSelect />
       </div>
 
-      <ProductList products={productsFromServer} />
+      <ProductList products={products} />
     </section>
   );
 };

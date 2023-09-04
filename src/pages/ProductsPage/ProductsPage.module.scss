@@ -1,20 +1,23 @@
 .productsPage {
+  padding: 30px 50px 10px 100px;
+
   display: flex;
   flex-direction: column;
 
   &__topInfo {
+    margin-bottom: 70px;
     display: flex;
     align-items: center;
   }
-  &__addButton {
-    /* Styles for the add button */
-  }
 
   &__title {
-    /* Styles for the title */
+    margin-right: 10px;
   }
 
   &__count {
-    /* Styles for the count */
+    margin-right: 25px;
+    font-weight: 700;
+    line-height: 100%;
+    font-size: 27px;
   }
 }
