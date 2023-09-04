@@ -3,6 +3,11 @@
   align-items: center;
 
   &__title {
+    margin-bottom: 7px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+
+    font-size: 14px;
   }
 
   &__openDetailsButton {
@@ -31,5 +36,112 @@
   }
 
   &__deleteIcon {
+  }
+}
+
+.orderItem {
+  padding: 10px 20px;
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
+
+  background: var(--back-light);
+  border-radius: 5px;
+
+  font-size: 14px;
+
+  gap: 20px;
+
+  &__nameInfo {
+    margin-right: 20px;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    &-title {
+      margin-bottom: 7px;
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+
+      font-size: 14px;
+    }
+
+    &-specification {
+      font-size: 12px;
+      color: var(--border);
+    }
+  }
+
+  &__status {
+    display: flex;
+    text-align: left;
+    margin-right: 20px;
+    font-weight: 500;
+    color: var(--text);
+
+    &--active {
+      color: var(--active);
+    }
+  }
+
+  &__garantee {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    &-label {
+      font-size: 12px;
+      color: var(--border);
+    }
+
+    &-start,
+    &-end {
+      font-weight: 500;
+    }
+  }
+
+  &__condition {
+    font-weight: 500;
+  }
+
+  &__price {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    &-USD {
+      &-label {
+      }
+      font-size: 12px;
+      color: var(--border);
+    }
+
+    &-UAH {
+      &-label {
+        font-size: 10px;
+      }
+    }
+  }
+
+  &__type {
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__orderTitle {
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__date {
+    font-weight: 500;
+  }
+
+  &__deleteButton {
+    min-width: 30px;
+  }
+
+  &__deleteIcon {
+    color: var(--border);
   }
 }

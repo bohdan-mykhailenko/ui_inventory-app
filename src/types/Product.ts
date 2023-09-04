@@ -1,7 +1,8 @@
 export interface Product {
   id: number;
   serialNumber: number;
-  isNew: number;
+  isNew: boolean;
+  isRepairing: boolean;
   photo: string;
   title: string;
   type: string;

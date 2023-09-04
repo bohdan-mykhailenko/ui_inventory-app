@@ -1,21 +1,44 @@
 .ordersPage {
+  padding: 30px 50px 10px 100px;
+
+  display: flex;
+  flex-direction: column;
+
   &__topInfo {
+    margin-bottom: 70px;
+
     display: flex;
     align-items: center;
+  }
 
-    &__addButton {
-      width: 20px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--primary);
-    }
+  &__addButton {
+    margin-right: 20px;
+    display: flex;
+    width: 35px;
+    height: 35px;
+    min-width: 30px;
 
-    &__title {
-      /* Styles for the title */
-    }
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--back-light);
+    font-size: 20px;
+    font-weight: 500;
+    border: 2px solid var(--primary-dark);
 
-    &__count {
-      /* Styles for the count span */
+    &:active,
+    &:hover {
+      background: var(--primary-dark);
     }
+  }
+
+  &__title {
+    margin-right: 10px;
+  }
+
+  &__count {
+    margin-right: 25px;
+    font-weight: 700;
+    line-height: 100%;
+    font-size: 27px;
   }
 }
