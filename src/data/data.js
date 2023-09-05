@@ -54,7 +54,7 @@ export const products = [
       { value: 100, symbol: 'USD', isDefault: 0 },
       { value: 2600, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 1,
+    order: 2,
     date: '2017-06-29 12:09:33'
   },
   {
@@ -174,7 +174,7 @@ export const products = [
       { value: 20, symbol: 'USD', isDefault: 0 },
       { value: 500, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 7,
+    order: 2,
     date: '2023-06-10 12:00:00'
   },
   {
