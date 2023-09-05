@@ -1,10 +1,10 @@
-/* eslint-disable indent */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { products } from '../data/data';
+import { Product } from '../types/Product';
 
 interface FilterState {
   selectedValue: string;
-  filteredProducts: typeof products;
+  filteredProducts: Product[];
 }
 
 const initialState: FilterState = {

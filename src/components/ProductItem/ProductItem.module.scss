@@ -5,7 +5,7 @@
   display: grid;
   align-items: center;
 
-  grid-template-columns: 10px 40px 20% 80px 120px 50px 70px 7% 10% 90px auto;
+  grid-template-columns: 10px 40px 20% 80px auto auto;
 
   background: var(--back-light);
   border-radius: 5px;
@@ -13,6 +13,10 @@
   font-size: 14px;
 
   gap: 20px;
+
+  &--shortForm {
+    background: red;
+  }
 
   &__indicator {
     display: flex;
@@ -65,6 +69,13 @@
     &--active {
       color: var(--active);
     }
+  }
+
+  &__detailedInfo {
+    display: grid;
+    grid-template-columns: 120px 50px 70px 15% 15% 90px;
+    align-items: center;
+    gap: 20px;
   }
 
   &__garantee {

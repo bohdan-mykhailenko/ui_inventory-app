@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux';
 import styles from './ProductsPage.module.scss';
 import { ProductList } from '../../components/ProductList';
 import { ProductSelect } from '../../components/ProductSelect';
-import { getProducts } from '../../selectors/productSelector';
+import { selectFilteredProducts } from '../../selectors/filterSelector';
 
 export const ProductsPage: React.FC = () => {
-  const products = useSelector(getProducts);
+  const products = useSelector(selectFilteredProducts);
   const count = products.length;
 
   return (

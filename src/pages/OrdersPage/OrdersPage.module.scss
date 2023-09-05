@@ -11,6 +11,11 @@
     align-items: center;
   }
 
+  &__ordersInfo {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+  }
+
   &__addButton {
     margin-right: 20px;
 

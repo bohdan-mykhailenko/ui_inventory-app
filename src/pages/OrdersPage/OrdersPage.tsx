@@ -3,8 +3,12 @@ import styles from './OrdersPage.module.scss';
 import { orders } from '../../data/data';
 import { OrderList } from '../../components/OrderList';
 import { Button } from 'react-bootstrap';
+import { DetailedOrder } from '../../components/Modals/DetailedOrder';
+import { useSelector } from 'react-redux';
+import { selectIsDetailedOrder } from '../../selectors/ordersSelector';
 
 export const OrdersPage: React.FC = () => {
+  const isDetailedOrder = useSelector(selectIsDetailedOrder);
   const ordersFromServer = orders;
   const count = ordersFromServer.length;
 
@@ -19,7 +23,11 @@ export const OrdersPage: React.FC = () => {
         </span>
       </div>
 
-      <OrderList orders={ordersFromServer} />
+      <div className={styles.ordersPage__ordersInfo}>
+        <OrderList orders={ordersFromServer} />
+
+        {isDetailedOrder && <DetailedOrder />}
+      </div>
     </section>
   );
 };

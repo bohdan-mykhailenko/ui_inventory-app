@@ -11,10 +11,6 @@ export const getProductsPrice = (products: Product[]) => {
       accumulator.priceUSD += valueUSD;
       accumulator.priceUAH += valueUAH;
 
-      if (products.length > 2) {
-        console.log(accumulator);
-      }
-
       return accumulator;
     },
     { priceUSD: 0, priceUAH: 0 },
