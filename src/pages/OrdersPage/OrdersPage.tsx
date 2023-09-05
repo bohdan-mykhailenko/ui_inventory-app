@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './OrdersPage.module.scss';
 import { orders } from '../../data/data';
 import { OrderList } from '../../components/OrderList';
-import { Button } from '@mui/material';
+import { Button } from 'react-bootstrap';
 
 export const OrdersPage: React.FC = () => {
   const ordersFromServer = orders;

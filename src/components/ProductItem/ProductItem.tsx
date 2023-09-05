@@ -7,7 +7,8 @@ import { Order } from '../../types/Order';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import classNames from 'classnames';
 import { formatDate } from '../../helpers/formatDate';
-import { Button } from '@mui/material';
+import { PriceInfo } from '../PriceInfo';
+import { Button } from 'react-bootstrap';
 
 interface ProductItemProps {
   product: Product;
@@ -40,6 +41,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const guaranteeStart = formatDate(guarantee.start);
   const guaranteeEnd = formatDate(guarantee.end);
   const creationDate = formatDate(date);
+  const prices = { priceUSD: price[0].value, priceUAH: price[1].value };
 
   return (
     <article className={styles.productItem}>
@@ -77,16 +79,11 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
         </p>
       </div>
       <p className={styles.productItem__condition}>{condition}</p>
-      <div className={styles.productItem__price}>
-        <p className={styles['productItem__price-USD']}>
-          {price[0].value}{' '}
-          <span className={styles['productItem__price-USD-label']}>$</span>
-        </p>
-        <p className={styles['productItem__price-UAH']}>
-          {price[1].value}{' '}
-          <span className={styles['productItem__price-UAH-label']}>UAH</span>
-        </p>
-      </div>
+
+      <p className={styles.productItem__price}>
+        <PriceInfo prices={prices} />
+      </p>
+
       <p className={styles.productItem__type}>{type}</p>
       <p className={styles.productItem__orderTitle}>{orderTitle}</p>
       <p className={styles.productItem__date}>{creationDate}</p>
