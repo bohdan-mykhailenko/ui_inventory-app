@@ -3,7 +3,7 @@ import { Product } from '../../types/Product';
 import { ProductItem } from '../ProductItem';
 import styles from './ProductList.module.scss';
 import cn from 'classnames';
-import { selectisOrderSelected } from '../../selectors/ordersSelector';
+import { selectIsOrderSelected } from '../../selectors/ordersSelector';
 import { useSelector } from 'react-redux';
 
 interface ProductListProps {
@@ -11,7 +11,7 @@ interface ProductListProps {
 }
 
 export const ProductList: React.FC<ProductListProps> = ({ products }) => {
-  const isOrderSelected = useSelector(selectisOrderSelected);
+  const isOrderSelected = useSelector(selectIsOrderSelected);
 
   return (
     <ul

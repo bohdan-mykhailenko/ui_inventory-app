@@ -1,21 +1,28 @@
 import React from 'react';
 import { ProductList } from '../../ProductList';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   selectOrder,
   selectProductsForOrder,
 } from '../../../selectors/ordersSelector';
 import styles from './DetailedOrder.module.scss';
 import { Button } from 'react-bootstrap';
-import CloseIcon from '@mui/icons-material/Close';
+import { setIsOrderSelected } from '../../../reducers/ordersSlice';
+import { CloseButton } from '../../CloseButton';
 
 export const DetailedOrder: React.FC = () => {
+  const dispatch = useDispatch();
+
   const productsForOrder = useSelector(selectProductsForOrder);
   const selectedOrder = useSelector(selectOrder);
 
   const isEmptyOrder = productsForOrder.length > 0;
 
   const { title = '' } = selectedOrder || {};
+
+  const closeDetailedOrder = () => {
+    dispatch(setIsOrderSelected(false));
+  };
 
   return (
     <section className={styles.detailedOrder}>
@@ -32,12 +39,10 @@ export const DetailedOrder: React.FC = () => {
       {isEmptyOrder ? (
         <ProductList products={productsForOrder} />
       ) : (
-        <h5 className={styles.detailedOrder__empty}>Empty order...</h5>
+        <h5 className={styles.detailedOrder__emptyList}>Empty order...</h5>
       )}
 
-      <Button className={styles.detailedOrder__closeButton}>
-        <CloseIcon />
-      </Button>
+      <CloseButton onClose={closeDetailedOrder} />
     </section>
   );
 };

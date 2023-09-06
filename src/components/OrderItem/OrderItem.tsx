@@ -12,18 +12,23 @@ import { getProductsForOrder } from '../../helpers/getProductsForOrder';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  setisOrderSelected,
+  setIsOrderSelected,
   setSelectedOrder,
   setProductsForOrder,
 } from '../../reducers/ordersSlice';
-import { selectisOrderSelected } from '../../selectors/ordersSelector';
+import { selectIsOrderSelected } from '../../selectors/ordersSelector';
+import { setIsOrderDeleteModalOpen } from '../../reducers/modalsSlice';
+import {
+  clearDeleteModalTimer,
+  setDeleteModalTimer,
+} from '../../reducers/timerSlice';
 
 interface OrderItemProps {
   order: Order;
 }
 
 export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
-  const isOrderSelected = useSelector(selectisOrderSelected);
+  const isOrderSelected = useSelector(selectIsOrderSelected);
   const dispatch = useDispatch();
 
   const { id, title, date } = order;
@@ -33,10 +38,24 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
 
   const prices = getProductsPrice(productsForOrder);
 
-  const handleOpenDetailedOrder = () => {
-    dispatch(setisOrderSelected(true));
+  const handleSelectOrder = () => {
     dispatch(setSelectedOrder(order));
+    dispatch(setIsOrderSelected(true));
     dispatch(setProductsForOrder(productsForOrder));
+  };
+
+  const handleDeleteOrder = () => {
+    dispatch(clearDeleteModalTimer());
+
+    dispatch(setSelectedOrder(order));
+    dispatch(setIsOrderDeleteModalOpen(true));
+    dispatch(setProductsForOrder(productsForOrder));
+
+    const timerId = setTimeout(() => {
+      dispatch(setIsOrderDeleteModalOpen(false));
+    }, 500000);
+
+    dispatch(setDeleteModalTimer(timerId));
   };
 
   return (
@@ -48,7 +67,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
       {!isOrderSelected && <h2 className={styles.orderItem__title}>{title}</h2>}
 
       <Button
-        onClick={handleOpenDetailedOrder}
+        onClick={handleSelectOrder}
         className={styles.orderItem__openDetailsButton}
       >
         <FormatListBulletedIcon className={styles.orderItem__listIcon} />
@@ -68,7 +87,10 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
       )}
 
       {!isOrderSelected && (
-        <Button className={styles.orderItem__deleteButton}>
+        <Button
+          onClick={handleDeleteOrder}
+          className={styles.orderItem__deleteButton}
+        >
           <DeleteForeverIcon className={styles.orderItem__deleteIcon} />
         </Button>
       )}

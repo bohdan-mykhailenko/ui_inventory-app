@@ -6,6 +6,9 @@
   min-height: 100vh;
 
   &__content {
+    display: grid;
     background: var(--shadow);
+
+    min-height: calc(100vh - 75px);
   }
 }

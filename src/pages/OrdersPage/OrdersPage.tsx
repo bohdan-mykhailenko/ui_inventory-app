@@ -5,16 +5,21 @@ import { OrderList } from '../../components/OrderList';
 import { Button } from 'react-bootstrap';
 import { DetailedOrder } from '../../components/Modals/DetailedOrder';
 import { useSelector } from 'react-redux';
-import { selectisOrderSelected } from '../../selectors/ordersSelector';
+import { selectIsOrderSelected } from '../../selectors/ordersSelector';
 import cn from 'classnames';
+import { DeleteModal } from '../../components/Modals/DeleteModal';
+import { selectIsOrderDeleteModalOpen } from '../../selectors/modalsSelector';
 
 export const OrdersPage: React.FC = () => {
-  const isOrderSelected = useSelector(selectisOrderSelected);
+  const isOrderSelected = useSelector(selectIsOrderSelected);
+  const isOrderDeleteModalOpen = useSelector(selectIsOrderDeleteModalOpen);
   const ordersFromServer = orders;
   const count = ordersFromServer.length;
 
   return (
     <section className={styles.ordersPage}>
+      {isOrderDeleteModalOpen && <div className={styles.ordersPage__overlay} />}
+
       <div className={styles.ordersPage__topInfo}>
         <Button className={styles.ordersPage__addButton}>+</Button>
 
@@ -31,8 +36,10 @@ export const OrdersPage: React.FC = () => {
       >
         <OrderList orders={ordersFromServer} />
 
-        {isOrderSelected && <DetailedOrder />}
+        {isOrderSelected && !isOrderDeleteModalOpen && <DetailedOrder />}
       </div>
+
+      {isOrderDeleteModalOpen && <DeleteModal item="order" />}
     </section>
   );
 };

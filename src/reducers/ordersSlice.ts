@@ -15,10 +15,10 @@ const initialState: OrderState = {
 };
 
 const ordersSlice = createSlice({
-  name: 'order',
+  name: 'orders',
   initialState,
   reducers: {
-    setisOrderSelected: (state, action: PayloadAction<boolean>) => {
+    setIsOrderSelected: (state, action: PayloadAction<boolean>) => {
       state.isOrderSelected = action.payload;
     },
 
@@ -32,6 +32,6 @@ const ordersSlice = createSlice({
   },
 });
 
-export const { setisOrderSelected, setSelectedOrder, setProductsForOrder } =
+export const { setIsOrderSelected, setSelectedOrder, setProductsForOrder } =
   ordersSlice.actions;
 export default ordersSlice.reducer;

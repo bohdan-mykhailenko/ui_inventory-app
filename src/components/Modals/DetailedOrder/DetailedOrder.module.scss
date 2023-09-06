@@ -50,35 +50,10 @@
     }
   }
 
-  &__empty {
+  &__emptyList {
     padding: 0 20px;
 
     font-size: 14px;
     color: var(--border);
-  }
-
-  &__closeButton {
-    position: absolute;
-
-    top: 0;
-    right: 0;
-    transform: translateX(75%) translateY(-50%);
-
-    margin-right: 10px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 40px;
-    height: 40px;
-
-    border-radius: 50%;
-    background: var(--back-light);
-
-    color: var(--border);
-    font-size: 16px;
-    box-shadow: 2px 2px 2px 1px var(--border);
-    border: none;
   }
 }

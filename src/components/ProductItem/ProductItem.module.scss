@@ -22,6 +22,12 @@
     border-radius: 0;
   }
 
+  &--demoForm {
+    margin-bottom: 0;
+
+    display: flex;
+  }
+
   &__indicator {
     display: flex;
     width: 8px;

@@ -9,7 +9,7 @@ const selectedOrderSelector = (state: RootState) => state.orders.selectedOrder;
 const productsForOrderSelector = (state: RootState) =>
   state.orders.productsForOrder;
 
-export const selectisOrderSelected = createSelector(
+export const selectIsOrderSelected = createSelector(
   [isOrderSelectedSelector],
   (isOrderSelected) => isOrderSelected,
 );

@@ -9,9 +9,10 @@ import { formatDate } from '../../helpers/formatDate';
 import { PriceInfo } from '../PriceInfo';
 import { Button } from 'react-bootstrap';
 import { getOrderById } from '../../helpers/getOrderById';
-import { selectisOrderSelected } from '../../selectors/ordersSelector';
+import { selectIsOrderSelected } from '../../selectors/ordersSelector';
 import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
+import { selectIsOrderDeleteModalOpen } from '../../selectors/modalsSelector';
 
 interface ProductItemProps {
   product: Product;
@@ -31,9 +32,12 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   } = product;
   const foundOrder = getOrderById(order, orders);
 
-  const isOrderSelected = useSelector(selectisOrderSelected);
+  const isOrderSelected = useSelector(selectIsOrderSelected);
   const isOrdersPage = useMatch('orders');
+  const isOrderDeleteModalOpen = useSelector(selectIsOrderDeleteModalOpen);
   const isShortForm = isOrderSelected && isOrdersPage;
+
+  const isDemoForm = isOrderDeleteModalOpen;
 
   const orderTitle = foundOrder?.title || '';
 
@@ -44,10 +48,15 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const creationDate = formatDate(date);
   const prices = { priceUSD: price[0].value, priceUAH: price[1].value };
 
+  const handleDeleteProduct = () => {
+    console.log('a');
+  };
+
   return (
     <article
       className={cn(styles.productItem, {
         [styles['productItem--shortForm']]: isShortForm,
+        [styles['productItem--demoForm']]: isDemoForm,
       })}
     >
       <div
@@ -66,15 +75,18 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
           {specification}
         </p>
       </div>
-      <p
-        className={cn(styles.productItem__status, {
-          [styles['productItem__status--active']]: isRepairing,
-        })}
-      >
-        {status}
-      </p>
 
-      {!isShortForm && (
+      {!isDemoForm && (
+        <p
+          className={cn(styles.productItem__status, {
+            [styles['productItem__status--active']]: isRepairing,
+          })}
+        >
+          {status}
+        </p>
+      )}
+
+      {!isShortForm && !isDemoForm && (
         <div className={styles.productItem__detailedInfo}>
           <div className={styles.productItem__garantee}>
             <p className={styles['productItem__garantee-start']}>
@@ -99,10 +111,11 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
           <p className={styles.productItem__date}>{creationDate}</p>
         </div>
       )}
-
-      <Button className={styles.productItem__deleteButton}>
-        <DeleteForeverIcon className={styles.productItem__deleteIcon} />
-      </Button>
+      {!isDemoForm && (
+        <Button className={styles.productItem__deleteButton}>
+          <DeleteForeverIcon className={styles.productItem__deleteIcon} />
+        </Button>
+      )}
     </article>
   );
 };
