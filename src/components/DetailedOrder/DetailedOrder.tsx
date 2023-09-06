@@ -1,14 +1,16 @@
 import React from 'react';
-import { ProductList } from '../../ProductList';
+import { ProductList } from '../ProductList';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectOrder,
   selectProductsForOrder,
-} from '../../../selectors/ordersSelector';
+} from '../../selectors/ordersSelector';
 import styles from './DetailedOrder.module.scss';
 import { Button } from 'react-bootstrap';
-import { setIsOrderSelected } from '../../../reducers/ordersSlice';
-import { CloseButton } from '../../CloseButton';
+import { setIsOrderSelected } from '../../reducers/ordersSlice';
+import { CloseButton } from '../CloseButton';
+
+import { setIsProductAddModalOpen } from '../../reducers/modalsSlice';
 
 export const DetailedOrder: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,11 +26,18 @@ export const DetailedOrder: React.FC = () => {
     dispatch(setIsOrderSelected(false));
   };
 
+  const handleAddProduct = () => {
+    dispatch(setIsProductAddModalOpen(true));
+  };
+
   return (
     <section className={styles.detailedOrder}>
       <h2 className={styles.detailedOrder__title}>{title}</h2>
       <div className={styles.detailedOrder__addProduct}>
-        <Button className={styles['detailedOrder__addProduct-button']}>
+        <Button
+          onClick={handleAddProduct}
+          className={styles['detailedOrder__addProduct-button']}
+        >
           +
         </Button>
         <span className={styles['detailedOrder__addProduct-label']}>

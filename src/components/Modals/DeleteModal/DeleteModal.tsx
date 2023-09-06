@@ -8,29 +8,42 @@ import {
 } from '../../../selectors/ordersSelector';
 import { Button } from 'react-bootstrap';
 import { CloseButton } from '../../CloseButton';
-import { setIsOrderDeleteModalOpen } from '../../../reducers/modalsSlice';
+import {
+  setIsOrderDeleteModalOpen,
+  setIsProductDeleteModalOpen,
+} from '../../../reducers/modalsSlice';
 import { ProductList } from '../../ProductList';
-import { clearDeleteModalTimer } from '../../../reducers/timerSlice';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Product } from '../../../types/Product';
 
 interface DeleteModalProps {
   item: string;
+  selectedProducts?: Product[];
 }
 
-export const DeleteModal: React.FC<DeleteModalProps> = ({ item }) => {
+export const DeleteModal: React.FC<DeleteModalProps> = ({
+  item,
+  selectedProducts = [],
+}) => {
   const dispatch = useDispatch();
-  const selectedOrder = useSelector(selectOrder);
-  const productsForOrder = useSelector(selectProductsForOrder);
-  const isEmptyOrder = productsForOrder.length > 0;
+  const isEmptyOrder = selectedProducts.length > 0;
 
-  const closeDeleteModal = () => {
-    dispatch(clearDeleteModalTimer());
-    dispatch(setIsOrderDeleteModalOpen(false));
+  const isProductPage = item === 'product';
+
+  const removeModal = () => {
+    if (isProductPage) {
+      dispatch(setIsProductDeleteModalOpen(false));
+    } else {
+      dispatch(setIsOrderDeleteModalOpen(false));
+    }
   };
 
-  const deleteModal = () => {
-    dispatch(clearDeleteModalTimer());
-    dispatch(setIsOrderDeleteModalOpen(false));
+  const handleCloseDeleteModal = () => {
+    removeModal();
+  };
+
+  const handleDeleteOrder = () => {
+    removeModal();
 
     alert('DELETED');
   };
@@ -38,27 +51,27 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({ item }) => {
   return (
     <div className={styles.deleteModal}>
       <h3 className={styles.deleteModal__title}>
-        {selectedOrder
-          ? `Are you sure you want to delete this ${item}`
-          : 'No order selected'}
+        {`Are you sure you want to delete this ${item}?`}
       </h3>
 
-      {isEmptyOrder ? (
-        <ProductList products={productsForOrder} />
-      ) : (
-        <h5 className={styles.deleteModal__emptyList}>Empty order...</h5>
-      )}
+      {!isProductPage ? (
+        isEmptyOrder ? (
+          <ProductList products={selectedProducts} />
+        ) : (
+          <h5 className={styles.deleteModal__emptyList}>Empty order...</h5>
+        )
+      ) : null}
 
       <div className={styles.deleteModal__actions}>
         <Button
-          onClick={closeDeleteModal}
+          onClick={handleCloseDeleteModal}
           className={`${styles['deleteModal__actions-button']} ${styles['deleteModal__actions-button--cancel']}`}
         >
           Cancel
         </Button>
 
         <Button
-          onClick={deleteModal}
+          onClick={handleDeleteOrder}
           className={`${styles['deleteModal__actions-button']} ${styles['deleteModal__actions-button--delete']}`}
         >
           <DeleteForeverIcon
@@ -69,7 +82,7 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({ item }) => {
           </span>
         </Button>
 
-        <CloseButton onClose={closeDeleteModal} />
+        <CloseButton onClose={handleCloseDeleteModal} />
       </div>
     </div>
   );

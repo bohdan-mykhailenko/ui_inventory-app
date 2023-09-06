@@ -1,37 +1,51 @@
-.deleteModal {
-  padding-top: 20px;
-
-  width: 50%;
-
-  border-radius: 5px;
-
-  position: absolute;
-  z-index: 2;
-
-  top: 150px;
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  background: var(--back-light);
-
-  &__title {
-    margin-bottom: 30px;
-    padding: 0 20px;
+.form {
+  &--product {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
-  &__emptyList {
-    margin-bottom: 20px;
+  &__formGroup {
     padding: 0 20px;
+    margin-bottom: 20px;
 
-    font-size: 14px;
-    color: var(--border);
+    label {
+      margin-bottom: 5px;
+
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 12px;
+
+      display: block;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+
+      &:focus {
+        border: 2px solid var(--primary);
+        outline: none;
+      }
+    }
+  }
+
+  &__error {
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    color: var(--danger);
   }
 
   &__actions {
     padding: 20px 0;
     padding-right: 50px;
     height: 100%;
+
+    grid-column: 1 / 4;
 
     display: flex;
     justify-content: flex-end;
@@ -67,28 +81,13 @@
         }
       }
 
-      &--delete {
-        display: flex;
-        align-items: center;
-        justify-self: center;
-
+      &--add {
         background: var(--back-light);
-        color: var(--danger);
-
-        &-binIcon {
-          margin-right: 10px;
-          color: var(--danger);
-
-          width: 20px;
-          min-width: 20px;
-        }
-
-        &-text {
-        }
+        color: var(--primary-dark);
 
         &:hover,
         &:active {
-          border-color: var(--danger);
+          border-color: var(--primary-dark);
         }
       }
     }
