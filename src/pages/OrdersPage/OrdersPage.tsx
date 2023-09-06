@@ -3,7 +3,7 @@ import styles from './OrdersPage.module.scss';
 import { orders } from '../../data/data';
 import { OrderList } from '../../components/OrderList';
 import { Button } from 'react-bootstrap';
-import { DetailedOrder } from '../../components/Modals/DetailedOrder';
+import { DetailedOrder } from '../../components/DetailedOrder';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectIsOrderSelected,
@@ -14,6 +14,8 @@ import { DeleteModal } from '../../components/Modals/DeleteModal';
 import {
   selectIsOrderAddModalOpen,
   selectIsOrderDeleteModalOpen,
+  selectIsProductAddModalOpen,
+  selectIsProductDeleteModalOpen,
 } from '../../selectors/modalsSelector';
 import {
   clearDeleteModalTimer,
@@ -28,12 +30,21 @@ export const OrdersPage: React.FC = () => {
   const isOrderSelected = useSelector(selectIsOrderSelected);
   const isOrderDeleteModalOpen = useSelector(selectIsOrderDeleteModalOpen);
   const isOrderAddModalOpen = useSelector(selectIsOrderAddModalOpen);
+  const isProductDeleteModalOpen = useSelector(selectIsProductDeleteModalOpen);
+  const isProductAddModalOpen = useSelector(selectIsProductAddModalOpen);
   const productsForOrder = useSelector(selectProductsForOrder);
 
   const ordersFromServer = orders;
   const count = ordersFromServer.length;
 
-  const isModalOpenned = isOrderAddModalOpen || isOrderDeleteModalOpen;
+  const isModalOpenned =
+    isOrderAddModalOpen || isOrderDeleteModalOpen || isProductAddModalOpen;
+  const isAddModalOppened = isOrderAddModalOpen || isProductAddModalOpen;
+  const newItem = isOrderAddModalOpen ? 'order' : 'product';
+
+  const isDeleteModalOppened =
+    isOrderDeleteModalOpen || isProductDeleteModalOpen;
+  const deletedItem = isOrderDeleteModalOpen ? 'order' : 'product';
 
   const handleAddOrder = () => {
     dispatch(clearDeleteModalTimer());
@@ -42,7 +53,7 @@ export const OrdersPage: React.FC = () => {
 
     const timerId = setTimeout(() => {
       dispatch(setIsOrderAddModalOpen(false));
-    }, 50000000);
+    }, 50000);
 
     dispatch(setDeleteModalTimer(timerId));
   };
@@ -75,10 +86,10 @@ export const OrdersPage: React.FC = () => {
         {isOrderSelected && !isOrderDeleteModalOpen && <DetailedOrder />}
       </div>
 
-      {isOrderAddModalOpen && <AddModal item="order" />}
+      {isAddModalOppened && <AddModal item={newItem} />}
 
-      {isOrderDeleteModalOpen && (
-        <DeleteModal item="order" selectedProducts={productsForOrder} />
+      {isDeleteModalOppened && (
+        <DeleteModal item={deletedItem} selectedProducts={productsForOrder} />
       )}
     </section>
   );

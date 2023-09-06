@@ -1,25 +1,21 @@
-import * as Yup from 'yup';
-
-const priceItemSchema = Yup.object().shape({
-  value: Yup.number().required('Price value is required'),
-  symbol: Yup.string().required('Price symbol is required'),
-  isDefault: Yup.number().required('Is Default is required'),
-});
-
 export interface ProductValidationSchema {
-  id: Yup.Schema<number>;
-  serialNumber: Yup.Schema<number>;
-  isNew: Yup.Schema<boolean>;
-  isRepairing: Yup.Schema<boolean>;
-  photo: Yup.Schema<string>;
-  title: Yup.Schema<string>;
-  type: Yup.Schema<string>;
-  specification: Yup.Schema<string>;
-  guarantee: Yup.ObjectSchema<{
+  id: number;
+  serialNumber: number;
+  isNew: boolean;
+  isRepairing: boolean;
+  photo: string;
+  title: string;
+  type: string;
+  specification: string;
+  guarantee: {
     start: string;
     end: string;
-  }>;
-  price: Yup.ArraySchema<typeof priceItemSchema>;
-  order: Yup.Schema<number>;
-  date: Yup.Schema<string>;
+  };
+  price: {
+    value: number;
+    symbol: string;
+    isDefault: number;
+  }[];
+  order: number;
+  date: string;
 }
