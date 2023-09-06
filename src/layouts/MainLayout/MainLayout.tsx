@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import {
   setIsOrderAddModalOpen,
   setIsProductAddModalOpen,
+  setIsProductDeleteModalOpen,
 } from '../../reducers/modalsSlice';
 
 export const MainLayout: React.FC = () => {
@@ -14,11 +15,11 @@ export const MainLayout: React.FC = () => {
   const pathname = useLocation().pathname;
 
   useEffect(() => {
-    if (pathname !== '/order') {
-      dispatch(setIsProductAddModalOpen(false));
-      dispatch(setIsOrderAddModalOpen(false));
-    }
-  }, [dispatch, pathname]);
+    dispatch(setIsProductAddModalOpen(false));
+    dispatch(setIsOrderAddModalOpen(false));
+    dispatch(setIsProductDeleteModalOpen(false));
+    dispatch(setIsOrderAddModalOpen(false));
+  }, [pathname]);
 
   return (
     <div className={styles.mainLayout}>

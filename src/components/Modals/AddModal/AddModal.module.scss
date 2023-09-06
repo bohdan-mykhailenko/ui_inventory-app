@@ -8,10 +8,14 @@
   position: absolute;
   z-index: 2;
 
-  top: 150px;
+  top: 50px;
   left: 50%;
 
   transform: translateX(-50%);
 
   background: var(--back-light);
+
+  &--product {
+    width: 75%;
+  }
 }

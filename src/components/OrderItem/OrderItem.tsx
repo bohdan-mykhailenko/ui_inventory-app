@@ -18,10 +18,6 @@ import {
 } from '../../reducers/ordersSlice';
 import { selectIsOrderSelected } from '../../selectors/ordersSelector';
 import { setIsOrderDeleteModalOpen } from '../../reducers/modalsSlice';
-import {
-  clearDeleteModalTimer,
-  setDeleteModalTimer,
-} from '../../reducers/timerSlice';
 
 interface OrderItemProps {
   order: Order;
@@ -46,17 +42,9 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
   };
 
   const handleDeleteOrder = () => {
-    dispatch(clearDeleteModalTimer());
-
     dispatch(setSelectedOrder(order));
     dispatch(setIsOrderDeleteModalOpen(true));
     dispatch(setProductsForOrder(productsForOrder));
-
-    const timerId = setTimeout(() => {
-      dispatch(setIsOrderDeleteModalOpen(false));
-    }, 5000);
-
-    dispatch(setDeleteModalTimer(timerId));
   };
 
   return (

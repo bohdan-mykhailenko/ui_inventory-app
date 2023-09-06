@@ -13,7 +13,6 @@ import {
   setIsProductDeleteModalOpen,
 } from '../../../reducers/modalsSlice';
 import { ProductList } from '../../ProductList';
-import { clearDeleteModalTimer } from '../../../reducers/timerSlice';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Product } from '../../../types/Product';
 
@@ -32,8 +31,6 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
   const isProductPage = item === 'product';
 
   const removeModal = () => {
-    dispatch(clearDeleteModalTimer());
-
     if (isProductPage) {
       dispatch(setIsProductDeleteModalOpen(false));
     } else {

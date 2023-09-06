@@ -9,10 +9,7 @@ import styles from './DetailedOrder.module.scss';
 import { Button } from 'react-bootstrap';
 import { setIsOrderSelected } from '../../reducers/ordersSlice';
 import { CloseButton } from '../CloseButton';
-import {
-  clearDeleteModalTimer,
-  setDeleteModalTimer,
-} from '../../reducers/timerSlice';
+
 import { setIsProductAddModalOpen } from '../../reducers/modalsSlice';
 
 export const DetailedOrder: React.FC = () => {
@@ -30,15 +27,7 @@ export const DetailedOrder: React.FC = () => {
   };
 
   const handleAddProduct = () => {
-    dispatch(clearDeleteModalTimer());
-
     dispatch(setIsProductAddModalOpen(true));
-
-    const timerId = setTimeout(() => {
-      dispatch(setIsProductAddModalOpen(false));
-    }, 20000);
-
-    dispatch(setDeleteModalTimer(timerId));
   };
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { Product } from '../../types/Product'; // Import Product type
+import { Product } from '../../types/Product';
 import { Button } from 'react-bootstrap';
 import { CloseButton } from '../CloseButton';
 import styles from './Form.module.scss';
@@ -15,14 +15,33 @@ const productValidationSchema = Yup.object<Product>({
   serialNumber: Yup.number().required('Serial Number is required'),
   isNew: Yup.boolean().required('Is New is required'),
   isRepairing: Yup.boolean().required('Is Repairing is required'),
-  photo: Yup.string(),
+  photo: Yup.mixed().test(
+    'fileType',
+    'Only image files are allowed',
+    (value) => {
+      if (!value) {
+        return true;
+      }
+
+      if (value instanceof File) {
+        const fileExtension = value.name.split('.').pop()?.toLowerCase();
+
+        if (fileExtension) {
+          const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+          return allowedExtensions.includes(fileExtension);
+        }
+      }
+
+      return false;
+    },
+  ),
   title: Yup.string().trim().required('Title is required'),
   type: Yup.string().required('Type is required'),
   specification: Yup.string().required('Specification is required'),
   guarantee: Yup.object({
     start: Yup.string(),
     end: Yup.string(),
-  }).required('Guarantee is required'),
+  }),
   price: Yup.array().of(
     Yup.object({
       value: Yup.number(),
@@ -87,9 +106,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
       initialValues={initialValues}
       validationSchema={productValidationSchema}
       onSubmit={handleSubmit}
-      className={styles.form}
     >
-      <Form>
+      <Form className={styles['form--product']}>
         <div className={styles.form__formGroup}>
           <label htmlFor="title">Title:</label>
           <Field type="text" id="title" name="title" />
@@ -102,7 +120,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
 
         <div className={styles.form__formGroup}>
           <label htmlFor="serialNumber">Serial Number:</label>
-          <Field type="number" id="serialNumber" name="serialNumber" />
+          <Field type="text" id="serialNumber" name="serialNumber" />
           <ErrorMessage
             name="serialNumber"
             component="div"
@@ -111,33 +129,28 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
         </div>
 
         <div className={styles.form__formGroup}>
-          <label htmlFor="isNew">Is New:</label>
-          <Field type="checkbox" id="isNew" name="isNew" />
-        </div>
-
-        <div className={styles.form__formGroup}>
-          <label htmlFor="isRepairing">Is Repairing:</label>
-          <Field type="checkbox" id="isRepairing" name="isRepairing" />
-        </div>
-
-        <div className={styles.form__formGroup}>
           <label htmlFor="photo">Photo:</label>
-          <Field type="text" id="photo" name="photo" />
+          <Field type="file" id="photo" name="photo" />
+          <ErrorMessage
+            name="photo"
+            component="div"
+            className={styles.form__error}
+          />
         </div>
 
         <div className={styles.form__formGroup}>
           <label htmlFor="type">Type:</label>
           <Field type="text" id="type" name="type" />
+          <ErrorMessage
+            name="type"
+            component="div"
+            className={styles.form__error}
+          />
         </div>
 
         <div className={styles.form__formGroup}>
           <label htmlFor="specification">Specification:</label>
-          <Field
-            as="textarea"
-            id="specification"
-            name="specification"
-            style={{ resize: 'none' }}
-          />
+          <Field type="text" id="specification" name="specification" />
           <ErrorMessage
             name="specification"
             component="div"
@@ -157,7 +170,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
 
         <div className={styles.form__formGroup}>
           <label htmlFor="price[0].value">Price Value:</label>
-          <Field type="number" id="price[0].value" name="price[0].value" />
+          <Field type="text" id="price[0].value" name="price[0].value" />
         </div>
 
         <div className={styles.form__formGroup}>
@@ -168,7 +181,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
         <div className={styles.form__formGroup}>
           <label htmlFor="price[0].isDefault">Is Default:</label>
           <Field
-            type="number"
+            type="text"
             id="price[0].isDefault"
             name="price[0].isDefault"
           />
@@ -176,7 +189,12 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
 
         <div className={styles.form__formGroup}>
           <label htmlFor="order">Order:</label>
-          <Field type="number" id="order" name="order" />
+          <Field type="text" id="order" name="order" />
+          <ErrorMessage
+            name="order"
+            component="div"
+            className={styles.form__error}
+          />
         </div>
 
         <div className={styles.form__formGroup}>
@@ -188,6 +206,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
+
+        {/* Add the checkbox fields here */}
 
         <div className={styles.form__actions}>
           <Button

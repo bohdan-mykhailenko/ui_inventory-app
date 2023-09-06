@@ -51,9 +51,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
       initialValues={initialValues}
       validationSchema={orderValidationSchema}
       onSubmit={handleSubmit}
-      className={styles.form}
     >
-      <Form>
+      <Form className={styles.form}>
         <div className={styles.form__formGroup}>
           <label htmlFor="title">Title:</label>
           <Field type="text" id="title" name="title" />

@@ -13,10 +13,6 @@ import { selectIsOrderSelected } from '../../selectors/ordersSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 import { selectIsOrderDeleteModalOpen } from '../../selectors/modalsSelector';
-import {
-  clearDeleteModalTimer,
-  setDeleteModalTimer,
-} from '../../reducers/timerSlice';
 import { setIsProductDeleteModalOpen } from '../../reducers/modalsSlice';
 
 interface ProductItemProps {
@@ -56,15 +52,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const prices = { priceUSD: price[0].value, priceUAH: price[1].value };
 
   const handleDeleteProduct = () => {
-    dispatch(clearDeleteModalTimer());
-
     dispatch(setIsProductDeleteModalOpen(true));
-
-    const timerId = setTimeout(() => {
-      dispatch(setIsProductDeleteModalOpen(false));
-    }, 5000);
-
-    dispatch(setDeleteModalTimer(timerId));
   };
 
   return (

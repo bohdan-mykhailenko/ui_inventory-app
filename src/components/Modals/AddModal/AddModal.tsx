@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from './AddModal.module.scss';
 import { useDispatch } from 'react-redux';
-import { clearDeleteModalTimer } from '../../../reducers/timerSlice';
 import {
   setIsOrderAddModalOpen,
   setIsProductAddModalOpen,
 } from '../../../reducers/modalsSlice';
 import { OrderForm, ProductForm } from '../../Forms';
+import cn from 'classnames';
 
 interface AddModalProps {
   item: string;
@@ -18,8 +18,6 @@ export const AddModal: React.FC<AddModalProps> = ({ item }) => {
   const isProductPage = item === 'product';
 
   const removeModal = () => {
-    dispatch(clearDeleteModalTimer());
-
     if (isProductPage) {
       dispatch(setIsProductAddModalOpen(false));
     } else {
@@ -28,7 +26,11 @@ export const AddModal: React.FC<AddModalProps> = ({ item }) => {
   };
 
   return (
-    <div className={styles.addModal}>
+    <div
+      className={cn(styles.addModal, {
+        [styles['addModal--product']]: isProductPage,
+      })}
+    >
       {isProductPage ? (
         <ProductForm onRemoveModal={removeModal} />
       ) : (
