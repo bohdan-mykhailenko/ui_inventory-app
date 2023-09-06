@@ -28,8 +28,9 @@ interface OrderItemProps {
 }
 
 export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
-  const isOrderSelected = useSelector(selectIsOrderSelected);
   const dispatch = useDispatch();
+
+  const isOrderSelected = useSelector(selectIsOrderSelected);
 
   const { id, title, date } = order;
   const productsForOrder = getProductsForOrder(id, products);
@@ -53,7 +54,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
 
     const timerId = setTimeout(() => {
       dispatch(setIsOrderDeleteModalOpen(false));
-    }, 500000);
+    }, 5000);
 
     dispatch(setDeleteModalTimer(timerId));
   };

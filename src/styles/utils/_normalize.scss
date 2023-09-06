@@ -5,3 +5,8 @@ input::placeholder {
   color: var(--text);
   font-family: Montserrat, Roboto, sans-serif;
 }
+
+input[type='button'],
+button {
+  cursor: pointer;
+}

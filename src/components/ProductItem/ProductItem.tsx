@@ -10,15 +10,22 @@ import { PriceInfo } from '../PriceInfo';
 import { Button } from 'react-bootstrap';
 import { getOrderById } from '../../helpers/getOrderById';
 import { selectIsOrderSelected } from '../../selectors/ordersSelector';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 import { selectIsOrderDeleteModalOpen } from '../../selectors/modalsSelector';
+import {
+  clearDeleteModalTimer,
+  setDeleteModalTimer,
+} from '../../reducers/timerSlice';
+import { setIsProductDeleteModalOpen } from '../../reducers/modalsSlice';
 
 interface ProductItemProps {
   product: Product;
 }
 
 export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
+  const dispatch = useDispatch();
+
   const {
     title,
     specification,
@@ -49,7 +56,15 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const prices = { priceUSD: price[0].value, priceUAH: price[1].value };
 
   const handleDeleteProduct = () => {
-    console.log('a');
+    dispatch(clearDeleteModalTimer());
+
+    dispatch(setIsProductDeleteModalOpen(true));
+
+    const timerId = setTimeout(() => {
+      dispatch(setIsProductDeleteModalOpen(false));
+    }, 5000);
+
+    dispatch(setDeleteModalTimer(timerId));
   };
 
   return (
@@ -112,7 +127,10 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
         </div>
       )}
       {!isDemoForm && (
-        <Button className={styles.productItem__deleteButton}>
+        <Button
+          onClick={handleDeleteProduct}
+          className={styles.productItem__deleteButton}
+        >
           <DeleteForeverIcon className={styles.productItem__deleteIcon} />
         </Button>
       )}
