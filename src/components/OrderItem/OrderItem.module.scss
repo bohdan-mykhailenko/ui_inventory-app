@@ -5,11 +5,18 @@
   display: grid;
   grid-template-columns: 45% 40px 10% auto 100px 1fr;
 
+  align-items: center;
+
   background: var(--back-light);
   border-radius: 5px;
   font-size: 14px;
 
   gap: 20px;
+
+  &--shortForm {
+    grid-template-columns: 30px 50px auto;
+    gap: 30px;
+  }
 
   &__title {
     margin-bottom: 7px;
@@ -79,6 +86,7 @@
   }
 
   &__date {
+    color: var(--border);
     font-weight: 500;
   }
 

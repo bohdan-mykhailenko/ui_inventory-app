@@ -1,0 +1,94 @@
+.deleteModal {
+  padding-top: 20px;
+
+  width: 50%;
+
+  border-radius: 5px;
+
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background: var(--back-light);
+
+  &__title {
+    margin-bottom: 30px;
+    padding: 0 20px;
+  }
+
+  &__emptyList {
+    margin-bottom: 20px;
+    padding: 0 20px;
+
+    font-size: 14px;
+    color: var(--border);
+  }
+
+  &__actions {
+    padding: 20px 0;
+    padding-right: 50px;
+    height: 100%;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 20px;
+
+    background: var(--primary);
+    &-button {
+      padding: 3px;
+
+      height: 40px;
+      width: 150px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      font-weight: 500;
+      text-transform: uppercase;
+
+      border-radius: 10px;
+      border: 2px solid transparent;
+
+      &--cancel {
+        background: transparent;
+        color: var(--back-light);
+
+        &:hover,
+        &:active {
+          border-color: var(--back-light);
+        }
+      }
+
+      &--delete {
+        display: flex;
+        align-items: center;
+        justify-self: center;
+
+        background: var(--back-light);
+        color: red;
+
+        &-binIcon {
+          margin-right: 10px;
+          color: red;
+
+          width: 20px;
+          min-width: 20px;
+        }
+
+        &-text {
+        }
+
+        &:hover,
+        &:active {
+          border-color: red;
+        }
+      }
+    }
+  }
+}

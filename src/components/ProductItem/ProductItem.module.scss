@@ -5,19 +5,33 @@
   display: grid;
   align-items: center;
 
-  grid-template-columns: 10px 40px 20% 80px 120px 50px 70px 7% 10% 90px auto;
+  grid-template-columns: 10px 40px 20% 80px auto auto;
 
   background: var(--back-light);
   border-radius: 5px;
+  border: 1px solid var(--shadow);
 
   font-size: 14px;
 
   gap: 20px;
 
+  &--shortForm {
+    margin-bottom: 0;
+
+    grid-template-columns: 8px 40px 40% 80px auto;
+    border-radius: 0;
+  }
+
+  &--demoForm {
+    margin-bottom: 0;
+
+    display: flex;
+  }
+
   &__indicator {
     display: flex;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
 
     border-radius: 50%;
     background: var(--text);
@@ -67,6 +81,13 @@
     }
   }
 
+  &__detailedInfo {
+    display: grid;
+    grid-template-columns: 120px 50px 70px 15% 15% 90px;
+    align-items: center;
+    gap: 20px;
+  }
+
   &__garantee {
     display: flex;
     justify-content: center;
@@ -109,6 +130,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    justify-self: end;
 
     min-width: 30px;
 

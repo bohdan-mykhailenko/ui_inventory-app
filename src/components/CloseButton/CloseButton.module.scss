@@ -1,0 +1,30 @@
+.closeButton {
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  transform: translateX(75%) translateY(-50%);
+
+  margin-right: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+  background: var(--back-light);
+
+  color: var(--border);
+  font-size: 16px;
+  box-shadow: 2px 2px 2px 1px rgba(47, 49, 49, 0.2);
+  border: none;
+
+  &:active,
+  &:hover {
+    color: var(--primary-dark);
+    background: var(--shadow);
+  }
+}
