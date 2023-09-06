@@ -1,13 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product } from '../types/Product';
+import { Order } from '../types/Order';
 
 interface OrderState {
-  isDetailedOrder: boolean;
+  isOrderSelected: boolean;
+  selectedOrder: Order | null;
   productsForOrder: Product[];
 }
 
 const initialState: OrderState = {
-  isDetailedOrder: false,
+  isOrderSelected: false,
+  selectedOrder: null,
   productsForOrder: [],
 };
 
@@ -15,8 +18,12 @@ const ordersSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    setIsDetailedOrder: (state, action: PayloadAction<boolean>) => {
-      state.isDetailedOrder = action.payload;
+    setisOrderSelected: (state, action: PayloadAction<boolean>) => {
+      state.isOrderSelected = action.payload;
+    },
+
+    setSelectedOrder: (state, action: PayloadAction<Order>) => {
+      state.selectedOrder = action.payload;
     },
 
     setProductsForOrder: (state, action: PayloadAction<Product[]>) => {
@@ -25,5 +32,6 @@ const ordersSlice = createSlice({
   },
 });
 
-export const { setIsDetailedOrder, setProductsForOrder } = ordersSlice.actions;
+export const { setisOrderSelected, setSelectedOrder, setProductsForOrder } =
+  ordersSlice.actions;
 export default ordersSlice.reducer;

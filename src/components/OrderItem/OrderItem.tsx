@@ -12,17 +12,18 @@ import { getProductsForOrder } from '../../helpers/getProductsForOrder';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  setIsDetailedOrder,
+  setisOrderSelected,
+  setSelectedOrder,
   setProductsForOrder,
 } from '../../reducers/ordersSlice';
-import { selectIsDetailedOrder } from '../../selectors/ordersSelector';
+import { selectisOrderSelected } from '../../selectors/ordersSelector';
 
 interface OrderItemProps {
   order: Order;
 }
 
 export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
-  const isDetailedOrder = useSelector(selectIsDetailedOrder);
+  const isOrderSelected = useSelector(selectisOrderSelected);
   const dispatch = useDispatch();
 
   const { id, title, date } = order;
@@ -33,17 +34,18 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
   const prices = getProductsPrice(productsForOrder);
 
   const handleOpenDetailedOrder = () => {
-    dispatch(setIsDetailedOrder(true));
+    dispatch(setisOrderSelected(true));
+    dispatch(setSelectedOrder(order));
     dispatch(setProductsForOrder(productsForOrder));
   };
 
   return (
     <article
       className={cn(styles.orderItem, {
-        [styles['orderItem--active']]: isDetailedOrder,
+        [styles['orderItem--shortForm']]: isOrderSelected,
       })}
     >
-      {!isDetailedOrder && <h2 className={styles.orderItem__title}>{title}</h2>}
+      {!isOrderSelected && <h2 className={styles.orderItem__title}>{title}</h2>}
 
       <Button
         onClick={handleOpenDetailedOrder}
@@ -59,13 +61,13 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
 
       <span className={styles.orderItem__date}>{creationDate}</span>
 
-      {!isDetailedOrder && (
+      {!isOrderSelected && (
         <div className={styles.orderItem__price}>
           <PriceInfo prices={prices} />
         </div>
       )}
 
-      {!isDetailedOrder && (
+      {!isOrderSelected && (
         <Button className={styles.orderItem__deleteButton}>
           <DeleteForeverIcon className={styles.orderItem__deleteIcon} />
         </Button>

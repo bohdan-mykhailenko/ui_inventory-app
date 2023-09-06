@@ -9,19 +9,23 @@
 
   background: var(--back-light);
   border-radius: 5px;
+  border: 1px solid var(--shadow);
 
   font-size: 14px;
 
   gap: 20px;
 
   &--shortForm {
-    background: red;
+    margin-bottom: 0;
+
+    grid-template-columns: 8px 40px 40% 80px auto;
+    border-radius: 0;
   }
 
   &__indicator {
     display: flex;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
 
     border-radius: 50%;
     background: var(--text);
@@ -120,6 +124,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    justify-self: end;
 
     min-width: 30px;
 

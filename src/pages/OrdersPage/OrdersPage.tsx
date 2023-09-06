@@ -5,10 +5,11 @@ import { OrderList } from '../../components/OrderList';
 import { Button } from 'react-bootstrap';
 import { DetailedOrder } from '../../components/Modals/DetailedOrder';
 import { useSelector } from 'react-redux';
-import { selectIsDetailedOrder } from '../../selectors/ordersSelector';
+import { selectisOrderSelected } from '../../selectors/ordersSelector';
+import cn from 'classnames';
 
 export const OrdersPage: React.FC = () => {
-  const isDetailedOrder = useSelector(selectIsDetailedOrder);
+  const isOrderSelected = useSelector(selectisOrderSelected);
   const ordersFromServer = orders;
   const count = ordersFromServer.length;
 
@@ -23,10 +24,14 @@ export const OrdersPage: React.FC = () => {
         </span>
       </div>
 
-      <div className={styles.ordersPage__ordersInfo}>
+      <div
+        className={cn(styles.ordersPage__mainInfo, {
+          [styles['ordersPage__mainInfo--row']]: isOrderSelected,
+        })}
+      >
         <OrderList orders={ordersFromServer} />
 
-        {isDetailedOrder && <DetailedOrder />}
+        {isOrderSelected && <DetailedOrder />}
       </div>
     </section>
   );

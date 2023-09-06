@@ -1,6 +1,6 @@
 .productList {
-  // &--shortForm {
-  //   border: 1px solid red;
-  //   background: red;
-  // }
+  &--shortForm {
+    display: inline;
+    height: 100%;
+  }
 }

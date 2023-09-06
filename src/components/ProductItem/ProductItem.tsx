@@ -9,7 +9,7 @@ import { formatDate } from '../../helpers/formatDate';
 import { PriceInfo } from '../PriceInfo';
 import { Button } from 'react-bootstrap';
 import { getOrderById } from '../../helpers/getOrderById';
-import { selectIsDetailedOrder } from '../../selectors/ordersSelector';
+import { selectisOrderSelected } from '../../selectors/ordersSelector';
 import { useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 
@@ -31,9 +31,9 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   } = product;
   const foundOrder = getOrderById(order, orders);
 
-  const isDetailedOrder = useSelector(selectIsDetailedOrder);
+  const isOrderSelected = useSelector(selectisOrderSelected);
   const isOrdersPage = useMatch('orders');
-  const isShortForm = isDetailedOrder && isOrdersPage;
+  const isShortForm = isOrderSelected && isOrdersPage;
 
   const orderTitle = foundOrder?.title || '';
 
