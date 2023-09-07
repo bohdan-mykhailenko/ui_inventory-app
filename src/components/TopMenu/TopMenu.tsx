@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import { API_URL } from '../../consts/api';
 import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import styles from './TopMenu.module.scss';
+import { API_URL } from '../../consts/api';
 
 export const TopMenu: React.FC = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -20,6 +20,8 @@ export const TopMenu: React.FC = () => {
 
   useEffect(() => {
     const socket = io('http://localhost:5000/');
+
+    console.log(socket);
 
     socket.on('activeSessions', (count: number) => {
       setActiveSessions(count);
@@ -48,8 +50,6 @@ export const TopMenu: React.FC = () => {
       weekday,
     });
   }, [currentDate]);
-
-  console.log(currentDate);
 
   return (
     <div className={styles.topMenu}>
