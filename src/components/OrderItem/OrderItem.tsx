@@ -5,7 +5,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import styles from './OrderItem.module.scss';
 import { products } from '../../data/data';
 import { Button } from 'react-bootstrap';
-import { formatDate } from '../../helpers/formatDate';
+import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
 import { PriceInfo } from '../PriceInfo';
 import { getProductsPrice } from '../../helpers/getProductsPrice';
 import { getProductsForOrder } from '../../helpers/getProductsForOrder';
@@ -31,7 +31,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
   const { id, title, date } = order;
   const productsForOrder = getProductsForOrder(id, products);
   const productsCount = productsForOrder.length;
-  const creationDate = formatDate(date);
+  const { formattedDate: creationDate } = getFormatDateAndTime(date);
 
   const prices = getProductsPrice(productsForOrder);
 

@@ -5,7 +5,7 @@ import { orders } from '../../data/data';
 import laptop from '../../imgs/laptop.jpg';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import cn from 'classnames';
-import { formatDate } from '../../helpers/formatDate';
+import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
 import { PriceInfo } from '../PriceInfo';
 import { Button } from 'react-bootstrap';
 import { getOrderById } from '../../helpers/getOrderById';
@@ -46,9 +46,11 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
 
   const condition = isNew ? 'New' : 'Used';
   const status = isRepairing ? 'Ready' : 'Repairing';
-  const guaranteeStart = formatDate(guarantee.start);
-  const guaranteeEnd = formatDate(guarantee.end);
-  const creationDate = formatDate(date);
+  const { formattedDate: guaranteeStart } = getFormatDateAndTime(
+    guarantee.start,
+  );
+  const { formattedDate: guaranteeEnd } = getFormatDateAndTime(guarantee.end);
+  const { formattedDate: creationDate } = getFormatDateAndTime(date);
   const prices = { priceUSD: price[0].value, priceUAH: price[1].value };
 
   const handleDeleteProduct = () => {

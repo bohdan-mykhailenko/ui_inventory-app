@@ -17,10 +17,6 @@ import {
   selectIsProductAddModalOpen,
   selectIsProductDeleteModalOpen,
 } from '../../selectors/modalsSelector';
-import {
-  clearDeleteModalTimer,
-  setDeleteModalTimer,
-} from '../../reducers/timerSlice';
 import { setIsOrderAddModalOpen } from '../../reducers/modalsSlice';
 import { AddModal } from '../../components/Modals/AddModal';
 
@@ -47,15 +43,7 @@ export const OrdersPage: React.FC = () => {
   const deletedItem = isOrderDeleteModalOpen ? 'order' : 'product';
 
   const handleAddOrder = () => {
-    dispatch(clearDeleteModalTimer());
-
     dispatch(setIsOrderAddModalOpen(true));
-
-    const timerId = setTimeout(() => {
-      dispatch(setIsOrderAddModalOpen(false));
-    }, 50000);
-
-    dispatch(setDeleteModalTimer(timerId));
   };
 
   return (

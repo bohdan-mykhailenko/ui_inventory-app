@@ -1,43 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+import { API_URL } from '../../consts/api';
+import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import styles from './TopMenu.module.scss';
 
 export const TopMenu: React.FC = () => {
-  const date: Date = new Date();
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [dateInfo, setDateInfo] = useState<{
+    formattedDate: string;
+    formattedTime: string;
+    weekday: string;
+  }>({
+    formattedDate: '',
+    formattedTime: '',
+    weekday: '',
+  });
+  const [activeSessions, setActiveSessions] = useState<number>(0);
 
-  const weekday = date.toLocaleString('en-US', { weekday: 'long' });
-  const day = date.getDate().toString().padStart(2, '0');
-  const monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  const month = monthNames[date.getMonth()];
-  const year = date.getFullYear();
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
+  useEffect(() => {
+    const socket = io('http://localhost:5000/');
+
+    socket.on('activeSessions', (count: number) => {
+      setActiveSessions(count);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected');
+    });
+
+    const interval = setInterval(() => {
+      setCurrentDate(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const { formattedDate, formattedTime, weekday } =
+      getFormatDateAndTime(currentDate);
+    setDateInfo({
+      formattedDate,
+      formattedTime,
+      weekday,
+    });
+  }, [currentDate]);
+
+  console.log(currentDate);
 
   return (
-    <div className={styles.TopMenu}>
-      <span className={styles.TopMenu__weekday}>{weekday}</span>
+    <div className={styles.topMenu}>
+      <p className={styles.topMenu__activeSessions}>
+        Active Sessions:
+        <p className={styles['topMenu__activeSessions--count']}>
+          {activeSessions}
+        </p>
+      </p>
 
-      <div className={styles.TopMenu__dateWrapper}>
-        <span
-          className={styles.TopMenu__date}
-        >{`${day} ${month}, ${year}`}</span>
+      <div className={styles.topMenu__dateInfo}>
+        <span className={styles.topMenu__weekday}>{dateInfo.weekday}</span>
 
-        <div className={styles.TopMenu__timeWrapper}>
-          <AccessTimeIcon className={styles.TopMenu__timeIcon} />
-          <span className={styles.TopMenu__time}>{`${hours}:${minutes}`}</span>
+        <div className={styles.topMenu__dateWrapper}>
+          <span className={styles.topMenu__date}>{dateInfo.formattedDate}</span>
+
+          <div className={styles.topMenu__timeWrapper}>
+            <AccessTimeIcon className={styles.topMenu__timeIcon} />
+            <span className={styles.topMenu__time}>
+              {dateInfo.formattedTime}
+            </span>
+          </div>
         </div>
       </div>
     </div>
