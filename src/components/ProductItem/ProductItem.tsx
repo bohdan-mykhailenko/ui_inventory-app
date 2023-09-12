@@ -94,12 +94,12 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
       {!isShortForm && !isDemoForm && (
         <div className={styles.productItem__detailedInfo}>
           <div className={styles.productItem__garantee}>
-            <p className={styles['productItem__garantee-start']}>
+            <div className={styles['productItem__garantee-start']}>
               <span className={styles['productItem__garantee-label']}>
                 from
               </span>{' '}
               {guaranteeStart}
-            </p>
+            </div>
             <p className={styles['productItem__garantee-end']}>
               <span className={styles['productItem__garantee-label']}>to</span>{' '}
               {guaranteeEnd}

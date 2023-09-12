@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './OrdersPage.module.scss';
 import { orders } from '../../data/data';
 import { OrderList } from '../../components/OrderList';
@@ -19,6 +19,9 @@ import {
 } from '../../selectors/modalsSelector';
 import { setIsOrderAddModalOpen } from '../../reducers/modalsSlice';
 import { AddModal } from '../../components/Modals/AddModal';
+import { getAllItems } from '../../api/api';
+import { Order } from '../../types/Order';
+import { useQuery } from 'react-query';
 
 export const OrdersPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,12 +38,21 @@ export const OrdersPage: React.FC = () => {
 
   const isModalOpenned =
     isOrderAddModalOpen || isOrderDeleteModalOpen || isProductAddModalOpen;
+
   const isAddModalOppened = isOrderAddModalOpen || isProductAddModalOpen;
   const newItem = isOrderAddModalOpen ? 'order' : 'product';
 
   const isDeleteModalOppened =
     isOrderDeleteModalOpen || isProductDeleteModalOpen;
   const deletedItem = isOrderDeleteModalOpen ? 'order' : 'product';
+
+  const { data, error, isLoading } = useQuery(['orders'], () =>
+    getAllItems<Order>('orders'),
+  );
+
+  if (!isLoading) {
+    console.log(data);
+  }
 
   const handleAddOrder = () => {
     dispatch(setIsOrderAddModalOpen(true));

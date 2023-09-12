@@ -19,7 +19,7 @@ export const TopMenu: React.FC = () => {
   const [activeSessions, setActiveSessions] = useState<number>(0);
 
   useEffect(() => {
-    const socket = io('http://localhost:5000/');
+    const socket = io(`${API_URL}`);
 
     console.log(socket);
 
@@ -53,12 +53,12 @@ export const TopMenu: React.FC = () => {
 
   return (
     <div className={styles.topMenu}>
-      <p className={styles.topMenu__activeSessions}>
+      <div className={styles.topMenu__activeSessions}>
         Active Sessions:
         <p className={styles['topMenu__activeSessions--count']}>
           {activeSessions}
         </p>
-      </p>
+      </div>
 
       <div className={styles.topMenu__dateInfo}>
         <span className={styles.topMenu__weekday}>{dateInfo.weekday}</span>
