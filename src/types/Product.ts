@@ -16,6 +16,6 @@ export interface Product {
     symbol: string;
     isDefault: number;
   }[];
-  order: number;
+  order_id: number;
   date: string;
 }

@@ -1,19 +1,19 @@
 import React from 'react';
 import { Product } from '../../types/Product';
 import styles from './ProductItem.module.scss';
-import { orders } from '../../data/data';
-import laptop from '../../imgs/laptop.jpg';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import cn from 'classnames';
 import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
 import { PriceInfo } from '../PriceInfo';
 import { Button } from 'react-bootstrap';
 import { getOrderById } from '../../helpers/getOrderById';
-import { selectIsOrderSelected } from '../../selectors/ordersSelector';
+import { selectIsOrderSelected } from '../../selectors/itemsSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
 import { selectIsOrderDeleteModalOpen } from '../../selectors/modalsSelector';
 import { setIsProductDeleteModalOpen } from '../../reducers/modalsSlice';
+import { API_URL } from '../../consts/api';
+import { setSelectedProduct } from '../../reducers/itemsSlice';
 
 interface ProductItemProps {
   product: Product;
@@ -28,12 +28,25 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
     guarantee,
     isNew,
     isRepairing,
-    price,
+    price = [
+      {
+        value: 100,
+        symbol: 'USD',
+        isDefault: true,
+      },
+      {
+        value: 100,
+        symbol: 'UAH',
+        isDefault: true,
+      },
+    ],
     type,
-    order,
+    order_id,
     date,
+    photo,
   } = product;
-  const foundOrder = getOrderById(order, orders);
+
+  const imageSrc = API_URL + '/images/' + photo;
 
   const isOrderSelected = useSelector(selectIsOrderSelected);
   const isOrdersPage = useMatch('orders');
@@ -42,18 +55,20 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
 
   const isDemoForm = isOrderDeleteModalOpen;
 
-  const orderTitle = foundOrder?.title || '';
+  const orderTitle = 'order';
+  //const orderTitle = foundOrder?.title || 'order';
 
   const condition = isNew ? 'New' : 'Used';
   const status = isRepairing ? 'Ready' : 'Repairing';
-  const { formattedDate: guaranteeStart } = getFormatDateAndTime(
-    guarantee.start,
-  );
-  const { formattedDate: guaranteeEnd } = getFormatDateAndTime(guarantee.end);
+  // const { formattedDate: guaranteeStart } = getFormatDateAndTime(
+  //   guarantee.start,
+  // );
+  // const { formattedDate: guaranteeEnd } = getFormatDateAndTime(guarantee.end);
   const { formattedDate: creationDate } = getFormatDateAndTime(date);
   const prices = { priceUSD: price[0].value, priceUAH: price[1].value };
 
   const handleDeleteProduct = () => {
+    dispatch(setSelectedProduct(product));
     dispatch(setIsProductDeleteModalOpen(true));
   };
 
@@ -71,7 +86,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
       />
       <img
         className={styles.productItem__img}
-        src={laptop}
+        src={imageSrc}
         alt="device photo"
       />
       <div className={styles.productItem__nameInfo}>
@@ -98,11 +113,11 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
               <span className={styles['productItem__garantee-label']}>
                 from
               </span>{' '}
-              {guaranteeStart}
+              {1111}
             </div>
             <p className={styles['productItem__garantee-end']}>
               <span className={styles['productItem__garantee-label']}>to</span>{' '}
-              {guaranteeEnd}
+              {222}
             </p>
           </div>
           <p className={styles.productItem__condition}>{condition}</p>

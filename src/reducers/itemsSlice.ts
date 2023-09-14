@@ -2,20 +2,22 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product } from '../types/Product';
 import { Order } from '../types/Order';
 
-interface OrderState {
+interface ItemsState {
   isOrderSelected: boolean;
   selectedOrder: Order | null;
+  selectedProduct: Product | null;
   productsForOrder: Product[];
 }
 
-const initialState: OrderState = {
+const initialState: ItemsState = {
   isOrderSelected: false,
   selectedOrder: null,
+  selectedProduct: null,
   productsForOrder: [],
 };
 
-const ordersSlice = createSlice({
-  name: 'orders',
+const itemsSlice = createSlice({
+  name: 'items',
   initialState,
   reducers: {
     setIsOrderSelected: (state, action: PayloadAction<boolean>) => {
@@ -26,12 +28,20 @@ const ordersSlice = createSlice({
       state.selectedOrder = action.payload;
     },
 
+    setSelectedProduct: (state, action: PayloadAction<Product>) => {
+      state.selectedProduct = action.payload;
+    },
+
     setProductsForOrder: (state, action: PayloadAction<Product[]>) => {
       state.productsForOrder = action.payload;
     },
   },
 });
 
-export const { setIsOrderSelected, setSelectedOrder, setProductsForOrder } =
-  ordersSlice.actions;
-export default ordersSlice.reducer;
+export const {
+  setIsOrderSelected,
+  setSelectedOrder,
+  setSelectedProduct,
+  setProductsForOrder,
+} = itemsSlice.actions;
+export default itemsSlice.reducer;

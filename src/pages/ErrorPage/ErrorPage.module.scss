@@ -1,0 +1,35 @@
+.errorPage {
+  margin-top: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__title {
+    margin-bottom: 20px;
+    color: var(--danger);
+  }
+
+  &__message {
+    margin-bottom: 20px;
+    color: var(--danger);
+  }
+
+  &__img {
+    width: 50%;
+    margin-bottom: 20px;
+  }
+
+  &__link {
+    margin-bottom: 20px;
+    padding: 3px;
+    border-radius: 5px;
+    color: var(--danger);
+    font-weight: 600;
+
+    &:hover {
+      box-shadow: 0 0 2px 1px var(--danger);
+    }
+  }
+}

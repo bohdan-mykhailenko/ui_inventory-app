@@ -21,14 +21,8 @@ export const TopMenu: React.FC = () => {
   useEffect(() => {
     const socket = io(`${API_URL}`);
 
-    console.log(socket);
-
     socket.on('activeSessions', (count: number) => {
       setActiveSessions(count);
-    });
-
-    socket.on('disconnect', () => {
-      console.log('Disconnected');
     });
 
     const interval = setInterval(() => {

@@ -29,7 +29,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
   };
 
   const handleSubmit = async (values: Order) => {
-    console.log(values);
 
     try {
       const normalizedData = {

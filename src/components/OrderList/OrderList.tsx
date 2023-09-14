@@ -1,13 +1,12 @@
 import React from 'react';
 import { Order } from '../../types/Order';
-import { orders } from '../../data/data';
 import { OrderItem } from '../OrderItem';
 
 interface OrderListProps {
   orders: Order[];
 }
 
-export const OrderList: React.FC<OrderListProps> = () => {
+export const OrderList: React.FC<OrderListProps> = ({ orders }) => {
   return (
     <ul>
       {orders.map((order) => (

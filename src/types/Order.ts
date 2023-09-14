@@ -3,4 +3,9 @@ export interface Order {
   title: string;
   date: string;
   description: string;
+  productCount?: number;
+  sumOfPrice?: {
+    value: number;
+    symbol?: string;
+  }[];
 }

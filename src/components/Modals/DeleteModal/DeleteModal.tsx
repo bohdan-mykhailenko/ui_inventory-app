@@ -4,8 +4,9 @@ import { OrderItem } from '../../OrderItem';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectOrder,
+  selectProduct,
   selectProductsForOrder,
-} from '../../../selectors/ordersSelector';
+} from '../../../selectors/itemsSelector';
 import { Button } from 'react-bootstrap';
 import { CloseButton } from '../../CloseButton';
 import {
@@ -15,20 +16,30 @@ import {
 import { ProductList } from '../../ProductList';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Product } from '../../../types/Product';
+import { deleteItem } from '../../../api/api';
+import { useErrorHandle } from '../../../hooks/useErrorHandle';
 
 interface DeleteModalProps {
-  item: string;
+  items: string;
   selectedProducts?: Product[];
 }
 
 export const DeleteModal: React.FC<DeleteModalProps> = ({
-  item,
+  items = '',
   selectedProducts = [],
 }) => {
   const dispatch = useDispatch();
+
+  const { handleError } = useErrorHandle();
+
   const isEmptyOrder = selectedProducts.length > 0;
 
-  const isProductPage = item === 'product';
+  const isProductPage = items === 'products';
+
+  const deletedItem = items.slice(0, -1);
+
+  const selectedOrder = useSelector(selectOrder);
+  const selectedProduct = useSelector(selectProduct);
 
   const removeModal = () => {
     if (isProductPage) {
@@ -42,16 +53,31 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
     removeModal();
   };
 
-  const handleDeleteOrder = () => {
+  const handleDeleteOrder = async () => {
+    let id = 0;
+
+    if (items === 'orders') {
+      id = selectedOrder ? selectedOrder.id : 0;
+    }
+
+    if (items === 'products') {
+      id = selectedProduct ? selectedProduct.id : 0;
+    }
+
     removeModal();
 
-    alert('DELETED');
+    try {
+      await deleteItem(items, id);
+      alert('DELETED');
+    } catch (error) {
+      handleError(error);
+    }
   };
 
   return (
     <div className={styles.deleteModal}>
       <h3 className={styles.deleteModal__title}>
-        {`Are you sure you want to delete this ${item}?`}
+        {`Are you sure you want to delete this ${deletedItem}?`}
       </h3>
 
       {!isProductPage ? (

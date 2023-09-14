@@ -49,7 +49,7 @@ const productValidationSchema = Yup.object<Product>({
       isDefault: Yup.number(),
     }),
   ),
-  order: Yup.number().required('Order is required'),
+  order_id: Yup.number().required('Order is required'),
   date: Yup.string()
     .required('Date is required')
     .matches(
@@ -79,12 +79,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
         isDefault: 0,
       },
     ],
-    order: 0,
+    order_id: 0,
     date: '',
   };
 
   const handleSubmit = async (values: Product) => {
-    console.log(values);
 
     try {
       // Normalize and send data to the API
