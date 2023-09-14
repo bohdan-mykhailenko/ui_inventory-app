@@ -1,12 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './DeleteModal.module.scss';
-import { OrderItem } from '../../OrderItem';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectOrder,
-  selectProduct,
-  selectProductsForOrder,
-} from '../../../selectors/itemsSelector';
 import { Button } from 'react-bootstrap';
 import { CloseButton } from '../../CloseButton';
 import {
@@ -18,6 +12,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Product } from '../../../types/Product';
 import { deleteItem } from '../../../api/api';
 import { useErrorHandle } from '../../../hooks/useErrorHandle';
+import { useQuery } from 'react-query';
+import { selectOrder, selectProduct } from '../../../selectors/itemsSelector';
 
 interface DeleteModalProps {
   items: string;
@@ -53,8 +49,26 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
     removeModal();
   };
 
-  const handleDeleteOrder = async () => {
-    let id = 0;
+  let id = 2;
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const { isLoading } = useQuery(
+    ['deleteItem', isDeleting],
+    () => {
+      if (isDeleting) {
+        return deleteItem(items, id);
+      }
+    },
+    {
+      enabled: isDeleting,
+      onSuccess: () => {
+        alert('DELETED');
+      },
+    },
+  );
+
+  const handleDeleteOrder = () => {
+    setIsDeleting(true);
 
     if (items === 'orders') {
       id = selectedOrder ? selectedOrder.id : 0;
@@ -65,50 +79,46 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
     }
 
     removeModal();
-
-    try {
-      await deleteItem(items, id);
-      alert('DELETED');
-    } catch (error) {
-      handleError(error);
-    }
   };
-
   return (
     <div className={styles.deleteModal}>
-      <h3 className={styles.deleteModal__title}>
-        {`Are you sure you want to delete this ${deletedItem}?`}
-      </h3>
+      <div className={styles.deleteModal__content}>
+        <h3 className={styles.deleteModal__title}>
+          {`Are you sure you want to delete this ${deletedItem}?`}
+        </h3>
 
-      {!isProductPage ? (
-        isEmptyOrder ? (
-          <ProductList products={selectedProducts} />
-        ) : (
-          <h5 className={styles.deleteModal__emptyList}>Empty order...</h5>
-        )
-      ) : null}
+        {!isProductPage ? (
+          isEmptyOrder ? (
+            <ProductList products={selectedProducts} />
+          ) : (
+            <h5 className={styles.deleteModal__emptyList}>Empty order...</h5>
+          )
+        ) : null}
 
-      <div className={styles.deleteModal__actions}>
-        <Button
-          onClick={handleCloseDeleteModal}
-          className={`${styles['deleteModal__actions-button']} ${styles['deleteModal__actions-button--cancel']}`}
-        >
-          Cancel
-        </Button>
+        <div className={styles.deleteModal__actions}>
+          <Button
+            onClick={handleCloseDeleteModal}
+            className={`${styles['deleteModal__actions-button']} ${styles['deleteModal__actions-button--cancel']}`}
+          >
+            Cancel
+          </Button>
 
-        <Button
-          onClick={handleDeleteOrder}
-          className={`${styles['deleteModal__actions-button']} ${styles['deleteModal__actions-button--delete']}`}
-        >
-          <DeleteForeverIcon
-            className={styles['deleteModal__actions-button--delete-binIcon']}
-          />
-          <span className={styles['deleteModal__actions-button--delete-text']}>
-            Delete
-          </span>
-        </Button>
+          <Button
+            onClick={handleDeleteOrder}
+            className={`${styles['deleteModal__actions-button']} ${styles['deleteModal__actions-button--delete']}`}
+          >
+            <DeleteForeverIcon
+              className={styles['deleteModal__actions-button--delete-binIcon']}
+            />
+            <span
+              className={styles['deleteModal__actions-button--delete-text']}
+            >
+              Delete
+            </span>
+          </Button>
 
-        <CloseButton onClose={handleCloseDeleteModal} />
+          <CloseButton onClose={handleCloseDeleteModal} />
+        </div>
       </div>
     </div>
   );

@@ -1,47 +1,40 @@
 import React from 'react';
-import * as Yup from 'yup';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Order } from '../../types/Order';
 import { Button } from 'react-bootstrap';
 import { CloseButton } from '../CloseButton';
 import styles from './Form.module.scss';
 
+import { useMutation, useQueryClient } from 'react-query'; // Import the necessary hooks
+import { postOrder } from '../../api/api'; // Import the postOrder function
+import { orderValidationSchema } from '../../validation/orderValidationSchema';
+
 interface OrderFormProps {
   onRemoveModal: () => void;
 }
 
-const orderValidationSchema = Yup.object({
-  title: Yup.string().trim().required('Title is required'),
-  date: Yup.string()
-    .required('Date is required')
-    .matches(
-      /^\d{4}-\d{2}-\d{2}$/,
-      'Date must be in the format YYYY-MM-DD (e.g., 2023-09-05)',
-    ),
-});
-
 export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
-  const initialValues: Order = {
-    id: 0,
+  const initialValues: Partial<Order> = {
     title: '',
     date: '',
     description: '',
   };
 
-  const handleSubmit = async (values: Order) => {
+  const queryClient = useQueryClient(); // Initialize the query client
 
+  const mutation = useMutation((values: Partial<Order>) => postOrder(values), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('orders');
+      onRemoveModal();
+    },
+  });
+
+  const handleSubmit = async (values: Partial<Order>) => {
     try {
-      const normalizedData = {
-        ...values,
-        title: values.title.replace(/\s{2,}/g, ' '),
-      };
-
-      //  const response = await axios.post('API_URL', normalizedData);
-      alert('Form submitted with data:');
+      mutation.mutate(values);
+      console.log(values);
     } catch (error) {
       console.error('Error submitting form:', error);
-    } finally {
-      onRemoveModal();
     }
   };
 
@@ -86,7 +79,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__actions}>
           <Button
             onClick={onRemoveModal}
@@ -99,11 +91,13 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
             type="submit"
             className={`${styles['form__actions-button']} ${styles['form__actions-button--add']}`}
           >
-            Add
+            {mutation.isLoading ? 'Adding...' : 'Add'}{' '}
+            {/* Display loading state */}
           </Button>
 
           <CloseButton onClose={onRemoveModal} />
         </div>
+        {mutation.isError && <div className={styles.error}>ERROOR</div>}
       </Form>
     </Formik>
   );

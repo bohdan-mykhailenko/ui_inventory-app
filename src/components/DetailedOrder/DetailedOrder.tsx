@@ -20,7 +20,6 @@ export const DetailedOrder: React.FC = () => {
   const { title = '', id = 0 } = selectedOrder || {};
 
   const productsForOrder = useSelector(selectProductsForOrder);
-  console.log(productsForOrder);
   const isEmptyOrder = productsForOrder.length > 0;
   const count = productsForOrder?.length || 0;
 
