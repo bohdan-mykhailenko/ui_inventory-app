@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-const querySelector = (state: RootState) => state.items.query;
+const isItemChangedSelector = (state: RootState) => state.items.isItemChanged;
 
 const isOrderSelectedSelector = (state: RootState) =>
   state.items.isOrderSelected;
@@ -14,7 +14,10 @@ const selectedProductSelector = (state: RootState) =>
 const productsForItemselector = (state: RootState) =>
   state.items.productsForOrder;
 
-export const selectQuery = createSelector([querySelector], (query) => query);
+export const selectIsItemChanged = createSelector(
+  [isItemChangedSelector],
+  (isItemChanged) => isItemChanged,
+);
 
 export const selectIsOrderSelected = createSelector(
   [isOrderSelectedSelector],

@@ -3,7 +3,7 @@ import { Product } from '../types/Product';
 import { Order } from '../types/Order';
 
 interface ItemsState {
-  query: string;
+  isItemChanged: boolean;
   isOrderSelected: boolean;
   selectedOrder: Order | null;
   selectedProduct: Product | null;
@@ -11,7 +11,7 @@ interface ItemsState {
 }
 
 const initialState: ItemsState = {
-  query: '',
+  isItemChanged: false,
   isOrderSelected: false,
   selectedOrder: null,
   selectedProduct: null,
@@ -22,8 +22,8 @@ const itemsSlice = createSlice({
   name: 'items',
   initialState,
   reducers: {
-    setQuery: (state, action: PayloadAction<string>) => {
-      state.query = action.payload;
+    setIsItemChanged: (state, action: PayloadAction<boolean>) => {
+      state.isItemChanged = action.payload;
     },
 
     setIsOrderSelected: (state, action: PayloadAction<boolean>) => {
@@ -45,7 +45,7 @@ const itemsSlice = createSlice({
 });
 
 export const {
-  setQuery,
+  setIsItemChanged,
   setIsOrderSelected,
   setSelectedOrder,
   setSelectedProduct,

@@ -8,17 +8,19 @@ import { ProductType } from '../../types/ProductType';
 import { createProductValidationSchema } from '../../validation/productValidationSchema ';
 import { postProduct } from '../../api/api';
 import { selectOrder } from '../../selectors/itemsSelector';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQueryClient } from 'react-query';
 import { useErrorHandle } from '../../hooks/useErrorHandle';
 import { Loader } from '../Loader';
 import { Checkbox, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { setIsItemChanged } from '../../reducers/itemsSlice';
 
 interface ProductFormProps {
   onRemoveModal: () => void;
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
+  const dispatch = useDispatch();
   const [imageFile, setImageFile] = useState<File | string>('');
   const [typeValue, setTypeValue] = useState(ProductType.DEFAULT);
   const selectedOrder = useSelector(selectOrder);
@@ -44,7 +46,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
 
   const mutation = useMutation((data: Partial<Product>) => postProduct(data), {
     onSuccess: () => {
-      queryClient.invalidateQueries('products');
+      queryClient.invalidateQueries('add product');
+      dispatch(setIsItemChanged(true));
     },
   });
 
@@ -86,6 +89,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
     } catch (error) {
       handleError(error);
     } finally {
+      dispatch(setIsItemChanged(true));
       onRemoveModal();
     }
   };

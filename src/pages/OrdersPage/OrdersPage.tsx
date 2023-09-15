@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import { DetailedOrder } from '../../components/DetailedOrder';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectIsItemChanged,
   selectIsOrderSelected,
   selectProductsForOrder,
 } from '../../selectors/itemsSelector';
@@ -23,15 +24,21 @@ import { Order } from '../../types/Order';
 import { useQuery } from 'react-query';
 import { Loader } from '../../components/Loader';
 import { useErrorHandle } from '../../hooks/useErrorHandle';
-import { setQuery } from '../../reducers/itemsSlice';
 import { useSearchParams } from 'react-router-dom';
+import { setIsItemChanged } from '../../reducers/itemsSlice';
 
 export const OrdersPage: React.FC = () => {
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const queryValue = searchParams.get('query') || '';
+  const isOrderChanged = useSelector(selectIsItemChanged);
 
-  const { data, error, isLoading } = useQuery(['orders', queryValue], () =>
-    getFilteredItems<Order[]>('orders', queryValue),
+  const { data, error, isLoading } = useQuery(
+    ['orders', queryValue, isOrderChanged],
+    () => getFilteredItems<Order[]>('orders', queryValue),
+    {
+      onSuccess: () => dispatch(setIsItemChanged(false)),
+    },
   );
 
   const { handleError } = useErrorHandle();
@@ -43,8 +50,6 @@ export const OrdersPage: React.FC = () => {
   const orders = data || [];
 
   const count = orders?.length || 0;
-
-  const dispatch = useDispatch();
 
   const isOrderSelected = useSelector(selectIsOrderSelected);
   const isOrderDeleteModalOpen = useSelector(selectIsOrderDeleteModalOpen);
