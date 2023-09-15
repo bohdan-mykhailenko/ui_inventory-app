@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './OrdersPage.module.scss';
 import { OrderList } from '../../components/OrderList';
 import { Button } from 'react-bootstrap';
 import { DetailedOrder } from '../../components/DetailedOrder';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectIsItemChanged,
   selectIsOrderSelected,
   selectProductsForOrder,
 } from '../../selectors/itemsSelector';
@@ -18,15 +19,26 @@ import {
 } from '../../selectors/modalsSelector';
 import { setIsOrderAddModalOpen } from '../../reducers/modalsSlice';
 import { AddModal } from '../../components/Modals/AddModal';
-import { getAllItems } from '../../api/api';
+import { getFilteredItems } from '../../api/api';
 import { Order } from '../../types/Order';
 import { useQuery } from 'react-query';
 import { Loader } from '../../components/Loader';
 import { useErrorHandle } from '../../hooks/useErrorHandle';
+import { useSearchParams } from 'react-router-dom';
+import { setIsItemChanged } from '../../reducers/itemsSlice';
 
 export const OrdersPage: React.FC = () => {
-  const { data, error, isLoading } = useQuery(['orders'], () =>
-    getAllItems<Order[]>('orders'),
+  const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+  const queryValue = searchParams.get('query') || '';
+  const isOrderChanged = useSelector(selectIsItemChanged);
+
+  const { data, error, isLoading } = useQuery(
+    ['orders', queryValue, isOrderChanged],
+    () => getFilteredItems<Order[]>('orders', queryValue),
+    {
+      onSuccess: () => dispatch(setIsItemChanged(false)),
+    },
   );
 
   const { handleError } = useErrorHandle();
@@ -38,8 +50,6 @@ export const OrdersPage: React.FC = () => {
   const orders = data || [];
 
   const count = orders?.length || 0;
-
-  const dispatch = useDispatch();
 
   const isOrderSelected = useSelector(selectIsOrderSelected);
   const isOrderDeleteModalOpen = useSelector(selectIsOrderDeleteModalOpen);
@@ -76,7 +86,7 @@ export const OrdersPage: React.FC = () => {
 
         <h1 className={styles.ordersPage__title}>Orders</h1>
         <span className={styles.ordersPage__count}>
-          / {count > 0 ? count : ''}
+          / {count > 0 ? count : 'Empty list...'}
         </span>
       </div>
 

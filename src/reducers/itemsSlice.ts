@@ -3,6 +3,7 @@ import { Product } from '../types/Product';
 import { Order } from '../types/Order';
 
 interface ItemsState {
+  isItemChanged: boolean;
   isOrderSelected: boolean;
   selectedOrder: Order | null;
   selectedProduct: Product | null;
@@ -10,6 +11,7 @@ interface ItemsState {
 }
 
 const initialState: ItemsState = {
+  isItemChanged: false,
   isOrderSelected: false,
   selectedOrder: null,
   selectedProduct: null,
@@ -20,6 +22,10 @@ const itemsSlice = createSlice({
   name: 'items',
   initialState,
   reducers: {
+    setIsItemChanged: (state, action: PayloadAction<boolean>) => {
+      state.isItemChanged = action.payload;
+    },
+
     setIsOrderSelected: (state, action: PayloadAction<boolean>) => {
       state.isOrderSelected = action.payload;
     },
@@ -39,6 +45,7 @@ const itemsSlice = createSlice({
 });
 
 export const {
+  setIsItemChanged,
   setIsOrderSelected,
   setSelectedOrder,
   setSelectedProduct,

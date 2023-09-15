@@ -13,8 +13,12 @@ import {
   setIsOrderSelected,
   setSelectedOrder,
   setProductsForOrder,
+  setIsItemChanged,
 } from '../../reducers/itemsSlice';
-import { selectIsOrderSelected } from '../../selectors/itemsSelector';
+import {
+  selectIsItemChanged,
+  selectIsOrderSelected,
+} from '../../selectors/itemsSelector';
 import { setIsOrderDeleteModalOpen } from '../../reducers/modalsSlice';
 import { getItemsFor } from '../../api/api';
 import { Product } from '../../types/Product';
@@ -35,13 +39,14 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
 
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
-
-  const { formattedDate: creationDate } = getFormatDateAndTime(date);
+  const isOrderChanged = useSelector(selectIsItemChanged);
   const isOrderSelected = useSelector(selectIsOrderSelected);
   const [isFetchingData, setIsFetchingData] = useState(false);
 
+  const { formattedDate: creationDate } = getFormatDateAndTime(date);
+
   const { isLoading } = useQuery(
-    ['orderProducts', id],
+    ['orderProducts', id, isOrderChanged],
     () => {
       if (isFetchingData) {
         return getItemsFor<Product[]>('products', 'order', id);
@@ -51,6 +56,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
       enabled: isFetchingData,
       onSuccess: (data = []) => {
         dispatch(setProductsForOrder(data));
+        dispatch(setIsItemChanged(false));
       },
     },
   );

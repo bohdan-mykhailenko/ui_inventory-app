@@ -7,18 +7,39 @@
     padding: 5px 10px;
     width: 100%;
 
-    border: 2px solid var(--shadow);
-    border-radius: 5px;
-
     background: var(--shadow);
 
     &::placeholder {
       font-weight: 600;
     }
 
-    &:active,
-    &:focus {
-      outline: var(--primary) solid 2px;
+    border: 2px solid var(--border);
+    border-radius: 4px 0px 0px 4px;
+
+    &:hover {
+      border: 2px solid var(--focus);
     }
+
+    &:focus {
+      border: 2px solid var(--focus);
+      outline: none;
+    }
+  }
+
+  &__button {
+    display: flex;
+    border-radius: 0px 4px 4px 0px;
+
+    border: 2px solid var(--border);
+
+    &:hover,
+    &:active {
+      background: var(--primary-dark);
+      border: 2px solid var(--focus);
+    }
+  }
+
+  &__icon {
+    color: white;
   }
 }

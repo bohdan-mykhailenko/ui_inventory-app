@@ -42,9 +42,28 @@ export const getItemsFor = async <T>(
   }
 };
 
-export const getItemsForType = async <T>(items: string, type: ProductType) => {
+export const getFilteredItems = async <T>(
+  items: string,
+  query?: string,
+  type?: ProductType,
+) => {
   try {
-    const response = await axios.get<T>(`${API_URL}/${items}?type=${type}`);
+    const params: Record<string, string> = {};
+
+    if (type !== undefined) {
+      params.type = type;
+    }
+
+    if (query !== undefined) {
+      params.query = query;
+    }
+    const queryString = new URLSearchParams(params).toString();
+
+    const apiUrl = queryString
+      ? `${API_URL}/${items}?${queryString}`
+      : `${API_URL}/${items}`;
+
+    const response = await axios.get<T>(apiUrl);
 
     return response.data;
   } catch (error: any) {
@@ -91,8 +110,6 @@ export const postProduct = async (data: Partial<Product>) => {
         }
       }
     }
-
-    console.log(formData);
 
     await axios.post(`${API_URL}/products`, formData, {
       headers: {
