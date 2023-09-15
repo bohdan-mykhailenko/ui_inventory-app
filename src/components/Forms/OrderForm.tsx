@@ -94,13 +94,13 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
             className={`${styles['form__actions-button']} ${styles['form__actions-button--add']}`}
           >
             {mutation.isLoading ? (
-              <>
+              <span>
                 Adding
                 <Loader size={15} />
-              </>
+              </span>
             ) : (
               'Add'
-            )}{' '}
+            )}
           </Button>
 
           <CloseButton onClose={onRemoveModal} />

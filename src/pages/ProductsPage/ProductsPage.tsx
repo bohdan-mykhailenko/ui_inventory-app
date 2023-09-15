@@ -11,14 +11,21 @@ import { Product } from '../../types/Product';
 import { Loader } from '../../components/Loader';
 import { useSearchParams } from 'react-router-dom';
 import { ProductType } from '../../types/ProductType';
-import { getItemsForType } from '../../api/api';
+import { getFilteredItems } from '../../api/api';
 
 export const ProductsPage: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const queryValue = searchParams.get('query') || '';
   const filterValue = searchParams.get('type') || ProductType.ALL;
 
-  const { data, error, isLoading } = useQuery(['products', filterValue], () =>
-    getItemsForType<Product[]>('products', filterValue as ProductType),
+  const { data, error, isLoading } = useQuery(
+    ['products', queryValue, filterValue],
+    () =>
+      getFilteredItems<Product[]>(
+        'products',
+        queryValue,
+        filterValue as ProductType,
+      ),
   );
 
   const { handleError } = useErrorHandle();
@@ -41,7 +48,7 @@ export const ProductsPage: React.FC = () => {
       <div className={styles.productsPage__topInfo}>
         <h1 className={styles.productsPage__title}>Products</h1>
         <span className={styles.productsPage__count}>
-          / {count > 0 ? count : ''}
+          / {count > 0 ? count : 'Empty list...'}
         </span>
         <ProductSelect filterValue={filterValue} />
       </div>

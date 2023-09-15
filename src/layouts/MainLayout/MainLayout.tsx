@@ -9,6 +9,7 @@ import {
   setIsProductAddModalOpen,
   setIsProductDeleteModalOpen,
 } from '../../reducers/modalsSlice';
+import { setQuery } from '../../reducers/itemsSlice';
 
 export const MainLayout: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export const MainLayout: React.FC = () => {
     dispatch(setIsOrderAddModalOpen(false));
     dispatch(setIsProductDeleteModalOpen(false));
     dispatch(setIsOrderAddModalOpen(false));
+    dispatch(setQuery(''));
   }, [pathname]);
 
   return (

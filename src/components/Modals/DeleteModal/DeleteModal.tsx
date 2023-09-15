@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './DeleteModal.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
@@ -12,8 +12,9 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Product } from '../../../types/Product';
 import { deleteItem } from '../../../api/api';
 import { useErrorHandle } from '../../../hooks/useErrorHandle';
-import { useQuery } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { selectOrder, selectProduct } from '../../../selectors/itemsSelector';
+import { Loader } from '../../Loader';
 
 interface DeleteModalProps {
   items: string;
@@ -25,17 +26,23 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
   selectedProducts = [],
 }) => {
   const dispatch = useDispatch();
-
   const { handleError } = useErrorHandle();
+  const queryClient = useQueryClient();
+
+  const { id = 0 } =
+    items === 'orders'
+      ? useSelector(selectOrder) || {}
+      : useSelector(selectProduct) || {};
 
   const isEmptyOrder = selectedProducts.length > 0;
-
   const isProductPage = items === 'products';
-
   const deletedItem = items.slice(0, -1);
 
-  const selectedOrder = useSelector(selectOrder);
-  const selectedProduct = useSelector(selectProduct);
+  const mutation = useMutation((itemId: number) => deleteItem(items, itemId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('delete item');
+    },
+  });
 
   const removeModal = () => {
     if (isProductPage) {
@@ -49,37 +56,16 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
     removeModal();
   };
 
-  let id = 2;
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const { isLoading } = useQuery(
-    ['deleteItem', isDeleting],
-    () => {
-      if (isDeleting) {
-        return deleteItem(items, id);
-      }
-    },
-    {
-      enabled: isDeleting,
-      onSuccess: () => {
-        alert('DELETED');
-      },
-    },
-  );
-
-  const handleDeleteOrder = () => {
-    setIsDeleting(true);
-
-    if (items === 'orders') {
-      id = selectedOrder ? selectedOrder.id : 0;
+  const handleDeleteOrder = async () => {
+    try {
+      mutation.mutate(id);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      removeModal();
     }
-
-    if (items === 'products') {
-      id = selectedProduct ? selectedProduct.id : 0;
-    }
-
-    removeModal();
   };
+
   return (
     <div className={styles.deleteModal}>
       <div className={styles.deleteModal__content}>
@@ -113,7 +99,14 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
             <span
               className={styles['deleteModal__actions-button--delete-text']}
             >
-              Delete
+              {mutation.isLoading ? (
+                <span>
+                  Deleting
+                  <Loader size={15} />
+                </span>
+              ) : (
+                'Delete'
+              )}
             </span>
           </Button>
 

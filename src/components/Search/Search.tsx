@@ -1,12 +1,34 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './Search.module.scss';
+import { Button } from 'react-bootstrap';
+import SearchIcon from '@mui/icons-material/Search';
+import { useSearchParams } from 'react-router-dom';
+import { debounce } from 'lodash';
 
 export const Search: React.FC = () => {
-  const [query, setQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const debouncedHandleChangeQuery = useCallback(
+    debounce((value: string) => {
+      const newSearchParams = new URLSearchParams(searchParams);
+
+      newSearchParams.set('query', value);
+      setSearchParams(newSearchParams);
+    }, 700),
+    [searchParams, setSearchParams],
+  );
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    const value = event.target.value;
+
+    setInputValue(value);
+    debouncedHandleChangeQuery(value);
   };
+
+  // useEffect(() => {
+  //   setInputValue(searchParams.get('query') || '');
+  // }, [searchParams]);
 
   return (
     <div className={styles.search}>
@@ -14,9 +36,14 @@ export const Search: React.FC = () => {
         type="text"
         placeholder="Search"
         className={styles.search__input}
-        value={query}
+        name="query"
         onChange={handleChangeQuery}
+        value={inputValue}
       />
+
+      <Button type="submit" className={styles.search__button}>
+        <SearchIcon className={styles.search__icon} />
+      </Button>
     </div>
   );
 };
