@@ -8,6 +8,21 @@
     padding: 0 20px;
     margin-bottom: 20px;
 
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    &--checkbox {
+      padding-bottom: 25px;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+
+      input {
+        height: 25px;
+      }
+    }
+
     label {
       margin-bottom: 5px;
 
@@ -25,10 +40,37 @@
       border: 2px solid var(--border);
       border-radius: 4px;
 
+      &:hover {
+        border: 2px solid var(--focus);
+      }
+
       &:focus {
-        border: 2px solid var(--primary);
+        background: var(--shadow-light);
+        border: 2px solid var(--focus);
         outline: none;
       }
+    }
+  }
+
+  &__select {
+    width: 100%;
+    height: 40px;
+    appearance: none;
+
+    font-family: inherit !important;
+    font-size: 14px;
+
+    border: 2px solid var(--border) !important;
+    outline: none !important;
+
+    &:hover {
+      border: 2px solid var(--focus) !important;
+    }
+
+    &:focus {
+      background: var(--shadow) !important;
+      border: 2px solid var(--focus) !important;
+      outline: none !important;
     }
   }
 
@@ -54,6 +96,7 @@
     gap: 20px;
 
     background: var(--primary);
+
     &-button {
       padding: 3px;
 

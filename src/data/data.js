@@ -1,35 +1,35 @@
-export const orders = [
+export const order_ids = [
   {
     id: 1,
-    title: 'Order 1',
+    title: 'order_id 1',
     date: '2017-06-29 12:09:33',
     description: 'desc',
     get products() { return products; }
   },
   {
     id: 2,
-    title: 'Order 2',
+    title: 'order_id 2',
     date: '2017-06-29 12:09:33',
     description: 'desc',
     get products() { return products; }
   },
   {
     id: 3,
-    title: 'Order 3',
+    title: 'order_id 3',
     date: '2017-06-29 12:09:33',
     description: 'desc',
     get products() { return products; },
   },
   {
     id: 4,
-    title: 'Order 3',
+    title: 'order_id 3',
     date: '2017-06-29 12:09:33',
     description: 'desc',
     get products() { return products; },
   },
   {
     id: 5,
-    title: 'Order 3',
+    title: 'order_id 3',
     date: '2017-06-29 12:09:33',
     description: 'desc',
     get products() { return products; },
@@ -54,7 +54,7 @@ export const products = [
       { value: 100, symbol: 'USD', isDefault: 0 },
       { value: 2600, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 2,
+    order_id: 2,
     date: '2017-06-29 12:09:33'
   },
   {
@@ -74,7 +74,7 @@ export const products = [
       { value: 200, symbol: 'USD', isDefault: 0 },
       { value: 3500, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 2,
+    order_id: 2,
     date: '2018-07-01 10:00:00'
   },
   {
@@ -94,7 +94,7 @@ export const products = [
       { value: 50, symbol: 'USD', isDefault: 0 },
       { value: 1200, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 3,
+    order_id: 3,
     date: '2019-08-15 08:30:00'
   },
   {
@@ -114,7 +114,7 @@ export const products = [
       { value: 800, symbol: 'USD', isDefault: 0 },
       { value: 18000, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 4,
+    order_id: 4,
     date: '2020-03-20 14:45:00'
   },
   {
@@ -134,7 +134,7 @@ export const products = [
       { value: 300, symbol: 'USD', isDefault: 0 },
       { value: 7500, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 5,
+    order_id: 5,
     date: '2021-04-12 09:15:00'
   },
   {
@@ -154,7 +154,7 @@ export const products = [
       { value: 400, symbol: 'USD', isDefault: 0 },
       { value: 9500, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 6,
+    order_id: 6,
     date: '2022-05-25 18:30:00'
   },
   {
@@ -174,7 +174,7 @@ export const products = [
       { value: 20, symbol: 'USD', isDefault: 0 },
       { value: 500, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 2,
+    order_id: 2,
     date: '2023-06-10 12:00:00'
   },
   {
@@ -194,7 +194,7 @@ export const products = [
       { value: 600, symbol: 'USD', isDefault: 0 },
       { value: 14000, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 8,
+    order_id: 8,
     date: '2024-07-20 15:30:00'
   },
   {
@@ -214,7 +214,7 @@ export const products = [
       { value: 150, symbol: 'USD', isDefault: 0 },
       { value: 3600, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 9,
+    order_id: 9,
     date: '2025-08-05 09:00:00'
   },
   {
@@ -234,7 +234,7 @@ export const products = [
       { value: 700, symbol: 'USD', isDefault: 0 },
       { value: 19000, symbol: 'UAH', isDefault: 1 }
     ],
-    order: 10,
+    order_id: 10,
     date: '2026-09-15 20:00:00'
   },
 ];

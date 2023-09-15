@@ -1,101 +1,90 @@
-import React from 'react';
-import * as Yup from 'yup';
+import React, { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { Product } from '../../types/Product';
-import { Button } from 'react-bootstrap';
+import { Product, ProductFormData } from '../../types/Product';
+import { Button, Form as FormInput } from 'react-bootstrap';
 import { CloseButton } from '../CloseButton';
 import styles from './Form.module.scss';
+import { ProductType } from '../../types/ProductType';
+import { createProductValidationSchema } from '../../validation/productValidationSchema ';
+import { postProduct } from '../../api/api';
+import { selectOrder } from '../../selectors/itemsSelector';
+import { useSelector } from 'react-redux';
+import { useMutation, useQueryClient } from 'react-query';
+import { useErrorHandle } from '../../hooks/useErrorHandle';
+import { Loader } from '../Loader';
+import { Checkbox, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 interface ProductFormProps {
   onRemoveModal: () => void;
 }
 
-const productValidationSchema = Yup.object<Product>({
-  id: Yup.number(),
-  serialNumber: Yup.number().required('Serial Number is required'),
-  isNew: Yup.boolean().required('Is New is required'),
-  isRepairing: Yup.boolean().required('Is Repairing is required'),
-  photo: Yup.mixed().test(
-    'fileType',
-    'Only image files are allowed',
-    (value) => {
-      if (!value) {
-        return true;
-      }
-
-      if (value instanceof File) {
-        const fileExtension = value.name.split('.').pop()?.toLowerCase();
-
-        if (fileExtension) {
-          const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-          return allowedExtensions.includes(fileExtension);
-        }
-      }
-
-      return false;
-    },
-  ),
-  title: Yup.string().trim().required('Title is required'),
-  type: Yup.string().required('Type is required'),
-  specification: Yup.string().required('Specification is required'),
-  guarantee: Yup.object({
-    start: Yup.string(),
-    end: Yup.string(),
-  }),
-  price: Yup.array().of(
-    Yup.object({
-      value: Yup.number(),
-      symbol: Yup.string(),
-      isDefault: Yup.number(),
-    }),
-  ),
-  order: Yup.number().required('Order is required'),
-  date: Yup.string()
-    .required('Date is required')
-    .matches(
-      /^\d{4}-\d{2}-\d{2}$/,
-      'Date must be in the format YYYY-MM-DD (e.g., 2023-09-05)',
-    ),
-});
-
 export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
-  const initialValues: Product = {
-    id: 0,
-    serialNumber: 0,
+  const [imageFile, setImageFile] = useState<File | string>('');
+  const [typeValue, setTypeValue] = useState(ProductType.DEFAULT);
+  const selectedOrder = useSelector(selectOrder);
+  const queryClient = useQueryClient();
+  const { handleError } = useErrorHandle();
+
+  const validationSchema = createProductValidationSchema(imageFile, typeValue);
+
+  const initialValues: ProductFormData = {
+    serialNumber: '',
     isNew: false,
     isRepairing: false,
-    photo: '',
+    photo: imageFile,
     title: '',
-    type: '',
+    type: typeValue,
     specification: '',
-    guarantee: {
-      start: '',
-      end: '',
-    },
-    price: [
-      {
-        value: 0,
-        symbol: '',
-        isDefault: 0,
-      },
-    ],
-    order: 0,
     date: '',
+    guaranteeStart: '',
+    guaranteeEnd: '',
+    priceUSD: 0,
+    priceUAH: 0,
   };
 
-  const handleSubmit = async (values: Product) => {
-    console.log(values);
+  const mutation = useMutation((data: Partial<Product>) => postProduct(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('products');
+    },
+  });
 
+  const handleImageFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.currentTarget.files?.[0];
+
+    setImageFile(file as File);
+  };
+
+  const handleChangeTypeValue = (event: SelectChangeEvent) => {
+    setTypeValue(event.target.value as ProductType);
+  };
+
+  const handleSubmit = async (values: ProductFormData) => {
     try {
-      // Normalize and send data to the API
-      // const normalizedData = {
-      //   ...values,
-      //   title: values.title.replace(/\s{2,}/g, ' '),
-      // };
-      // const response = await axios.post('API_URL', normalizedData);
-      alert('Form submitted with data:');
+      const productData: Partial<Product> = {
+        serialNumber: values.serialNumber,
+        isNew: values.isNew,
+        isRepairing: values.isRepairing,
+        photo: imageFile,
+        title: values.title,
+        type: typeValue,
+        specification: values.specification,
+        guarantee: {
+          start: values.guaranteeStart,
+          end: values.guaranteeEnd,
+        },
+        price: [
+          { value: values.priceUSD as number, symbol: 'USD', isDefault: 0 },
+          { value: values.priceUAH as number, symbol: 'UAH', isDefault: 1 },
+        ],
+        order_id: selectedOrder?.id,
+        date: values.date,
+      };
+
+      mutation.mutate(productData);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      handleError(error);
     } finally {
       onRemoveModal();
     }
@@ -104,7 +93,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={productValidationSchema}
+      validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       <Form className={styles['form--product']}>
@@ -117,7 +106,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="serialNumber">Serial Number:</label>
           <Field type="text" id="serialNumber" name="serialNumber" />
@@ -127,27 +115,43 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="photo">Photo:</label>
-          <Field type="file" id="photo" name="photo" />
+          <input
+            type="file"
+            id="photo"
+            name="photo"
+            accept=".jpg, .jpeg, .png, .gif, .jfif, .webp"
+            onChange={handleImageFileChange}
+          />
           <ErrorMessage
             name="photo"
             component="div"
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="type">Type:</label>
-          <Field type="text" id="type" name="type" />
+          <Select
+            value={typeValue}
+            onChange={handleChangeTypeValue}
+            className={styles.form__select}
+            name="type"
+          >
+            <MenuItem value="default" disabled>
+              Select an option
+            </MenuItem>
+            <MenuItem value={ProductType.LAPTOPS}>Laptops</MenuItem>
+            <MenuItem value={ProductType.MONITORS}>Monitors</MenuItem>
+            <MenuItem value={ProductType.PHONES}>Phones</MenuItem>
+            <MenuItem value={ProductType.TABLETS}>Tablets</MenuItem>
+          </Select>
           <ErrorMessage
             name="type"
             component="div"
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="specification">Specification:</label>
           <Field type="text" id="specification" name="specification" />
@@ -157,46 +161,42 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
-          <label htmlFor="guarantee.start">Guarantee Start:</label>
-          <Field type="text" id="guarantee.start" name="guarantee.start" />
-        </div>
-
-        <div className={styles.form__formGroup}>
-          <label htmlFor="guarantee.end">Guarantee End:</label>
-          <Field type="text" id="guarantee.end" name="guarantee.end" />
-        </div>
-
-        <div className={styles.form__formGroup}>
-          <label htmlFor="price[0].value">Price Value:</label>
-          <Field type="text" id="price[0].value" name="price[0].value" />
-        </div>
-
-        <div className={styles.form__formGroup}>
-          <label htmlFor="price[0].symbol">Price Symbol:</label>
-          <Field type="text" id="price[0].symbol" name="price[0].symbol" />
-        </div>
-
-        <div className={styles.form__formGroup}>
-          <label htmlFor="price[0].isDefault">Is Default:</label>
-          <Field
-            type="text"
-            id="price[0].isDefault"
-            name="price[0].isDefault"
-          />
-        </div>
-
-        <div className={styles.form__formGroup}>
-          <label htmlFor="order">Order:</label>
-          <Field type="text" id="order" name="order" />
+          <label htmlFor="guaranteeStart">Guarantee Start:</label>
+          <Field type="text" id="guaranteeStart" name="guaranteeStart" />
           <ErrorMessage
-            name="order"
+            name="guaranteeStart"
             component="div"
             className={styles.form__error}
           />
         </div>
-
+        <div className={styles.form__formGroup}>
+          <label htmlFor="guaranteeEnd">Guarantee End:</label>
+          <Field type="text" id="guaranteeEnd" name="guaranteeEnd" />
+          <ErrorMessage
+            name="guaranteeEnd"
+            component="div"
+            className={styles.form__error}
+          />
+        </div>
+        <div className={styles.form__formGroup}>
+          <label htmlFor="priceUSD">Price Value (USD):</label>
+          <Field type="text" id="priceUSD" name="priceUSD" />
+          <ErrorMessage
+            name="priceUSD"
+            component="div"
+            className={styles.form__error}
+          />
+        </div>
+        <div className={styles.form__formGroup}>
+          <label htmlFor="priceUAH">Price Value (UAH):</label>
+          <Field type="text" id="priceUAH" name="priceUAH" />
+          <ErrorMessage
+            name="priceUAH"
+            component="div"
+            className={styles.form__error}
+          />
+        </div>
         <div className={styles.form__formGroup}>
           <label htmlFor="date">Date:</label>
           <Field type="text" id="date" name="date" />
@@ -206,9 +206,29 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
+        <div
+          className={`${styles.form__formGroup} ${styles['form__formGroup--checkbox']}`}
+        >
+          <label htmlFor="isNew">Is New:</label>
+          <Field
+            id="isNew"
+            type="checkbox"
+            name="isNew"
+            className={styles.form__checkbox}
+          />
+        </div>
 
-        {/* Add the checkbox fields here */}
-
+        <div
+          className={`${styles.form__formGroup} ${styles['form__formGroup--checkbox']}`}
+        >
+          <label htmlFor="isReapiring">Is Reapiring:</label>
+          <Field
+            id="isReapiring"
+            type="checkbox"
+            name="isReapiring"
+            className={styles.form__checkbox}
+          />
+        </div>
         <div className={styles.form__actions}>
           <Button
             onClick={onRemoveModal}
@@ -221,7 +241,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             type="submit"
             className={`${styles['form__actions-button']} ${styles['form__actions-button--add']}`}
           >
-            Add
+            {mutation.isLoading ? (
+              <>
+                Adding
+                <Loader size={15} />
+              </>
+            ) : (
+              'Add'
+            )}{' '}
           </Button>
 
           <CloseButton onClose={onRemoveModal} />

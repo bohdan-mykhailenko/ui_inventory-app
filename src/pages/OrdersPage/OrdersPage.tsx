@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './OrdersPage.module.scss';
-import { orders } from '../../data/data';
 import { OrderList } from '../../components/OrderList';
 import { Button } from 'react-bootstrap';
 import { DetailedOrder } from '../../components/DetailedOrder';
@@ -8,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectIsOrderSelected,
   selectProductsForOrder,
-} from '../../selectors/ordersSelector';
+} from '../../selectors/itemsSelector';
 import cn from 'classnames';
 import { DeleteModal } from '../../components/Modals/DeleteModal';
 import {
@@ -17,14 +16,29 @@ import {
   selectIsProductAddModalOpen,
   selectIsProductDeleteModalOpen,
 } from '../../selectors/modalsSelector';
-import {
-  clearDeleteModalTimer,
-  setDeleteModalTimer,
-} from '../../reducers/timerSlice';
 import { setIsOrderAddModalOpen } from '../../reducers/modalsSlice';
 import { AddModal } from '../../components/Modals/AddModal';
+import { getAllItems } from '../../api/api';
+import { Order } from '../../types/Order';
+import { useQuery } from 'react-query';
+import { Loader } from '../../components/Loader';
+import { useErrorHandle } from '../../hooks/useErrorHandle';
 
 export const OrdersPage: React.FC = () => {
+  const { data, error, isLoading } = useQuery(['orders'], () =>
+    getAllItems<Order[]>('orders'),
+  );
+
+  const { handleError } = useErrorHandle();
+
+  if (error) {
+    handleError(error);
+  }
+
+  const orders = data || [];
+
+  const count = orders?.length || 0;
+
   const dispatch = useDispatch();
 
   const isOrderSelected = useSelector(selectIsOrderSelected);
@@ -34,28 +48,18 @@ export const OrdersPage: React.FC = () => {
   const isProductAddModalOpen = useSelector(selectIsProductAddModalOpen);
   const productsForOrder = useSelector(selectProductsForOrder);
 
-  const ordersFromServer = orders;
-  const count = ordersFromServer.length;
-
   const isModalOpenned =
     isOrderAddModalOpen || isOrderDeleteModalOpen || isProductAddModalOpen;
+
   const isAddModalOppened = isOrderAddModalOpen || isProductAddModalOpen;
   const newItem = isOrderAddModalOpen ? 'order' : 'product';
 
   const isDeleteModalOppened =
     isOrderDeleteModalOpen || isProductDeleteModalOpen;
-  const deletedItem = isOrderDeleteModalOpen ? 'order' : 'product';
+  const deletedItem = isOrderDeleteModalOpen ? 'orders' : 'products';
 
   const handleAddOrder = () => {
-    dispatch(clearDeleteModalTimer());
-
     dispatch(setIsOrderAddModalOpen(true));
-
-    const timerId = setTimeout(() => {
-      dispatch(setIsOrderAddModalOpen(false));
-    }, 50000);
-
-    dispatch(setDeleteModalTimer(timerId));
   };
 
   return (
@@ -76,20 +80,24 @@ export const OrdersPage: React.FC = () => {
         </span>
       </div>
 
-      <div
-        className={cn(styles.ordersPage__mainInfo, {
-          [styles['ordersPage__mainInfo--row']]: isOrderSelected,
-        })}
-      >
-        <OrderList orders={ordersFromServer} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div
+          className={cn(styles.ordersPage__mainInfo, {
+            [styles['ordersPage__mainInfo--row']]: isOrderSelected,
+          })}
+        >
+          <OrderList orders={orders} />
 
-        {isOrderSelected && !isOrderDeleteModalOpen && <DetailedOrder />}
-      </div>
+          {isOrderSelected && !isOrderDeleteModalOpen && <DetailedOrder />}
+        </div>
+      )}
 
       {isAddModalOppened && <AddModal item={newItem} />}
 
       {isDeleteModalOppened && (
-        <DeleteModal item={deletedItem} selectedProducts={productsForOrder} />
+        <DeleteModal items={deletedItem} selectedProducts={productsForOrder} />
       )}
     </section>
   );

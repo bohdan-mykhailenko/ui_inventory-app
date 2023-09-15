@@ -1,50 +1,79 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import { Order } from '../../types/Order';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import styles from './OrderItem.module.scss';
-import { products } from '../../data/data';
 import { Button } from 'react-bootstrap';
-import { formatDate } from '../../helpers/formatDate';
+import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
 import { PriceInfo } from '../PriceInfo';
-import { getProductsPrice } from '../../helpers/getProductsPrice';
-import { getProductsForOrder } from '../../helpers/getProductsForOrder';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setIsOrderSelected,
   setSelectedOrder,
   setProductsForOrder,
-} from '../../reducers/ordersSlice';
-import { selectIsOrderSelected } from '../../selectors/ordersSelector';
+} from '../../reducers/itemsSlice';
+import { selectIsOrderSelected } from '../../selectors/itemsSelector';
 import { setIsOrderDeleteModalOpen } from '../../reducers/modalsSlice';
+import { getItemsFor } from '../../api/api';
+import { Product } from '../../types/Product';
+import { useErrorHandle } from '../../hooks/useErrorHandle';
 
 interface OrderItemProps {
   order: Order;
 }
 
 export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
+  const {
+    id,
+    title,
+    date,
+    sumOfPrice = [{ value: 0 }, { value: 0 }],
+    productCount,
+  } = order;
+
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
+  const { formattedDate: creationDate } = getFormatDateAndTime(date);
   const isOrderSelected = useSelector(selectIsOrderSelected);
+  const [isFetchingData, setIsFetchingData] = useState(false);
 
-  const { id, title, date } = order;
-  const productsForOrder = getProductsForOrder(id, products);
-  const productsCount = productsForOrder.length;
-  const creationDate = formatDate(date);
+  const { isLoading } = useQuery(
+    ['orderProducts', id],
+    () => {
+      if (isFetchingData) {
+        return getItemsFor<Product[]>('products', 'order', id);
+      }
+    },
+    {
+      enabled: isFetchingData,
+      onSuccess: (data = []) => {
+        dispatch(setProductsForOrder(data));
+      },
+    },
+  );
 
-  const prices = getProductsPrice(productsForOrder);
+  const selectOrder = () => {
+    dispatch(setSelectedOrder(order));
+    setIsFetchingData(true);
+    queryClient.invalidateQueries(['orderProducts', id]);
+  };
 
   const handleSelectOrder = () => {
-    dispatch(setSelectedOrder(order));
+    selectOrder();
     dispatch(setIsOrderSelected(true));
-    dispatch(setProductsForOrder(productsForOrder));
   };
 
   const handleDeleteOrder = () => {
-    dispatch(setSelectedOrder(order));
+    selectOrder();
     dispatch(setIsOrderDeleteModalOpen(true));
-    dispatch(setProductsForOrder(productsForOrder));
+  };
+
+  const prices = {
+    priceUSD: sumOfPrice[0].value,
+    priceUAH: sumOfPrice[1].value,
   };
 
   return (
@@ -63,7 +92,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
       </Button>
 
       <div className={styles.orderItem__productsInfo}>
-        <span className={styles.orderItem__productsCount}>{productsCount}</span>
+        <span className={styles.orderItem__productsCount}>{productCount}</span>
         <span className={styles.orderItem__productsTitle}>Products</span>
       </div>
 

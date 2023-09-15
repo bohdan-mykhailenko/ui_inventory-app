@@ -1,5 +1,4 @@
 import React from 'react';
-import './styles/main.scss';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { MainLayout } from './layouts/MainLayout';
 import { HomePage } from './pages/HomePage';
@@ -9,6 +8,9 @@ import { SettingsPage } from './pages/SettingsPage';
 import { UsersPage } from './pages/UsersPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { OrdersPage } from './pages/OrdersPage';
+import { ErrorPage } from './pages/ErrorPage';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/main.scss';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path="products" element={<ProductsPage />} />
         <Route path="users" element={<UsersPage />} />
         <Route path="settings" element={<SettingsPage />} />
+
+        <Route path="error" element={<ErrorPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Route>

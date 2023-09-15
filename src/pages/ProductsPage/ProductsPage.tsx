@@ -3,31 +3,52 @@ import { useSelector } from 'react-redux';
 import styles from './ProductsPage.module.scss';
 import { ProductList } from '../../components/ProductList';
 import { ProductSelect } from '../../components/ProductSelect';
-import { selectFilteredProducts } from '../../selectors/filterSelector';
 import { DeleteModal } from '../../components/Modals/DeleteModal';
 import { selectIsProductDeleteModalOpen } from '../../selectors/modalsSelector';
+import { useErrorHandle } from '../../hooks/useErrorHandle';
+import { useQuery } from 'react-query';
+import { Product } from '../../types/Product';
+import { Loader } from '../../components/Loader';
+import { useSearchParams } from 'react-router-dom';
+import { ProductType } from '../../types/ProductType';
+import { getItemsForType } from '../../api/api';
 
 export const ProductsPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const filterValue = searchParams.get('type') || ProductType.ALL;
+
+  const { data, error, isLoading } = useQuery(['products', filterValue], () =>
+    getItemsForType<Product[]>('products', filterValue as ProductType),
+  );
+
+  const { handleError } = useErrorHandle();
+
+  if (error) {
+    handleError(error);
+  }
+
+  const products = data || [];
+  const count = products?.length || 0;
+
   const isProductDeleteModalOpen = useSelector(selectIsProductDeleteModalOpen);
-  const products = useSelector(selectFilteredProducts);
-  const count = products.length;
 
   return (
     <section className={styles.productsPage}>
       {isProductDeleteModalOpen && (
         <div className={styles.productsPage__overlay} />
       )}
+
       <div className={styles.productsPage__topInfo}>
         <h1 className={styles.productsPage__title}>Products</h1>
         <span className={styles.productsPage__count}>
           / {count > 0 ? count : ''}
         </span>
-        <ProductSelect />
+        <ProductSelect filterValue={filterValue} />
       </div>
 
-      <ProductList products={products} />
+      {isLoading ? <Loader /> : <ProductList products={products} />}
 
-      {isProductDeleteModalOpen && <DeleteModal item="product" />}
+      {isProductDeleteModalOpen && <DeleteModal items="products" />}
     </section>
   );
 };

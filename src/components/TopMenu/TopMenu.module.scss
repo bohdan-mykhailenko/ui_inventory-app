@@ -1,8 +1,28 @@
-.TopMenu {
+.topMenu {
   display: flex;
-  flex-direction: column;
-  font-weight: 600;
   justify-self: flex-end;
+  align-items: center;
+  font-weight: 500;
+
+  &__activeSessions {
+    margin-right: 40px;
+
+    text-transform: uppercase;
+    display: flex;
+    align-self: flex-start;
+    font-weight: 600;
+
+    &--count {
+      margin-left: 5px;
+      color: var(--primary);
+    }
+  }
+
+  &__dateInfo {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+  }
 
   &__weekday {
     margin-bottom: 10px;
@@ -30,5 +50,6 @@
   }
 
   &__time {
+    padding: 2px;
   }
 }

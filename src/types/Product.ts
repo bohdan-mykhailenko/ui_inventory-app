@@ -1,9 +1,9 @@
 export interface Product {
   id: number;
-  serialNumber: number;
+  serialNumber: string;
   isNew: boolean;
   isRepairing: boolean;
-  photo: string;
+  photo: File | string | Blob | null;
   title: string;
   type: string;
   specification: string;
@@ -16,6 +16,21 @@ export interface Product {
     symbol: string;
     isDefault: number;
   }[];
-  order: number;
+  order_id: number;
+  date: string;
+}
+
+export interface ProductFormData {
+  serialNumber: string;
+  isNew: boolean;
+  isRepairing: boolean;
+  photo: File | string;
+  title: string;
+  type: string;
+  specification: string;
+  guaranteeStart: string;
+  guaranteeEnd: string;
+  priceUSD: number;
+  priceUAH: number;
   date: string;
 }

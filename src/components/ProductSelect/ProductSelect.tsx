@@ -1,5 +1,4 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 import {
   Select,
   MenuItem,
@@ -7,19 +6,25 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import styles from './ProductSelect.module.scss';
-import { setSelectedValue } from '../../reducers/filterSlice';
-import { RootState } from '../../store';
+import { ProductType } from '../../types/ProductType';
+import { useSearchParams } from 'react-router-dom';
 
-export const ProductSelect = () => {
-  const selectedValue = useSelector(
-    (state: RootState) => state.filter.selectedValue,
-  );
-  const dispatch = useDispatch();
+interface ProductSelectProps {
+  filterValue: string;
+}
 
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    const newValue = event.target.value;
+export const ProductSelect: React.FC<ProductSelectProps> = ({
+  filterValue,
+}) => {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-    dispatch(setSelectedValue(newValue));
+  const handleChangeFilterValue = (event: SelectChangeEvent) => {
+    const value = event.target.value;
+    const newSearchParams = new URLSearchParams(searchParams);
+
+    newSearchParams.set('type', value);
+
+    setSearchParams(newSearchParams);
   };
 
   return (
@@ -27,17 +32,18 @@ export const ProductSelect = () => {
       <div className={styles.productSelect__wrapper}>
         <span className={styles.productSelect__label}>Type:</span>
         <Select
-          value={selectedValue}
-          onChange={handleChange}
+          value={filterValue}
+          onChange={handleChangeFilterValue}
           className={styles.productSelect__select}
         >
           <MenuItem value="default" disabled>
             Select an option
           </MenuItem>
-          <MenuItem value="Phones">Phones</MenuItem>
-          <MenuItem value="Tablets">Tablets</MenuItem>
-          <MenuItem value="Monitors">Monitors</MenuItem>
-          <MenuItem value="Laptops">Laptops</MenuItem>
+          <MenuItem value={ProductType.ALL}>All</MenuItem>
+          <MenuItem value={ProductType.LAPTOPS}>Laptops</MenuItem>
+          <MenuItem value={ProductType.MONITORS}>Monitors</MenuItem>
+          <MenuItem value={ProductType.PHONES}>Phones</MenuItem>
+          <MenuItem value={ProductType.TABLETS}>Tablets</MenuItem>
         </Select>
       </div>
     </FormControl>
