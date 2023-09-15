@@ -1,5 +1,4 @@
 import React from 'react';
-import './styles/main.scss';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { MainLayout } from './layouts/MainLayout';
 import { HomePage } from './pages/HomePage';
@@ -10,6 +9,8 @@ import { UsersPage } from './pages/UsersPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { ErrorPage } from './pages/ErrorPage';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/main.scss';
 
 function App() {
   return (

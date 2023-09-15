@@ -4,37 +4,39 @@ import { Order } from '../../types/Order';
 import { Button } from 'react-bootstrap';
 import { CloseButton } from '../CloseButton';
 import styles from './Form.module.scss';
-
-import { useMutation, useQueryClient } from 'react-query'; // Import the necessary hooks
-import { postOrder } from '../../api/api'; // Import the postOrder function
+import { useMutation, useQueryClient } from 'react-query';
+import { postOrder } from '../../api/api';
 import { orderValidationSchema } from '../../validation/orderValidationSchema';
+import { useErrorHandle } from '../../hooks/useErrorHandle';
+import { Loader } from '../Loader';
 
 interface OrderFormProps {
   onRemoveModal: () => void;
 }
 
 export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
+  const { handleError } = useErrorHandle();
+  const queryClient = useQueryClient();
+
   const initialValues: Partial<Order> = {
     title: '',
     date: '',
     description: '',
   };
 
-  const queryClient = useQueryClient(); // Initialize the query client
-
   const mutation = useMutation((values: Partial<Order>) => postOrder(values), {
     onSuccess: () => {
       queryClient.invalidateQueries('orders');
-      onRemoveModal();
     },
   });
 
   const handleSubmit = async (values: Partial<Order>) => {
     try {
       mutation.mutate(values);
-      console.log(values);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      handleError(error);
+    } finally {
+      onRemoveModal();
     }
   };
 
@@ -91,8 +93,14 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
             type="submit"
             className={`${styles['form__actions-button']} ${styles['form__actions-button--add']}`}
           >
-            {mutation.isLoading ? 'Adding...' : 'Add'}{' '}
-            {/* Display loading state */}
+            {mutation.isLoading ? (
+              <>
+                Adding
+                <Loader size={15} />
+              </>
+            ) : (
+              'Add'
+            )}{' '}
           </Button>
 
           <CloseButton onClose={onRemoveModal} />

@@ -9,3 +9,14 @@
 h1 {
   @extend %h1;
 }
+
+%button {
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+button {
+  @extend %button;
+}

@@ -24,14 +24,13 @@ export interface ProductFormData {
   serialNumber: string;
   isNew: boolean;
   isRepairing: boolean;
-  photo: string;
+  photo: File | string;
   title: string;
   type: string;
   specification: string;
   guaranteeStart: string;
   guaranteeEnd: string;
-  priceUSD: number | null;
-  priceUAH: number | null;
-  order_id: number | null;
+  priceUSD: number;
+  priceUAH: number;
   date: string;
 }

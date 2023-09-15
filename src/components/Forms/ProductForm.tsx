@@ -1,42 +1,63 @@
-import React, { FormEvent, useState } from 'react';
-import {
-  Formik,
-  Field,
-  Form,
-  ErrorMessage,
-  FormikConsumer,
-  FormikHelpers,
-  useFormikContext,
-} from 'formik';
+import React, { useState } from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Product, ProductFormData } from '../../types/Product';
-import { Button } from 'react-bootstrap';
+import { Button, Form as FormInput } from 'react-bootstrap';
 import { CloseButton } from '../CloseButton';
 import styles from './Form.module.scss';
 import { ProductType } from '../../types/ProductType';
-import { productValidationSchema } from '../../validation/productValidationSchema ';
+import { createProductValidationSchema } from '../../validation/productValidationSchema ';
 import { postProduct } from '../../api/api';
+import { selectOrder } from '../../selectors/itemsSelector';
+import { useSelector } from 'react-redux';
+import { useMutation, useQueryClient } from 'react-query';
+import { useErrorHandle } from '../../hooks/useErrorHandle';
+import { Loader } from '../Loader';
+import { Checkbox, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 
 interface ProductFormProps {
   onRemoveModal: () => void;
 }
 
 export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | string>('');
+  const [typeValue, setTypeValue] = useState(ProductType.DEFAULT);
+  const selectedOrder = useSelector(selectOrder);
+  const queryClient = useQueryClient();
+  const { handleError } = useErrorHandle();
+
+  const validationSchema = createProductValidationSchema(imageFile, typeValue);
 
   const initialValues: ProductFormData = {
     serialNumber: '',
     isNew: false,
     isRepairing: false,
-    photo: '',
+    photo: imageFile,
     title: '',
-    type: '',
+    type: typeValue,
     specification: '',
-    order_id: null,
     date: '',
     guaranteeStart: '',
     guaranteeEnd: '',
-    priceUSD: null,
-    priceUAH: null,
+    priceUSD: 0,
+    priceUAH: 0,
+  };
+
+  const mutation = useMutation((data: Partial<Product>) => postProduct(data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('products');
+    },
+  });
+
+  const handleImageFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.currentTarget.files?.[0];
+
+    setImageFile(file as File);
+  };
+
+  const handleChangeTypeValue = (event: SelectChangeEvent) => {
+    setTypeValue(event.target.value as ProductType);
   };
 
   const handleSubmit = async (values: ProductFormData) => {
@@ -47,7 +68,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
         isRepairing: values.isRepairing,
         photo: imageFile,
         title: values.title,
-        type: values.type,
+        type: typeValue,
         specification: values.specification,
         guarantee: {
           start: values.guaranteeStart,
@@ -57,40 +78,22 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
           { value: values.priceUSD as number, symbol: 'USD', isDefault: 0 },
           { value: values.priceUAH as number, symbol: 'UAH', isDefault: 1 },
         ],
-        order_id: values.order_id as number,
+        order_id: selectedOrder?.id,
         date: values.date,
       };
 
-      console.log('photo', values.photo);
-      console.log(productData);
-
-      const product = await postProduct(productData);
-
-      return product;
+      mutation.mutate(productData);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      handleError(error);
     } finally {
       onRemoveModal();
     }
   };
 
-  const formik = useFormikContext<ProductFormData>();
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.currentTarget.files?.[0];
-
-    setImageFile(file as File);
-
-    console.log('formik-file', file);
-    console.log('formik', formik);
-  };
-
-  console.log('imageFile', imageFile);
-
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={productValidationSchema}
+      validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
       <Form className={styles['form--product']}>
@@ -103,7 +106,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="serialNumber">Serial Number:</label>
           <Field type="text" id="serialNumber" name="serialNumber" />
@@ -113,7 +115,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="photo">Photo:</label>
           <input
@@ -121,26 +122,36 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             id="photo"
             name="photo"
             accept=".jpg, .jpeg, .png, .gif, .jfif, .webp"
-            onChange={handleFileChange}
+            onChange={handleImageFileChange}
+          />
+          <ErrorMessage
+            name="photo"
+            component="div"
+            className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="type">Type:</label>
-          <Field as="select" id="type" name="type">
-            <option value="default">Select a type</option>
-            <option value={ProductType.LAPTOPS}>Laptops</option>
-            <option value={ProductType.MONITORS}>Monitors</option>
-            <option value={ProductType.PHONES}>Phones</option>
-            <option value={ProductType.TABLETS}>Tablets</option>
-          </Field>
+          <Select
+            value={typeValue}
+            onChange={handleChangeTypeValue}
+            className={styles.form__select}
+            name="type"
+          >
+            <MenuItem value="default" disabled>
+              Select an option
+            </MenuItem>
+            <MenuItem value={ProductType.LAPTOPS}>Laptops</MenuItem>
+            <MenuItem value={ProductType.MONITORS}>Monitors</MenuItem>
+            <MenuItem value={ProductType.PHONES}>Phones</MenuItem>
+            <MenuItem value={ProductType.TABLETS}>Tablets</MenuItem>
+          </Select>
           <ErrorMessage
             name="type"
             component="div"
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="specification">Specification:</label>
           <Field type="text" id="specification" name="specification" />
@@ -150,7 +161,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="guaranteeStart">Guarantee Start:</label>
           <Field type="text" id="guaranteeStart" name="guaranteeStart" />
@@ -160,7 +170,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="guaranteeEnd">Guarantee End:</label>
           <Field type="text" id="guaranteeEnd" name="guaranteeEnd" />
@@ -170,7 +179,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="priceUSD">Price Value (USD):</label>
           <Field type="text" id="priceUSD" name="priceUSD" />
@@ -180,7 +188,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="priceUAH">Price Value (UAH):</label>
           <Field type="text" id="priceUAH" name="priceUAH" />
@@ -190,17 +197,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
-        <div className={styles.form__formGroup}>
-          <label htmlFor="order_id">Order:</label>
-          <Field type="text" id="order_id" name="order_id" />
-          <ErrorMessage
-            name="order_id"
-            component="div"
-            className={styles.form__error}
-          />
-        </div>
-
         <div className={styles.form__formGroup}>
           <label htmlFor="date">Date:</label>
           <Field type="text" id="date" name="date" />
@@ -210,19 +206,29 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__error}
           />
         </div>
-
-        <div className={styles.form__formGroup}>
-          <label>
-            <Field type="checkbox" name="isNew" /> Is New
-          </label>
+        <div
+          className={`${styles.form__formGroup} ${styles['form__formGroup--checkbox']}`}
+        >
+          <label htmlFor="isNew">Is New:</label>
+          <Field
+            id="isNew"
+            type="checkbox"
+            name="isNew"
+            className={styles.form__checkbox}
+          />
         </div>
 
-        <div className={styles.form__formGroup}>
-          <label>
-            <Field type="checkbox" name="isRepairing" /> Is Repairing
-          </label>
+        <div
+          className={`${styles.form__formGroup} ${styles['form__formGroup--checkbox']}`}
+        >
+          <label htmlFor="isReapiring">Is Reapiring:</label>
+          <Field
+            id="isReapiring"
+            type="checkbox"
+            name="isReapiring"
+            className={styles.form__checkbox}
+          />
         </div>
-
         <div className={styles.form__actions}>
           <Button
             onClick={onRemoveModal}
@@ -235,7 +241,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             type="submit"
             className={`${styles['form__actions-button']} ${styles['form__actions-button--add']}`}
           >
-            Add
+            {mutation.isLoading ? (
+              <>
+                Adding
+                <Loader size={15} />
+              </>
+            ) : (
+              'Add'
+            )}{' '}
           </Button>
 
           <CloseButton onClose={onRemoveModal} />
