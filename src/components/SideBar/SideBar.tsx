@@ -14,7 +14,7 @@ export const SideBar: React.FC = () => {
           alt="avatar"
         />
         <div className={styles['sidebar__profile-settings']}>
-          <SettingsIcon />
+          <SettingsIcon className={styles['sidebar__profile-icon']} />
         </div>
       </div>
 

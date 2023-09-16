@@ -18,6 +18,7 @@ export interface Product {
   }[];
   order_id: number;
   date: string;
+  orderTitle: string;
 }
 
 export interface ProductFormData {

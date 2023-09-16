@@ -47,15 +47,16 @@ export const TopMenu: React.FC = () => {
 
   return (
     <div className={styles.topMenu}>
-      <div className={styles.topMenu__activeSessions}>
-        Active Sessions:
-        <p className={styles['topMenu__activeSessions--count']}>
-          {activeSessions}
-        </p>
-      </div>
-
       <div className={styles.topMenu__dateInfo}>
-        <span className={styles.topMenu__weekday}>{dateInfo.weekday}</span>
+        <div className={styles.topMenu__sessionWrapper}>
+          <p className={styles.topMenu__weekday}>{dateInfo.weekday}</p>
+          <div className={styles.topMenu__activeSessions}>
+            Sessions:
+            <p className={styles['topMenu__activeSessions--count']}>
+              {activeSessions}
+            </p>
+          </div>
+        </div>
 
         <div className={styles.topMenu__dateWrapper}>
           <span className={styles.topMenu__date}>{dateInfo.formattedDate}</span>

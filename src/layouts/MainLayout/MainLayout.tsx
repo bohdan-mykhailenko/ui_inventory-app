@@ -9,7 +9,7 @@ import {
   setIsProductAddModalOpen,
   setIsProductDeleteModalOpen,
 } from '../../reducers/modalsSlice';
-import { setIsItemChanged } from '../../reducers/itemsSlice';
+import { setIsItemChanged, setSelectedOrder } from '../../reducers/itemsSlice';
 
 export const MainLayout: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,9 +17,7 @@ export const MainLayout: React.FC = () => {
 
   useEffect(() => {
     dispatch(setIsProductAddModalOpen(false));
-    dispatch(setIsOrderAddModalOpen(false));
     dispatch(setIsProductDeleteModalOpen(false));
-    dispatch(setIsOrderAddModalOpen(false));
     dispatch(setIsItemChanged(false));
   }, [pathname]);
 

@@ -13,7 +13,10 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useErrorHandle } from '../../hooks/useErrorHandle';
 import { Loader } from '../Loader';
 import { Checkbox, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { setIsItemChanged } from '../../reducers/itemsSlice';
+import {
+  setIsItemChanged,
+  setIsOrderSelected,
+} from '../../reducers/itemsSlice';
 
 interface ProductFormProps {
   onRemoveModal: () => void;
@@ -89,7 +92,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
     } catch (error) {
       handleError(error);
     } finally {
-      dispatch(setIsItemChanged(true));
+      dispatch(setIsOrderSelected(false));
       onRemoveModal();
     }
   };
@@ -245,14 +248,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             type="submit"
             className={`${styles['form__actions-button']} ${styles['form__actions-button--add']}`}
           >
-            {mutation.isLoading ? (
-              <>
-                Adding
-                <Loader size={15} />
-              </>
-            ) : (
-              'Add'
-            )}{' '}
+            {mutation.isLoading ? <Loader size={15} /> : 'Add'}{' '}
           </Button>
 
           <CloseButton onClose={onRemoveModal} />

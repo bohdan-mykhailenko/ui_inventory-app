@@ -4,13 +4,30 @@
   align-items: center;
   font-weight: 500;
 
-  &__activeSessions {
-    margin-right: 40px;
+  @media (max-width: 992px) {
+    font-size: 14px;
+  }
 
+  @media (max-width: 450px) {
+    grid-column: 1 / 3;
+  }
+
+  &__sessionWrapper {
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+
+    @media (max-width: 450px) {
+      margin-bottom: 0;
+    }
+  }
+
+  &__activeSessions {
     text-transform: uppercase;
     display: flex;
-    align-self: flex-start;
+    align-items: center;
     font-weight: 600;
+    align-self: center;
 
     &--count {
       margin-left: 5px;
@@ -21,11 +38,24 @@
   &__dateInfo {
     display: flex;
     flex-direction: column;
+
     font-weight: 600;
+
+    @media (max-width: 450px) {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
   }
 
   &__weekday {
-    margin-bottom: 10px;
+    margin-right: 25px;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
   }
 
   &__dateWrapper {
@@ -35,6 +65,10 @@
 
   &__date {
     margin-right: 10px;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
   }
 
   &__timeWrapper {

@@ -26,10 +26,6 @@ export const Search: React.FC = () => {
     debouncedHandleChangeQuery(value);
   };
 
-  // useEffect(() => {
-  //   setInputValue(searchParams.get('query') || '');
-  // }, [searchParams]);
-
   return (
     <div className={styles.search}>
       <input
@@ -40,10 +36,6 @@ export const Search: React.FC = () => {
         onChange={handleChangeQuery}
         value={inputValue}
       />
-
-      <Button type="submit" className={styles.search__button}>
-        <SearchIcon className={styles.search__icon} />
-      </Button>
     </div>
   );
 };

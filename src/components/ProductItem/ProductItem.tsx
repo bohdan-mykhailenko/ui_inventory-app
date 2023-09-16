@@ -6,7 +6,6 @@ import cn from 'classnames';
 import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
 import { PriceInfo } from '../PriceInfo';
 import { Button } from 'react-bootstrap';
-import { getOrderById } from '../../helpers/getOrderById';
 import { selectIsOrderSelected } from '../../selectors/itemsSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMatch } from 'react-router-dom';
@@ -14,6 +13,11 @@ import { selectIsOrderDeleteModalOpen } from '../../selectors/modalsSelector';
 import { setIsProductDeleteModalOpen } from '../../reducers/modalsSlice';
 import { API_URL } from '../../consts/api';
 import { setSelectedProduct } from '../../reducers/itemsSlice';
+import { getItemById } from '../../api/api';
+import { useQuery } from 'react-query';
+import { Order } from '../../types/Order';
+import { useErrorHandle } from '../../hooks/useErrorHandle';
+import { Loader } from '../Loader';
 
 interface ProductItemProps {
   product: Product;
@@ -23,27 +27,18 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const dispatch = useDispatch();
 
   const {
+    id,
     title,
-    specification,
+    serialNumber,
     guarantee,
     isNew,
     isRepairing,
-    price = [
-      {
-        value: 100,
-        symbol: 'USD',
-        isDefault: true,
-      },
-      {
-        value: 100,
-        symbol: 'UAH',
-        isDefault: true,
-      },
-    ],
+    price,
     type,
     order_id,
     date,
     photo,
+    orderTitle,
   } = product;
 
   const imageSrc = API_URL + '/images/' + photo;
@@ -55,15 +50,12 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
 
   const isDemoForm = isOrderDeleteModalOpen;
 
-  const orderTitle = 'order';
-  //const orderTitle = foundOrder?.title || 'order';
-
   const condition = isNew ? 'New' : 'Used';
   const status = isRepairing ? 'Ready' : 'Repairing';
-  // const { formattedDate: guaranteeStart } = getFormatDateAndTime(
-  //   guarantee.start,
-  // );
-  // const { formattedDate: guaranteeEnd } = getFormatDateAndTime(guarantee.end);
+  const { formattedDate: guaranteeStart } = getFormatDateAndTime(
+    guarantee.start,
+  );
+  const { formattedDate: guaranteeEnd } = getFormatDateAndTime(guarantee.end);
   const { formattedDate: creationDate } = getFormatDateAndTime(date);
   const prices = { priceUSD: price[0].value, priceUAH: price[1].value };
 
@@ -85,14 +77,23 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
         })}
       />
       <img
-        className={styles.productItem__img}
+        className={cn(styles.productItem__image, {
+          [styles['productItem__image--shortForm']]: isShortForm,
+        })}
         src={imageSrc}
         alt="device photo"
       />
       <div className={styles.productItem__nameInfo}>
-        <h2 className={styles['productItem__nameInfo-title']}>{title}</h2>
-        <p className={styles['productItem__nameInfo-specification']}>
-          {specification}
+        <h2
+          className={cn(styles['productItem__nameInfo-title'], {
+            [styles['productItem__nameInfo-title--demo']]: isDemoForm,
+            [styles['productItem__nameInfo-title--shortForm']]: isShortForm,
+          })}
+        >
+          {title}
+        </h2>
+        <p className={styles['productItem__nameInfo-serialNumber']}>
+          {serialNumber}
         </p>
       </div>
 
@@ -100,6 +101,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
         <p
           className={cn(styles.productItem__status, {
             [styles['productItem__status--active']]: isRepairing,
+            [styles['productItem__status--shortForm']]: isShortForm,
           })}
         >
           {status}
@@ -113,11 +115,11 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
               <span className={styles['productItem__garantee-label']}>
                 from
               </span>{' '}
-              {1111}
+              {guaranteeStart}
             </div>
             <p className={styles['productItem__garantee-end']}>
               <span className={styles['productItem__garantee-label']}>to</span>{' '}
-              {222}
+              {guaranteeEnd}
             </p>
           </div>
           <p className={styles.productItem__condition}>{condition}</p>
@@ -134,7 +136,9 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
       {!isDemoForm && (
         <Button
           onClick={handleDeleteProduct}
-          className={styles.productItem__deleteButton}
+          className={cn(styles.productItem__deleteButton, {
+            [styles['productItem__deleteButton--shortForm']]: isShortForm,
+          })}
         >
           <DeleteForeverIcon className={styles.productItem__deleteIcon} />
         </Button>

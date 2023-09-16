@@ -3,11 +3,26 @@
   line-height: 100%;
   letter-spacing: 1px;
   text-align: center;
-  font-size: 32px;
+  font-size: 27px;
+
+  @media (max-width: 992px) {
+    font-size: 24px;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 22px;
+  }
+
+  @media (max-width: 450px) {
+    font-size: 20px;
+  }
 }
 
-h1 {
-  @extend %h1;
+%h2 {
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0.5px;
+  font-size: 30px;
 }
 
 %button {
@@ -15,6 +30,14 @@ h1 {
   display: flex;
   align-items: center;
   justify-items: center;
+}
+
+h1 {
+  @extend %h1;
+}
+
+h2 {
+  @extend %h2;
 }
 
 button {

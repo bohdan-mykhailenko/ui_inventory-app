@@ -9,7 +9,10 @@ import { postOrder } from '../../api/api';
 import { orderValidationSchema } from '../../validation/orderValidationSchema';
 import { useErrorHandle } from '../../hooks/useErrorHandle';
 import { Loader } from '../Loader';
-import { setIsItemChanged } from '../../reducers/itemsSlice';
+import {
+  setIsItemChanged,
+  setIsOrderSelected,
+} from '../../reducers/itemsSlice';
 import { useDispatch } from 'react-redux';
 
 interface OrderFormProps {
@@ -30,6 +33,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
   const mutation = useMutation((values: Partial<Order>) => postOrder(values), {
     onSuccess: () => {
       queryClient.invalidateQueries('add order');
+      dispatch(setIsItemChanged(true));
     },
   });
 
@@ -39,7 +43,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
     } catch (error) {
       handleError(error);
     } finally {
-      dispatch(setIsItemChanged(true));
+      dispatch(setIsOrderSelected(false));
       onRemoveModal();
     }
   };
@@ -97,14 +101,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
             type="submit"
             className={`${styles['form__actions-button']} ${styles['form__actions-button--add']}`}
           >
-            {mutation.isLoading ? (
-              <span>
-                Adding
-                <Loader size={15} />
-              </span>
-            ) : (
-              'Add'
-            )}
+            {mutation.isLoading ? <Loader size={15} /> : 'Add'}
           </Button>
 
           <CloseButton onClose={onRemoveModal} />

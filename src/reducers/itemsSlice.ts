@@ -30,7 +30,7 @@ const itemsSlice = createSlice({
       state.isOrderSelected = action.payload;
     },
 
-    setSelectedOrder: (state, action: PayloadAction<Order>) => {
+    setSelectedOrder: (state, action: PayloadAction<Order | null>) => {
       state.selectedOrder = action.payload;
     },
 

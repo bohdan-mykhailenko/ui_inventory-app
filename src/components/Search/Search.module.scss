@@ -2,6 +2,16 @@
   width: 70%;
   display: flex;
   justify-self: flex-start;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 992px) {
+    width: 80%;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 
   &__input {
     padding: 5px 10px;
@@ -14,7 +24,7 @@
     }
 
     border: 2px solid var(--border);
-    border-radius: 4px 0px 0px 4px;
+    border-radius: 4px;
 
     &:hover {
       border: 2px solid var(--focus);
@@ -24,22 +34,5 @@
       border: 2px solid var(--focus);
       outline: none;
     }
-  }
-
-  &__button {
-    display: flex;
-    border-radius: 0px 4px 4px 0px;
-
-    border: 2px solid var(--border);
-
-    &:hover,
-    &:active {
-      background: var(--primary-dark);
-      border: 2px solid var(--focus);
-    }
-  }
-
-  &__icon {
-    color: white;
   }
 }

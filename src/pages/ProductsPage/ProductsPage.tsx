@@ -53,10 +53,13 @@ export const ProductsPage: React.FC = () => {
       )}
 
       <div className={styles.productsPage__topInfo}>
-        <h1 className={styles.productsPage__title}>Products</h1>
-        <span className={styles.productsPage__count}>
-          / {count > 0 ? count : 'Empty list...'}
-        </span>
+        <h1 className={styles.productsPage__title}>
+          Products{' '}
+          <span className={styles.productsPage__count}>
+            / {count > 0 ? count : 'Empty list...'}
+          </span>
+        </h1>
+
         <ProductSelect filterValue={filterValue} />
       </div>
 
