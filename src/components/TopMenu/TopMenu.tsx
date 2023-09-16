@@ -2,24 +2,21 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import styles from './TopMenu.module.scss';
 import { API_URL } from '../../consts/api';
+import styles from './TopMenu.module.scss';
+import { FormattedDate } from '../../types/FormattedDate';
 
 export const TopMenu: React.FC = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [dateInfo, setDateInfo] = useState<{
-    formattedDate: string;
-    formattedTime: string;
-    weekday: string;
-  }>({
+  const [activeSessions, setActiveSessions] = useState<number>(0);
+  const [dateInfo, setDateInfo] = useState<FormattedDate>({
     formattedDate: '',
     formattedTime: '',
     weekday: '',
   });
-  const [activeSessions, setActiveSessions] = useState<number>(0);
 
   useEffect(() => {
-    const socket = io(`${API_URL}`);
+    const socket = io(API_URL);
 
     socket.on('activeSessions', (count: number) => {
       setActiveSessions(count);

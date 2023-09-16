@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Select,
   MenuItem,
   FormControl,
   SelectChangeEvent,
 } from '@mui/material';
-import styles from './ProductSelect.module.scss';
 import { ProductType } from '../../types/ProductType';
 import { useSearchParams } from 'react-router-dom';
+import styles from './ProductSelect.module.scss';
 
 interface ProductSelectProps {
   filterValue: string;
@@ -31,6 +31,7 @@ export const ProductSelect: React.FC<ProductSelectProps> = ({
     <FormControl>
       <div className={styles.productSelect__wrapper}>
         <span className={styles.productSelect__label}>Type:</span>
+
         <Select
           value={filterValue}
           onChange={handleChangeFilterValue}

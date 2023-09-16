@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Order } from '../../types/Order';
 import { Button } from 'react-bootstrap';
 import { CloseButton } from '../CloseButton';
-import styles from './Form.module.scss';
 import { useMutation, useQueryClient } from 'react-query';
 import { postOrder } from '../../api/api';
 import { orderValidationSchema } from '../../validation/orderValidationSchema';
@@ -14,6 +13,7 @@ import {
   setIsOrderSelected,
 } from '../../reducers/itemsSlice';
 import { useDispatch } from 'react-redux';
+import styles from './Form.module.scss';
 
 interface OrderFormProps {
   onRemoveModal: () => void;
@@ -37,16 +37,19 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
     },
   });
 
-  const handleSubmit = async (values: Partial<Order>) => {
-    try {
-      mutation.mutate(values);
-    } catch (error) {
-      handleError(error);
-    } finally {
-      dispatch(setIsOrderSelected(false));
-      onRemoveModal();
-    }
-  };
+  const handleSubmit = useCallback(
+    async (values: Partial<Order>) => {
+      try {
+        mutation.mutate(values);
+      } catch (error) {
+        handleError(error);
+      } finally {
+        dispatch(setIsOrderSelected(false));
+        onRemoveModal();
+      }
+    },
+    [mutation, handleError],
+  );
 
   return (
     <Formik
@@ -106,7 +109,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({ onRemoveModal }) => {
 
           <CloseButton onClose={onRemoveModal} />
         </div>
-        {mutation.isError && <div className={styles.error}>ERROOR</div>}
       </Form>
     </Formik>
   );

@@ -3,8 +3,6 @@ import { useQuery, useQueryClient } from 'react-query';
 import { Order } from '../../types/Order';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import styles from './OrderItem.module.scss';
-import { Button } from 'react-bootstrap';
 import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
 import { PriceInfo } from '../PriceInfo';
 import cn from 'classnames';
@@ -24,6 +22,8 @@ import { setIsOrderDeleteModalOpen } from '../../reducers/modalsSlice';
 import { getItemsFor } from '../../api/api';
 import { Product } from '../../types/Product';
 import { useErrorHandle } from '../../hooks/useErrorHandle';
+import styles from './OrderItem.module.scss';
+import { Button } from 'react-bootstrap';
 
 interface OrderItemProps {
   order: Order;
@@ -92,6 +92,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
 
   return (
     <article
+      data-aos={isOrderSelected ? '' : 'fade-right'}
       className={cn(styles.orderItem, {
         [styles['orderItem--shortForm']]: isOrderSelected,
         [styles['orderItem--selected']]: isSelectedOrder,

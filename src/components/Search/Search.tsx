@@ -1,7 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './Search.module.scss';
-import { Button } from 'react-bootstrap';
-import SearchIcon from '@mui/icons-material/Search';
 import { useSearchParams } from 'react-router-dom';
 import { debounce } from 'lodash';
 

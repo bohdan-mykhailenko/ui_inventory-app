@@ -6,6 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './store';
 import { QueryProvider } from './providers/QueryProvider';
+import 'aos/dist/aos.css';
+import AOS from 'aos';
+
+AOS.init();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

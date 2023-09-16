@@ -1,6 +1,5 @@
 import React from 'react';
 import { Product } from '../../types/Product';
-import styles from './ProductItem.module.scss';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import cn from 'classnames';
 import { getFormatDateAndTime } from '../../helpers/getFormatDateAndTime';
@@ -13,11 +12,7 @@ import { selectIsOrderDeleteModalOpen } from '../../selectors/modalsSelector';
 import { setIsProductDeleteModalOpen } from '../../reducers/modalsSlice';
 import { API_URL } from '../../consts/api';
 import { setSelectedProduct } from '../../reducers/itemsSlice';
-import { getItemById } from '../../api/api';
-import { useQuery } from 'react-query';
-import { Order } from '../../types/Order';
-import { useErrorHandle } from '../../hooks/useErrorHandle';
-import { Loader } from '../Loader';
+import styles from './ProductItem.module.scss';
 
 interface ProductItemProps {
   product: Product;
@@ -25,9 +20,11 @@ interface ProductItemProps {
 
 export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const dispatch = useDispatch();
+  const isOrderSelected = useSelector(selectIsOrderSelected);
+  const isOrdersPage = useMatch('orders');
+  const isOrderDeleteModalOpen = useSelector(selectIsOrderDeleteModalOpen);
 
   const {
-    id,
     title,
     serialNumber,
     guarantee,
@@ -35,21 +32,12 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
     isRepairing,
     price,
     type,
-    order_id,
     date,
     photo,
     orderTitle,
   } = product;
 
   const imageSrc = API_URL + '/images/' + photo;
-
-  const isOrderSelected = useSelector(selectIsOrderSelected);
-  const isOrdersPage = useMatch('orders');
-  const isOrderDeleteModalOpen = useSelector(selectIsOrderDeleteModalOpen);
-  const isShortForm = isOrderSelected && isOrdersPage;
-
-  const isDemoForm = isOrderDeleteModalOpen;
-
   const condition = isNew ? 'New' : 'Used';
   const status = isRepairing ? 'Ready' : 'Repairing';
   const { formattedDate: guaranteeStart } = getFormatDateAndTime(
@@ -59,6 +47,9 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const { formattedDate: creationDate } = getFormatDateAndTime(date);
   const prices = { priceUSD: price[0].value, priceUAH: price[1].value };
 
+  const isShortForm = isOrderSelected && isOrdersPage;
+  const isDemoForm = isOrderDeleteModalOpen;
+
   const handleDeleteProduct = () => {
     dispatch(setSelectedProduct(product));
     dispatch(setIsProductDeleteModalOpen(true));
@@ -66,6 +57,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
 
   return (
     <article
+      data-aos="fade-right"
       className={cn(styles.productItem, {
         [styles['productItem--shortForm']]: isShortForm,
         [styles['productItem--demoForm']]: isDemoForm,

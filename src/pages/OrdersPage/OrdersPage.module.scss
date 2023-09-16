@@ -45,6 +45,7 @@
   }
 
   &__mainInfo {
+    padding-bottom: 140px;
     display: grid;
     gap: 20px;
 
@@ -54,6 +55,7 @@
 
     &--row {
       grid-template-columns: 35% 1fr;
+      grid-template-rows: 1fr;
 
       @media (max-width: 992px) {
         grid-template-columns: auto 1fr;
@@ -82,9 +84,14 @@
     font-weight: 500;
     border: 2px solid var(--primary-dark);
 
+    transition:
+      background-color 0.3s linear,
+      transform 0.3s linear;
+
     &:active,
     &:hover {
-      background: var(--primary-dark);
+      transform: scale(1.1);
+      background-color: var(--primary-dark);
     }
 
     @media (max-width: 600px) {
