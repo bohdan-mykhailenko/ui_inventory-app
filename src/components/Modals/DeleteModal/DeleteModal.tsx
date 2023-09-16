@@ -46,6 +46,9 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
   const mutation = useMutation((itemId: number) => deleteItem(items, itemId), {
     onSuccess: () => {
       queryClient.invalidateQueries('delete item');
+      dispatch(setSelectedOrder(null));
+      dispatch(setIsOrderSelected(false));
+      dispatch(setIsItemChanged(true));
     },
   });
 
@@ -54,8 +57,6 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
       dispatch(setIsProductDeleteModalOpen(false));
     } else {
       dispatch(setIsOrderDeleteModalOpen(false));
-      dispatch(setSelectedOrder(null));
-      dispatch(setIsOrderSelected(false));
     }
   };
 
@@ -65,11 +66,10 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
 
   const handleDeleteOrder = async () => {
     try {
-      await mutation.mutate(id);
+      mutation.mutate(id);
     } catch (error) {
       handleError(error);
     } finally {
-      dispatch(setIsItemChanged(true));
       removeModal();
     }
   };
@@ -104,18 +104,9 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
             <DeleteForeverIcon
               className={styles['deleteModal__actions-button--delete-binIcon']}
             />
-            <span
-              className={styles['deleteModal__actions-button--delete-text']}
-            >
-              {mutation.isLoading ? (
-                <span>
-                  Deleting
-                  <Loader size={15} />
-                </span>
-              ) : (
-                'Delete'
-              )}
-            </span>
+            <div className={styles['deleteModal__actions-button--delete-text']}>
+              {mutation.isLoading ? <Loader size={15} /> : 'Delete'}
+            </div>
           </Button>
 
           <CloseButton onClose={handleCloseDeleteModal} />

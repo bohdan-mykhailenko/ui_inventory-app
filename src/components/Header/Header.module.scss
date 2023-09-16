@@ -12,6 +12,8 @@
   position: relative;
   z-index: 10;
 
+  background: var(--back-light);
+
   @media (max-width: 992px) {
     grid-template-columns: 35% 1fr auto;
   }

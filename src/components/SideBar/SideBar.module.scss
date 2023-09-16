@@ -5,6 +5,8 @@
   flex-direction: column;
   align-items: center;
 
+  background: var(--back-light);
+
   &__list {
     display: flex;
     flex-direction: column;
