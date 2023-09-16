@@ -18,6 +18,7 @@ import {
 import {
   selectIsItemChanged,
   selectIsOrderSelected,
+  selectOrder,
 } from '../../selectors/itemsSelector';
 import { setIsOrderDeleteModalOpen } from '../../reducers/modalsSlice';
 import { getItemsFor } from '../../api/api';
@@ -35,6 +36,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
   const isOrderChanged = useSelector(selectIsItemChanged);
   const isOrderSelected = useSelector(selectIsOrderSelected);
   const [isFetchingData, setIsFetchingData] = useState(false);
+  const selectedOrder = useSelector(selectOrder);
 
   const {
     id,
@@ -66,23 +68,25 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
     priceUAH: sumOfPrice[1].value,
   };
 
+  const isSelectedOrder = id === selectedOrder?.id;
+
   if (error) {
     handleError(error);
   }
 
-  const selectOrder = () => {
+  const selectNewOrder = () => {
     dispatch(setSelectedOrder(order));
     setIsFetchingData(true);
     queryClient.invalidateQueries(['orderProducts', id]);
   };
 
   const handleSelectOrder = () => {
-    selectOrder();
+    selectNewOrder();
     dispatch(setIsOrderSelected(true));
   };
 
   const handleDeleteOrder = () => {
-    selectOrder();
+    selectNewOrder();
     dispatch(setIsOrderDeleteModalOpen(true));
   };
 
@@ -90,6 +94,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
     <article
       className={cn(styles.orderItem, {
         [styles['orderItem--shortForm']]: isOrderSelected,
+        [styles['orderItem--selected']]: isSelectedOrder,
       })}
     >
       {!isOrderSelected && <h2 className={styles.orderItem__title}>{title}</h2>}
@@ -101,9 +106,17 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
         <FormatListBulletedIcon className={styles.orderItem__listIcon} />
       </Button>
 
-      <div className={styles.orderItem__productsInfo}>
-        <span className={styles.orderItem__productsCount}>{productCount}</span>
-        <span className={styles.orderItem__productsTitle}>Products</span>
+      <div
+        className={cn(styles.orderItem__productsInfo, {
+          [styles['orderItem__productsInfo--shortForm']]: isOrderSelected,
+        })}
+      >
+        <span className={styles['orderItem__productsInfo-count']}>
+          {productCount}
+        </span>
+        <span className={styles['orderItem__productsInfo-title']}>
+          Products
+        </span>
       </div>
 
       <span className={styles.orderItem__date}>{creationDate}</span>

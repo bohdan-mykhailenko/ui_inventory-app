@@ -27,4 +27,9 @@
     color: var(--primary-dark);
     background: var(--shadow);
   }
+
+  @media (max-width: 600px) {
+    width: 30px;
+    height: 30px;
+  }
 }

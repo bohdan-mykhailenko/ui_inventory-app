@@ -5,6 +5,10 @@
 
   min-height: 100vh;
 
+  @media (max-width: 992px) {
+    grid-template-columns: auto 1fr;
+  }
+
   &__content {
     display: grid;
     background: var(--shadow);

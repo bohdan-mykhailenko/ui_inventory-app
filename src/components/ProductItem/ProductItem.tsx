@@ -29,7 +29,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
   const {
     id,
     title,
-    specification,
+    serialNumber,
     guarantee,
     isNew,
     isRepairing,
@@ -77,14 +77,23 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
         })}
       />
       <img
-        className={styles.productItem__img}
+        className={cn(styles.productItem__image, {
+          [styles['productItem__image--shortForm']]: isShortForm,
+        })}
         src={imageSrc}
         alt="device photo"
       />
       <div className={styles.productItem__nameInfo}>
-        <h2 className={styles['productItem__nameInfo-title']}>{title}</h2>
-        <p className={styles['productItem__nameInfo-specification']}>
-          {specification}
+        <h2
+          className={cn(styles['productItem__nameInfo-title'], {
+            [styles['productItem__nameInfo-title--demo']]: isDemoForm,
+            [styles['productItem__nameInfo-title--shortForm']]: isShortForm,
+          })}
+        >
+          {title}
+        </h2>
+        <p className={styles['productItem__nameInfo-serialNumber']}>
+          {serialNumber}
         </p>
       </div>
 
@@ -92,6 +101,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
         <p
           className={cn(styles.productItem__status, {
             [styles['productItem__status--active']]: isRepairing,
+            [styles['productItem__status--shortForm']]: isShortForm,
           })}
         >
           {status}
@@ -126,7 +136,9 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
       {!isDemoForm && (
         <Button
           onClick={handleDeleteProduct}
-          className={styles.productItem__deleteButton}
+          className={cn(styles.productItem__deleteButton, {
+            [styles['productItem__deleteButton--shortForm']]: isShortForm,
+          })}
         >
           <DeleteForeverIcon className={styles.productItem__deleteIcon} />
         </Button>

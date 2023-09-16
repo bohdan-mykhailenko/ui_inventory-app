@@ -1,16 +1,30 @@
 .detailedOrder {
+  padding: 10px 0;
   position: relative;
-
-  height: 40%;
 
   border-radius: 5px;
   background-color: var(--back-light);
 
   &__title {
-    margin: 20px 0;
+    margin-bottom: 20px;
     padding: 0 20px;
 
     font-size: 24px;
+
+    @media (max-width: 992px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 600px) {
+      margin-bottom: 10px;
+      padding: 0 10px;
+      font-size: 18px;
+    }
+
+    @media (max-width: 450px) {
+      padding: 0 3px;
+      font-size: 16px;
+    }
   }
 
   &__addProduct {
@@ -19,6 +33,14 @@
 
     display: flex;
     align-items: center;
+
+    @media (max-width: 600px) {
+      padding: 0 10px;
+    }
+
+    @media (max-width: 450px) {
+      padding: 0 3px;
+    }
 
     &-button {
       margin-right: 10px;

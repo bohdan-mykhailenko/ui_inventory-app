@@ -59,7 +59,10 @@ export const OrdersPage: React.FC = () => {
   const productsForOrder = useSelector(selectProductsForOrder);
 
   const isModalOpenned =
-    isOrderAddModalOpen || isOrderDeleteModalOpen || isProductAddModalOpen;
+    isOrderAddModalOpen ||
+    isOrderDeleteModalOpen ||
+    isProductAddModalOpen ||
+    isProductDeleteModalOpen;
 
   const isAddModalOppened = isOrderAddModalOpen || isProductAddModalOpen;
   const newItem = isOrderAddModalOpen ? 'order' : 'product';
@@ -84,10 +87,12 @@ export const OrdersPage: React.FC = () => {
           +
         </Button>
 
-        <h1 className={styles.ordersPage__title}>Orders</h1>
-        <span className={styles.ordersPage__count}>
-          / {count > 0 ? count : 'Empty list...'}
-        </span>
+        <h1 className={styles.ordersPage__title}>
+          Orders{' '}
+          <span className={styles.ordersPage__count}>
+            / {count > 0 ? count : 'Empty list...'}
+          </span>
+        </h1>
       </div>
 
       {isLoading ? (

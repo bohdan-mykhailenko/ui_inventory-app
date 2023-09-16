@@ -2,24 +2,47 @@
   &__content {
     padding-top: 20px;
 
-    width: 50%;
+    width: 60%;
 
     border-radius: 5px;
 
     position: absolute;
     z-index: 2;
 
-    top: 150px;
+    top: 250px;
     left: 50%;
 
     transform: translateX(-50%);
 
     background: var(--back-light);
+
+    @media (max-width: 992px) {
+      width: 75%;
+    }
+
+    @media (max-width: 600px) {
+      width: 85%;
+
+      top: 150px;
+    }
   }
 
   &__title {
     margin-bottom: 30px;
     padding: 0 20px;
+
+    @media (max-width: 600px) {
+      margin-bottom: 15px;
+      padding: 0 10px;
+
+      font-size: 16px;
+    }
+
+    @media (max-width: 450px) {
+      margin-bottom: 10px;
+
+      font-size: 14px;
+    }
   }
 
   &__emptyList {
@@ -42,6 +65,12 @@
     gap: 20px;
 
     background: var(--primary);
+
+    @media (max-width: 767px) {
+      padding: 10px 0;
+      justify-content: center;
+    }
+
     &-button {
       padding: 3px;
 
@@ -58,6 +87,16 @@
 
       border-radius: 10px;
       border: 2px solid transparent;
+
+      @media (max-width: 767px) {
+        width: 100px;
+      }
+
+      @media (max-width: 450px) {
+        padding: 5px;
+        height: 30px;
+        width: auto;
+      }
 
       &--cancel {
         background: transparent;
@@ -79,10 +118,14 @@
 
         &-binIcon {
           margin-right: 10px;
-          color: var(--danger);
 
-          width: 20px;
-          min-width: 20px;
+          color: var(--danger);
+          font-size: 20px !important;
+
+          @media (max-width: 450px) {
+            margin-right: 4px;
+            font-size: 17px !important;
+          }
         }
 
         &-text {

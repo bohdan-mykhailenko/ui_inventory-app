@@ -15,7 +15,11 @@ import { useErrorHandle } from '../../../hooks/useErrorHandle';
 import { useMutation, useQueryClient } from 'react-query';
 import { selectOrder, selectProduct } from '../../../selectors/itemsSelector';
 import { Loader } from '../../Loader';
-import { setIsItemChanged } from '../../../reducers/itemsSlice';
+import {
+  setIsItemChanged,
+  setSelectedOrder,
+  setIsOrderSelected,
+} from '../../../reducers/itemsSlice';
 
 interface DeleteModalProps {
   items: string;
@@ -50,6 +54,8 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
       dispatch(setIsProductDeleteModalOpen(false));
     } else {
       dispatch(setIsOrderDeleteModalOpen(false));
+      dispatch(setSelectedOrder(null));
+      dispatch(setIsOrderSelected(false));
     }
   };
 
@@ -59,7 +65,7 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
 
   const handleDeleteOrder = async () => {
     try {
-      await deleteItem(items, id);
+      await mutation.mutate(id);
     } catch (error) {
       handleError(error);
     } finally {

@@ -1,11 +1,23 @@
 .ordersPage {
-  padding: 30px 50px 10px 100px;
+  padding: 30px 30px 10px 50px;
 
   position: relative;
 
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  @media (max-width: 992px) {
+    padding: 30px 20px 10px 20px;
+  }
+
+  @media (max-width: 600px) {
+    padding: 30px 15px 10px 10px;
+  }
+
+  @media (max-width: 450px) {
+    padding: 20px 15px 10px 5px;
+  }
 
   &__overlay {
     position: absolute;
@@ -18,18 +30,38 @@
   }
 
   &__topInfo {
-    margin-bottom: 70px;
+    margin-bottom: 50px;
 
     display: flex;
     align-items: center;
+
+    @media (max-width: 600px) {
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 450px) {
+      margin-bottom: 20px;
+    }
   }
 
   &__mainInfo {
     display: grid;
     gap: 20px;
 
+    @media (max-width: 992px) {
+      gap: 10px;
+    }
+
     &--row {
-      grid-template-columns: 30% 1fr;
+      grid-template-columns: 35% 1fr;
+
+      @media (max-width: 992px) {
+        grid-template-columns: auto 1fr;
+      }
+
+      @media (max-width: 450px) {
+        grid-template-columns: 55px 1fr;
+      }
     }
   }
 
@@ -42,7 +74,6 @@
 
     width: 35px;
     height: 35px;
-    min-width: 30px;
 
     border-radius: 50%;
     background: var(--primary);
@@ -55,16 +86,16 @@
     &:hover {
       background: var(--primary-dark);
     }
-  }
 
-  &__title {
-    margin-right: 10px;
-  }
+    @media (max-width: 600px) {
+      margin-right: 10px;
+      width: 30px;
+      height: 30px;
+    }
 
-  &__count {
-    margin-right: 25px;
-    font-weight: 700;
-    line-height: 100%;
-    font-size: 27px;
+    @media (max-width: 450px) {
+      width: 25px;
+      height: 25px;
+    }
   }
 }
