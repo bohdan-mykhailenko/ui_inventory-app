@@ -13,7 +13,10 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useErrorHandle } from '../../hooks/useErrorHandle';
 import { Loader } from '../Loader';
 import { Checkbox, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { setIsItemChanged } from '../../reducers/itemsSlice';
+import {
+  setIsItemChanged,
+  setIsOrderSelected,
+} from '../../reducers/itemsSlice';
 
 interface ProductFormProps {
   onRemoveModal: () => void;
@@ -89,7 +92,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
     } catch (error) {
       handleError(error);
     } finally {
-      dispatch(setIsItemChanged(true));
+      dispatch(setIsOrderSelected(false));
       onRemoveModal();
     }
   };

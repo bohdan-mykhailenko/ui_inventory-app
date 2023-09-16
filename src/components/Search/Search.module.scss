@@ -14,7 +14,7 @@
     }
 
     border: 2px solid var(--border);
-    border-radius: 4px 0px 0px 4px;
+    border-radius: 4px;
 
     &:hover {
       border: 2px solid var(--focus);
@@ -24,22 +24,5 @@
       border: 2px solid var(--focus);
       outline: none;
     }
-  }
-
-  &__button {
-    display: flex;
-    border-radius: 0px 4px 4px 0px;
-
-    border: 2px solid var(--border);
-
-    &:hover,
-    &:active {
-      background: var(--primary-dark);
-      border: 2px solid var(--focus);
-    }
-  }
-
-  &__icon {
-    color: white;
   }
 }

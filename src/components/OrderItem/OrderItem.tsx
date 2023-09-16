@@ -29,6 +29,13 @@ interface OrderItemProps {
 }
 
 export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
+  const dispatch = useDispatch();
+  const { handleError } = useErrorHandle();
+  const queryClient = useQueryClient();
+  const isOrderChanged = useSelector(selectIsItemChanged);
+  const isOrderSelected = useSelector(selectIsOrderSelected);
+  const [isFetchingData, setIsFetchingData] = useState(false);
+
   const {
     id,
     title,
@@ -37,15 +44,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
     productCount,
   } = order;
 
-  const dispatch = useDispatch();
-  const queryClient = useQueryClient();
-  const isOrderChanged = useSelector(selectIsItemChanged);
-  const isOrderSelected = useSelector(selectIsOrderSelected);
-  const [isFetchingData, setIsFetchingData] = useState(false);
-
-  const { formattedDate: creationDate } = getFormatDateAndTime(date);
-
-  const { isLoading } = useQuery(
+  const { error } = useQuery(
     ['orderProducts', id, isOrderChanged],
     () => {
       if (isFetchingData) {
@@ -61,6 +60,16 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
     },
   );
 
+  const { formattedDate: creationDate } = getFormatDateAndTime(date);
+  const prices = {
+    priceUSD: sumOfPrice[0].value,
+    priceUAH: sumOfPrice[1].value,
+  };
+
+  if (error) {
+    handleError(error);
+  }
+
   const selectOrder = () => {
     dispatch(setSelectedOrder(order));
     setIsFetchingData(true);
@@ -75,11 +84,6 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
   const handleDeleteOrder = () => {
     selectOrder();
     dispatch(setIsOrderDeleteModalOpen(true));
-  };
-
-  const prices = {
-    priceUSD: sumOfPrice[0].value,
-    priceUAH: sumOfPrice[1].value,
   };
 
   return (

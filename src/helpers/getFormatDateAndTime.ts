@@ -1,7 +1,9 @@
 import { monthNames } from '../consts/monthNames';
 
-export const getFormatDateAndTime = (inputDate: string | Date) => {
-  const date = new Date(inputDate);
+export const getFormatDateAndTime = (input: string | Date) => {
+  const inputDate = new Date(input);
+
+  const date = isNaN(inputDate.getTime()) ? new Date() : inputDate;
 
   const weekday = date.toLocaleString('en-US', { weekday: 'long' });
 

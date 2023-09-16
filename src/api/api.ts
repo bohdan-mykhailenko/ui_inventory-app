@@ -100,7 +100,9 @@ export const postProduct = async (data: Partial<Product>) => {
         const typedKey = key as keyof Partial<Product>;
 
         if (typedKey === 'guarantee' || typedKey === 'price') {
-          formData.append(typedKey, JSON.stringify(data[typedKey]));
+          const jsonData = JSON.stringify(data[typedKey]);
+
+          formData.append(typedKey, jsonData);
         } else if (typedKey === 'photo') {
           const photoBlob = data[typedKey] as Blob;
 
