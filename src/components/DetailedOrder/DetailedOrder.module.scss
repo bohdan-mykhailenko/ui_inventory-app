@@ -4,6 +4,11 @@
 
   border-radius: 5px;
   background-color: var(--back-light);
+  height: 130px;
+
+  @media (max-width: 450px) {
+    height: 120px;
+  }
 
   &__title {
     margin-bottom: 20px;
@@ -23,7 +28,7 @@
 
     @media (max-width: 450px) {
       padding: 0 3px;
-      font-size: 16px;
+      font-size: 14px;
     }
   }
 
@@ -56,12 +61,17 @@
       background: var(--primary);
 
       color: var(--back-light);
-      font-size: 16px;
+      font-size: 18px;
       border: 2px solid var(--primary-dark);
+
+      transition:
+        background-color 0.3s linear,
+        transform 0.3s linear;
 
       &:active,
       &:hover {
-        background: var(--primary-dark);
+        transform: scale(1.1);
+        background-color: var(--primary-dark);
       }
     }
 
@@ -73,9 +83,20 @@
   }
 
   &__emptyList {
-    padding: 0 20px;
+    padding: 10px 20px;
 
     font-size: 14px;
-    color: var(--border);
+    color: var(--secondary);
+    background: var(--back-light);
+    border-radius: 0px 0 4px 4px;
+
+    @media (max-width: 600px) {
+      padding: 10px 10px;
+    }
+
+    @media (max-width: 450px) {
+      padding: 5px 3px;
+      font-size: 12px;
+    }
   }
 }

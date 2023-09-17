@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Product, ProductFormData } from '../../types/Product';
-import { Button, Form as FormInput } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { CloseButton } from '../CloseButton';
-import styles from './Form.module.scss';
 import { ProductType } from '../../types/ProductType';
 import { createProductValidationSchema } from '../../validation/productValidationSchema ';
 import { postProduct } from '../../api/api';
@@ -12,11 +11,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQueryClient } from 'react-query';
 import { useErrorHandle } from '../../hooks/useErrorHandle';
 import { Loader } from '../Loader';
-import { Checkbox, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import {
   setIsItemChanged,
   setIsOrderSelected,
 } from '../../reducers/itemsSlice';
+import styles from './Form.module.scss';
 
 interface ProductFormProps {
   onRemoveModal: () => void;
@@ -24,11 +24,11 @@ interface ProductFormProps {
 
 export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
   const dispatch = useDispatch();
+  const { handleError } = useErrorHandle();
   const [imageFile, setImageFile] = useState<File | string>('');
   const [typeValue, setTypeValue] = useState(ProductType.DEFAULT);
   const selectedOrder = useSelector(selectOrder);
   const queryClient = useQueryClient();
-  const { handleError } = useErrorHandle();
 
   const validationSchema = createProductValidationSchema(imageFile, typeValue);
 
@@ -66,36 +66,39 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
     setTypeValue(event.target.value as ProductType);
   };
 
-  const handleSubmit = async (values: ProductFormData) => {
-    try {
-      const productData: Partial<Product> = {
-        serialNumber: values.serialNumber,
-        isNew: values.isNew,
-        isRepairing: values.isRepairing,
-        photo: imageFile,
-        title: values.title,
-        type: typeValue,
-        specification: values.specification,
-        guarantee: {
-          start: values.guaranteeStart,
-          end: values.guaranteeEnd,
-        },
-        price: [
-          { value: values.priceUSD as number, symbol: 'USD', isDefault: 0 },
-          { value: values.priceUAH as number, symbol: 'UAH', isDefault: 1 },
-        ],
-        order_id: selectedOrder?.id,
-        date: values.date,
-      };
+  const handleSubmit = useCallback(
+    async (values: ProductFormData) => {
+      try {
+        const productData: Partial<Product> = {
+          serialNumber: values.serialNumber,
+          isNew: values.isNew,
+          isRepairing: values.isRepairing,
+          photo: imageFile,
+          title: values.title,
+          type: typeValue,
+          specification: values.specification,
+          guarantee: {
+            start: values.guaranteeStart,
+            end: values.guaranteeEnd,
+          },
+          price: [
+            { value: values.priceUSD as number, symbol: 'USD', isDefault: 0 },
+            { value: values.priceUAH as number, symbol: 'UAH', isDefault: 1 },
+          ],
+          order_id: selectedOrder?.id,
+          date: values.date,
+        };
 
-      mutation.mutate(productData);
-    } catch (error) {
-      handleError(error);
-    } finally {
-      dispatch(setIsOrderSelected(false));
-      onRemoveModal();
-    }
-  };
+        mutation.mutate(productData);
+      } catch (error) {
+        handleError(error);
+      } finally {
+        dispatch(setIsOrderSelected(false));
+        onRemoveModal();
+      }
+    },
+    [mutation, handleError],
+  );
 
   return (
     <Formik
@@ -224,7 +227,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onRemoveModal }) => {
             className={styles.form__checkbox}
           />
         </div>
-
         <div
           className={`${styles.form__formGroup} ${styles['form__formGroup--checkbox']}`}
         >

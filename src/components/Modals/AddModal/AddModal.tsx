@@ -1,12 +1,12 @@
-import React from 'react';
-import styles from './AddModal.module.scss';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   setIsOrderAddModalOpen,
   setIsProductAddModalOpen,
 } from '../../../reducers/modalsSlice';
 import { OrderForm, ProductForm } from '../../Forms';
-import cn from 'classnames';
+import styles from './AddModal.module.scss';
+import { animated, useSpring } from 'react-spring';
 
 interface AddModalProps {
   item: string;
@@ -15,27 +15,43 @@ interface AddModalProps {
 export const AddModal: React.FC<AddModalProps> = ({ item }) => {
   const dispatch = useDispatch();
 
-  const isProductPage = item === 'product';
+  const [modalAnimation, setModalAnimation] = useSpring(() => ({
+    opacity: 0,
+    config: {
+      friction: 20,
+      duration: 300,
+    },
+  }));
 
-  const removeModal = () => {
-    if (isProductPage) {
+  const isProductItem = item === 'product';
+
+  const removeModal = useCallback(() => {
+    if (isProductItem) {
       dispatch(setIsProductAddModalOpen(false));
     } else {
       dispatch(setIsOrderAddModalOpen(false));
     }
+  }, []);
+
+  const closeDeleteModal = () => {
+    setModalAnimation({ opacity: 0 });
+
+    setTimeout(() => {
+      removeModal();
+    }, 150);
   };
 
+  useEffect(() => {
+    setModalAnimation({ opacity: 1 });
+  }, [setModalAnimation]);
+
   return (
-    <div
-      className={cn(styles.addModal, {
-        [styles['addModal--product']]: isProductPage,
-      })}
-    >
-      {isProductPage ? (
-        <ProductForm onRemoveModal={removeModal} />
+    <animated.div className={styles.addModal} style={modalAnimation}>
+      {isProductItem ? (
+        <ProductForm onRemoveModal={closeDeleteModal} />
       ) : (
-        <OrderForm onRemoveModal={removeModal} />
+        <OrderForm onRemoveModal={closeDeleteModal} />
       )}
-    </div>
+    </animated.div>
   );
 };

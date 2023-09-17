@@ -1,10 +1,10 @@
 import React from 'react';
 import { Product } from '../../types/Product';
 import { ProductItem } from '../ProductItem';
-import styles from './ProductList.module.scss';
 import cn from 'classnames';
 import { selectIsOrderSelected } from '../../selectors/itemsSelector';
 import { useSelector } from 'react-redux';
+import styles from './ProductList.module.scss';
 
 interface ProductListProps {
   products: Product[];
@@ -15,6 +15,7 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
 
   return (
     <ul
+      data-aos="fade-right"
       className={cn(styles.productList, {
         [styles['productList--shortForm']]: isOrderSelected,
       })}

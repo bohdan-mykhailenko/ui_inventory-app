@@ -1,4 +1,12 @@
 .deleteModal {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  &--active {
+    opacity: 1;
+    background-color: red;
+  }
+
   &__content {
     padding-top: 20px;
 
@@ -50,7 +58,7 @@
     padding: 0 20px;
 
     font-size: 14px;
-    color: var(--border);
+    color: var(--secondary);
   }
 
   &__actions {
@@ -87,6 +95,10 @@
 
       border-radius: 10px;
       border: 2px solid transparent;
+
+      transition:
+        border-color 0.3s linear,
+        color 0.3s linear;
 
       @media (max-width: 767px) {
         width: 100px;

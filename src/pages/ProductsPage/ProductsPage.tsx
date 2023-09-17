@@ -47,7 +47,7 @@ export const ProductsPage: React.FC = () => {
   const isProductDeleteModalOpen = useSelector(selectIsProductDeleteModalOpen);
 
   return (
-    <section className={styles.productsPage}>
+    <section className={styles.productsPage} data-aos="fade-down">
       {isProductDeleteModalOpen && (
         <div className={styles.productsPage__overlay} />
       )}

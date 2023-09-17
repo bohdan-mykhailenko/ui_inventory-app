@@ -15,6 +15,13 @@
 
   gap: 10px;
 
+  transition: box-shadow 0.3s linear;
+
+  &:active,
+  &:hover {
+    box-shadow: 3px 2px 5px var(--secondary);
+  }
+
   @media (max-width: 1200px) {
     grid-template-columns: 10px 40px 1fr 80px;
     grid-template-rows: repeat(2, 1fr);
@@ -119,7 +126,7 @@
 
     &-serialNumber {
       font-size: 12px;
-      color: var(--border);
+      color: var(--secondary);
       text-decoration: underline;
     }
   }
@@ -177,7 +184,7 @@
 
     &-label {
       font-size: 12px;
-      color: var(--border);
+      color: var(--secondary);
     }
 
     &-start,
@@ -225,10 +232,19 @@
     justify-content: center;
     justify-self: end;
 
-    min-width: 30px;
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
 
     background: transparent;
     border: none;
+
+    transition: background-color 0.3s linear;
+
+    &:hover {
+      background-color: var(--shadow);
+    }
 
     @media (max-width: 600px) {
       grid-row: 1 / 2;
@@ -243,7 +259,15 @@
   }
 
   &__deleteIcon {
-    color: var(--border);
+    color: var(--secondary);
+
+    transition:
+      color 0.3s linear,
+      background-color 0.3s linear;
+
+    &:hover {
+      color: var(--danger);
+    }
 
     @media (max-width: 450px) {
       font-size: 20px !important;

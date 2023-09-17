@@ -1,18 +1,8 @@
-import { API_URL } from '../consts/api';
 import axios from 'axios';
 import { ProductType } from '../types/ProductType';
 import { Order } from '../types/Order';
 import { Product } from '../types/Product';
-
-export const getItemById = async <T>(items: string, id: number) => {
-  try {
-    const response = await axios.get<T>(`${API_URL}/${items}/${id}`);
-
-    return response.data;
-  } catch (error: any) {
-    throw new Error(`Failed to fetch ${items} by ID: ${error.message}`);
-  }
-};
+import { API_URL } from '../consts/api';
 
 export const getAllItems = async <T>(items: string) => {
   try {
@@ -91,7 +81,7 @@ export const postOrder = async <T>(data: Partial<Order>) => {
   }
 };
 
-export const postProduct = async (data: Partial<Product>) => {
+export const postProduct = async <T>(data: Partial<Product>) => {
   try {
     const formData = new FormData();
 
@@ -113,7 +103,7 @@ export const postProduct = async (data: Partial<Product>) => {
       }
     }
 
-    await axios.post(`${API_URL}/products`, formData, {
+    await axios.post<T>(`${API_URL}/products`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

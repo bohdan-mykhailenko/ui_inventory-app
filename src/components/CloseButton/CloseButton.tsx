@@ -1,9 +1,10 @@
-import React from 'react';
+// CloseButton.tsx
+import React, { useCallback } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Button } from 'react-bootstrap';
-import styles from './CloseButton.module.scss';
 import { useDispatch } from 'react-redux';
 import { setSelectedOrder } from '../../reducers/itemsSlice';
+import styles from './CloseButton.module.scss';
 
 interface CloseButtonProps {
   onClose: () => void;
@@ -12,10 +13,10 @@ interface CloseButtonProps {
 export const CloseButton: React.FC<CloseButtonProps> = ({ onClose }) => {
   const dispatch = useDispatch();
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     dispatch(setSelectedOrder(null));
     onClose();
-  };
+  }, [dispatch, onClose]);
 
   return (
     <Button onClick={handleCloseModal} className={styles.closeButton}>

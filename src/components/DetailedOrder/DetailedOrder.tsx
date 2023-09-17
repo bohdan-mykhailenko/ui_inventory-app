@@ -10,18 +10,14 @@ import { Button } from 'react-bootstrap';
 import { setIsOrderSelected } from '../../reducers/itemsSlice';
 import { CloseButton } from '../CloseButton';
 import { setIsProductAddModalOpen } from '../../reducers/modalsSlice';
-import { Loader } from '../Loader';
-import { selectIsOrderDeleteModalOpen } from '../../selectors/modalsSelector';
 
 export const DetailedOrder: React.FC = () => {
   const dispatch = useDispatch();
   const selectedOrder = useSelector(selectOrder);
-  const isOrderDeleteModalOpen = useSelector(selectIsOrderDeleteModalOpen);
-  const { title = '', id = 0 } = selectedOrder || {};
-
   const productsForOrder = useSelector(selectProductsForOrder);
+
+  const { title = '' } = selectedOrder || {};
   const isEmptyOrder = productsForOrder.length > 0;
-  const count = productsForOrder?.length || 0;
 
   const closeDetailedOrder = () => {
     dispatch(setIsOrderSelected(false));
@@ -32,8 +28,9 @@ export const DetailedOrder: React.FC = () => {
   };
 
   return (
-    <section className={styles.detailedOrder}>
+    <section className={styles.detailedOrder} data-aos="fade-down">
       <h2 className={styles.detailedOrder__title}>{title}</h2>
+
       <div className={styles.detailedOrder__addProduct}>
         <Button
           onClick={handleAddProduct}

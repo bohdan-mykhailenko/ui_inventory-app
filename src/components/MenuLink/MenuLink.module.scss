@@ -1,7 +1,8 @@
 .menuLink {
+  margin-bottom: 15px;
+
   display: inline;
   width: 100%;
-  margin-bottom: 15px;
 
   line-height: 20px;
   font-size: 14px;
@@ -10,10 +11,23 @@
   letter-spacing: 0.48px;
   text-transform: uppercase;
 
-  color: var(--secondary);
+  color: var(--text);
   border-bottom: 3px solid transparent;
 
   &--active {
     border-bottom: 3px solid var(--primary);
+  }
+
+  transition:
+    transform 0.3s linear,
+    color 0.3s linear;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:active {
+    transform: scale(1.02);
+    color: var(--primary);
   }
 }

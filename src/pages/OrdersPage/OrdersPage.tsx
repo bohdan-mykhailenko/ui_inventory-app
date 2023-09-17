@@ -76,7 +76,7 @@ export const OrdersPage: React.FC = () => {
   };
 
   return (
-    <section className={styles.ordersPage}>
+    <section className={styles.ordersPage} data-aos="fade-down">
       {isModalOpenned && <div className={styles.ordersPage__overlay} />}
 
       <div className={styles.ordersPage__topInfo}>

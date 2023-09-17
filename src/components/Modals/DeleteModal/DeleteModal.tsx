@@ -1,5 +1,4 @@
-import React from 'react';
-import styles from './DeleteModal.module.scss';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import { CloseButton } from '../../CloseButton';
@@ -20,6 +19,8 @@ import {
   setSelectedOrder,
   setIsOrderSelected,
 } from '../../../reducers/itemsSlice';
+import styles from './DeleteModal.module.scss';
+import { animated, useSpring } from 'react-spring';
 
 interface DeleteModalProps {
   items: string;
@@ -33,6 +34,13 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
   const dispatch = useDispatch();
   const { handleError } = useErrorHandle();
   const queryClient = useQueryClient();
+  const [modalAnimation, setModalAnimation] = useSpring(() => ({
+    opacity: 0,
+    config: {
+      friction: 20,
+      duration: 300,
+    },
+  }));
 
   const { id = 0 } =
     items === 'orders'
@@ -52,30 +60,38 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
     },
   });
 
-  const removeModal = () => {
+  const removeModal = useCallback(() => {
     if (isProductPage) {
       dispatch(setIsProductDeleteModalOpen(false));
     } else {
       dispatch(setIsOrderDeleteModalOpen(false));
     }
-  };
+  }, [dispatch, isProductPage]);
 
   const handleCloseDeleteModal = () => {
-    removeModal();
+    setModalAnimation({ opacity: 0 });
+
+    setTimeout(() => {
+      removeModal();
+    }, 150);
   };
 
-  const handleDeleteOrder = async () => {
+  const handleDeleteOrder = useCallback(async () => {
     try {
       mutation.mutate(id);
     } catch (error) {
       handleError(error);
     } finally {
-      removeModal();
+      handleCloseDeleteModal();
     }
-  };
+  }, [id, mutation, removeModal, handleError]);
+
+  useEffect(() => {
+    setModalAnimation({ opacity: 1 });
+  }, [setModalAnimation]);
 
   return (
-    <div className={styles.deleteModal}>
+    <animated.div style={modalAnimation} className={styles.deleteModal}>
       <div className={styles.deleteModal__content}>
         <h3 className={styles.deleteModal__title}>
           {`Are you sure you want to delete this ${deletedItem}?`}
@@ -112,6 +128,6 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
           <CloseButton onClose={handleCloseDeleteModal} />
         </div>
       </div>
-    </div>
+    </animated.div>
   );
 };

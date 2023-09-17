@@ -1,0 +1,17 @@
+@mixin basicTransition($property) {
+  transition: $property 0.4s linear;
+}
+
+@mixin hoverTransition($property, $value) {
+  @include basicTransition($property);
+  &:hover {
+    #{$property}: $value;
+  }
+}
+
+@mixin activeTransition($property, $value) {
+  @include basicTransition($property);
+  &:active {
+    #{$property}: $value;
+  }
+}
