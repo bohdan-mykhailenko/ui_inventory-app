@@ -57,7 +57,6 @@ export const ProductItem: React.FC<ProductItemProps> = ({ product }) => {
 
   return (
     <article
-      data-aos="fade-right"
       className={cn(styles.productItem, {
         [styles['productItem--shortForm']]: isShortForm,
         [styles['productItem--demoForm']]: isDemoForm,

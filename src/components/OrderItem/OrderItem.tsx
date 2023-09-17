@@ -92,7 +92,6 @@ export const OrderItem: React.FC<OrderItemProps> = ({ order }) => {
 
   return (
     <article
-      data-aos={isOrderSelected ? '' : 'fade-right'}
       className={cn(styles.orderItem, {
         [styles['orderItem--shortForm']]: isOrderSelected,
         [styles['orderItem--selected']]: isSelectedOrder,

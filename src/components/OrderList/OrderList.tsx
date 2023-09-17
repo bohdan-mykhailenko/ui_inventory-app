@@ -9,7 +9,7 @@ interface OrderListProps {
 
 export const OrderList: React.FC<OrderListProps> = ({ orders }) => {
   return (
-    <ul className={styles.orderList}>
+    <ul className={styles.orderList} data-aos="fade-right">
       {orders.map((order) => (
         <OrderItem key={order.id} order={order} />
       ))}

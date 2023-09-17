@@ -19,7 +19,7 @@ export const AddModal: React.FC<AddModalProps> = ({ item }) => {
     opacity: 0,
     config: {
       friction: 20,
-      duration: 500,
+      duration: 300,
     },
   }));
 

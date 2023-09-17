@@ -15,6 +15,7 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
 
   return (
     <ul
+      data-aos="fade-right"
       className={cn(styles.productList, {
         [styles['productList--shortForm']]: isOrderSelected,
       })}
