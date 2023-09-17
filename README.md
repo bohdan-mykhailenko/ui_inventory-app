@@ -1,46 +1,91 @@
-# Getting Started with Create React App
+#  Inventory Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+* [**Demo Link**](https://fe-apr23-418-teapot-crew.github.io/online_store_front-end/#)
+* [**Backend Repo**](https://github.com/fe-apr23-418-teapot-crew/online_store_back-end)
 
-## Available Scripts
+This project is an online inventory where you can store and manage orders and products. Easy to use with all possible functions for comfortable browsing and interacting!
 
-In the project directory, you can run:
+## Stack
 
-### `npm start`
+- [TypeScript](https://www.typescriptlang.org/)
+- [React](https://reactjs.org/)
+- [React Router](https://reactrouter.com/)
+- [React Query](https://tanstack.com/query/v3/docs/react/overview)
+- [Axios](https://axios-http.com/docs/intro)
+- [MUI](https://mui.com/)
+- 
+- [SCSS](https://sass-lang.com/)
+- [Node.js](https://nodejs.org/)
+- [Express.js](https://expressjs.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Sequelize](https://sequelize.org/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Preview
+**Home Page**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+ ![Home Page](https://github.com/fe-apr23-418-teapot-crew/online_store_front-end/assets/76702178/154a3b60-d554-4430-a3ad-6b89f1c2bfa7)
 
-### `npm test`
+**Phones Page**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Phones Page](https://github.com/fe-apr23-418-teapot-crew/online_store_front-end/assets/76702178/1fd036a7-f84d-4eff-9f20-452cdd40140e)
 
-### `npm run build`
+**Detailed Product Page**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Detailed Product Page](https://github.com/fe-apr23-418-teapot-crew/online_store_front-end/assets/76702178/4123add3-c0f0-4869-bd42-8bd2f48bb760)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Favs Page**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![Favs Page](https://github.com/fe-apr23-418-teapot-crew/online_store_front-end/assets/76702178/705531aa-63ab-4c45-a489-9767cf93c34e)
 
-### `npm run eject`
+**Cart Page**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![Cart Page](https://github.com/fe-apr23-418-teapot-crew/online_store_front-end/assets/76702178/6c29a6a1-b1e4-4cdb-ad39-f23d30c99824)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Authorization**: Registration and login via email.
+- **Theme switcher**: Switches to a light or dark theme.
+- **Carousels**: Infinite sliders with highlighted products.
+- **Search and Filter**: Ability to find a specific product or group of products.
+- **Adaptability**: Full adaptability for different screen resolutions.
+    
+## Structure
+* **Frontend Side**:
+	* API
+	* Components
+	* Contexts
+	* Helpers
+	* Hooks
+	* Layouts
+	* Pages
+	* Provider
+	* Styles
+* **Backend Side**:
+	* Controllers
+	* Exceptions
+	* Models
+	* Middlewares
+	* Routes
+	* Services
+	* Static
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## How to start
+
+**Follow these steps to start app in your local machine:**
+
+1.  Clone the repo:
+    `git clone https://github.com/fe-apr23-418-teapot-crew/online_store_front-end.git`
+    
+2.  Navigate to the project dir:
+     `cd online_store_front-end`
+
+3.  Install dependencies:
+    `npm install`
+    
+ 4.  Start the server:
+    `npm start`
+
