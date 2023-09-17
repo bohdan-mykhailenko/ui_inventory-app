@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { SideBar } from '../../components/SideBar';
 import { Header } from '../../components/Header';
 import { useDispatch } from 'react-redux';
 import {
@@ -15,6 +14,7 @@ import {
   setSelectedOrder,
 } from '../../reducers/itemsSlice';
 import styles from './MainLayout.module.scss';
+import { NavigationMenu } from '../../components/NavigationMenu';
 
 export const MainLayout: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,6 +25,9 @@ export const MainLayout: React.FC = () => {
     dispatch(setIsProductDeleteModalOpen(false));
     dispatch(setIsOrderDeleteModalOpen(false));
     dispatch(setIsOrderAddModalOpen(false));
+  };
+
+  const resetSelectedItem = () => {
     dispatch(setIsItemChanged(false));
     dispatch(setIsOrderSelected(false));
     dispatch(setSelectedOrder(null));
@@ -32,13 +35,14 @@ export const MainLayout: React.FC = () => {
 
   useEffect(() => {
     resetOpenModals();
+    resetSelectedItem();
   }, [pathname]);
 
   return (
     <div className={styles.mainLayout}>
       <Header />
 
-      <SideBar />
+      <NavigationMenu />
 
       <main className={styles.mainLayout__content}>
         <Outlet />

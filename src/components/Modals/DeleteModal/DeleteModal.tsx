@@ -73,7 +73,7 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
 
     setTimeout(() => {
       removeModal();
-    }, 300);
+    }, 150);
   };
 
   const handleDeleteOrder = useCallback(async () => {

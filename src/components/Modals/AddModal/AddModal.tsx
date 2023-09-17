@@ -38,7 +38,7 @@ export const AddModal: React.FC<AddModalProps> = ({ item }) => {
 
     setTimeout(() => {
       removeModal();
-    }, 300);
+    }, 150);
   };
 
   useEffect(() => {
