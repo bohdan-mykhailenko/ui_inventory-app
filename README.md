@@ -1,8 +1,8 @@
 #  Inventory Application
 
 ## Overview
-* [**Demo Link**](https://fe-apr23-418-teapot-crew.github.io/online_store_front-end/#)
-* [**Backend Repo**](https://github.com/fe-apr23-418-teapot-crew/online_store_back-end)
+* [**Demo Link**](https://bohdan-mykhailenko.github.io/inventory/)
+* [**Backend Repo**](https://github.com/bohdan-mykhailenko/inventory-backend)
 
 ## Description
 
