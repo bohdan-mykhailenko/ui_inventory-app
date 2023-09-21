@@ -10,8 +10,6 @@ This project is an online inventory where you can store and manage orders and pr
 
 ## Features
 
-**The API provides the following features:**
-
 - **Upload and interact with data:** Get, create, and delete orders or products.
 - **Count active sessions:** Using the web socket the app counts sessions.
 - **Search and filter**: Ability to find a specific product or order.
